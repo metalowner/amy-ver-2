@@ -1,6 +1,14 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import SignIn from './components/SignIn.vue'
+import { onMounted, ref } from 'vue'
+
+const signIn = ref(null)
+
+onMounted(() => {
+  console.log(signIn.value.auth, signIn.value.userLoggedIn)
+})
 </script>
 
 <template>
@@ -11,9 +19,10 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="You did it!" />
 
       <nav>
+        <SignIn ref="signIn" />
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/register">Register</RouterLink>
+        <RouterLink to="/profile" v-if="signIn?.userLoggedIn">Profile</RouterLink>
       </nav>
     </div>
   </header>
