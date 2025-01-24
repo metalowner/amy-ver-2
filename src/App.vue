@@ -2,13 +2,25 @@
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import SignIn from './components/SignIn.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from './main'
 
 const signIn = ref(null)
+const userData = ref({})
 
-onMounted(() => {
-  console.log(signIn.value.auth, signIn.value.userLoggedIn)
-})
+setTimeout(async () => {
+  if (signIn.value.userLoggedIn === true) {
+    const docRef = doc(db, 'users', signIn.value.auth.currentUser.uid)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      userData.value = docSnap.data()
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log('No such document!')
+    }
+  }
+}, 1000)
 </script>
 
 <template>
@@ -27,7 +39,7 @@ onMounted(() => {
     </div>
   </header>
 
-  <RouterView />
+  <RouterView :auth="signIn" :userData="userData" />
 </template>
 
 <style scoped>
