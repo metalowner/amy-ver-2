@@ -38,8 +38,10 @@ setTimeout(async () => {
       </nav>
     </div>
   </header>
-
-  <RouterView :auth="signIn" :userData="userData" />
+  <Suspense>
+    <RouterView :auth="signIn" :userData="userData" />
+    <template #fallback> Loading... </template>
+  </Suspense>
 </template>
 
 <style scoped>

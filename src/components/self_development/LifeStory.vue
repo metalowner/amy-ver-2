@@ -9,7 +9,7 @@
 
 <script setup>
 import { onMounted, ref, toRefs } from 'vue'
-import MyButton from './MyButton.vue'
+import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 // define props
 const props = defineProps({
@@ -45,6 +45,7 @@ const saveLifeStory = async () => {
     await updateDoc(userRef, {
       lifeStory: lifeStoryText.value,
     })
+    userData.value.vision = lifeStoryText.value
   } catch (err) {
     console.log('Error adding documents', err)
   }
