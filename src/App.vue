@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import SignIn from './components/SignIn.vue'
 import { ref } from 'vue'
 import { doc, getDoc } from 'firebase/firestore'
@@ -20,16 +19,12 @@ setTimeout(async () => {
       console.log('No such document!')
     }
   }
-}, 1000)
+}, 3000)
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
       <nav>
         <SignIn ref="signIn" />
         <RouterLink to="/">Home</RouterLink>
@@ -38,10 +33,7 @@ setTimeout(async () => {
       </nav>
     </div>
   </header>
-  <Suspense>
-    <RouterView :auth="signIn" :userData="userData" />
-    <template #fallback> Loading... </template>
-  </Suspense>
+  <RouterView :auth="signIn" :userData="userData" />
 </template>
 
 <style scoped>

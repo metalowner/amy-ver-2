@@ -35,7 +35,7 @@ const lifeStoryText = ref('Your awesome story')
 onMounted(() => {
   setTimeout(() => {
     lifeStoryText.value = userData.value.lifeStory
-  }, 1000)
+  }, 3000)
 })
 // save function
 const saveLifeStory = async () => {

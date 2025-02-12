@@ -7,9 +7,8 @@ import PersonalVision from '@/components/self_development/PersonalVision.vue'
 import UserValue from '@/components/self_development/UserValue.vue'
 import MyButton from '@/components/MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
-import UserObstacle from '@/components/self_development/UserObstacle.vue'
-import UserResource from '@/components/self_development/UserResource.vue'
 import UserGoal from '@/components/self_development/UserGoal.vue'
+import UserPlan from '@/components/self_development/UserPlan.vue'
 
 const props = defineProps({
   auth: {
@@ -35,60 +34,31 @@ const newObstacleDescription = ref('')
 const addNewResource = ref(false)
 const newResourceHeader = ref('')
 const newResourceDescription = ref('')
-// declare value methods
-const saveNewValue = async () => {
+// declare goal variables
+const addNewGoal = ref(false)
+const newGoalHeader = ref('')
+const newGoalDescription = ref('')
+
+// declare simple value save methods
+const saveNewValue = async (array, newHeader, newDescription) => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
   const newValueObject = {
-    valueHeader: newValueHeader.value,
-    valueDescription: newValueDescription.value,
-    valueImportance: 1,
+    header: newHeader,
+    description: newDescription,
+    importance: 1,
   }
-  userData.value.values.push(newValueObject)
+  userData.value[array].push(newValueObject)
   try {
     await updateDoc(userRef, {
-      values: userData.value.values,
+      [array]: userData.value[array],
     })
   } catch (err) {
     console.log('Error adding documents', err)
   }
 }
-// declare obstacle method
-const saveNewObstacle = async () => {
-  const userUid = auth.value.auth.currentUser.uid
-  const userRef = doc(db, 'users', userUid)
-  const newObstacleObject = {
-    obstacleHeader: newObstacleHeader.value,
-    obstacleDescription: newObstacleDescription.value,
-    obstacleImportance: 1,
-  }
-  userData.value.obstacles.push(newObstacleObject)
-  try {
-    await updateDoc(userRef, {
-      obstacles: userData.value.obstacles,
-    })
-  } catch (err) {
-    console.log('Error adding documents', err)
-  }
-}
-// declare resources methods
-const saveNewResource = async () => {
-  const userUid = auth.value.auth.currentUser.uid
-  const userRef = doc(db, 'users', userUid)
-  const newResourceObject = {
-    resourceHeader: newResourceHeader.value,
-    resourceDescription: newResourceDescription.value,
-    resourceImportance: 1,
-  }
-  userData.value.resources.push(newResourceObject)
-  try {
-    await updateDoc(userRef, {
-      resources: userData.value.resources,
-    })
-  } catch (err) {
-    console.log('Error adding documents', err)
-  }
-}
+
+// declate goal method
 </script>
 
 <template>
@@ -101,18 +71,23 @@ const saveNewResource = async () => {
   <div v-if="addNewValue">
     <h3><input type="text" placeholder="New value header" v-model="newValueHeader" /></h3>
     <p><input type="text" placeholder="New value description" v-model="newValueDescription" /></p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveNewValue" />
+    <MyButton
+      btn-style="standard"
+      btn-text="Save"
+      @click="saveNewValue('values', newValueHeader, newValueDescription)"
+    />
   </div>
   <UserValue
     v-for="(value, index) in userData?.values"
-    :key="value.valueHeaer"
+    :key="value.header"
     :db="db"
     :auth="auth.auth"
     :user-data="userData"
-    :value-index="index"
-    :value-header="value.valueHeader"
-    :value-description="value.valueDescription"
-    :value-importance="value.valueImportance"
+    :index="index"
+    :header="value.header"
+    :description="value.description"
+    :importance="value.importance"
+    property="values"
   />
   <h2>Obstacles</h2>
   <MyButton
@@ -125,18 +100,23 @@ const saveNewResource = async () => {
     <p>
       <input type="text" placeholder="New obstacle description" v-model="newObstacleDescription" />
     </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveNewObstacle" />
+    <MyButton
+      btn-style="standard"
+      btn-text="Save"
+      @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
+    />
   </div>
-  <UserObstacle
+  <UserValue
     v-for="(obstacle, index) in userData?.obstacles"
-    :key="obstacle.obstacleHeader"
+    :key="obstacle.header"
     :db="db"
     :auth="auth.auth"
     :user-data="userData"
-    :obstacle-index="index"
-    :obstacle-header="obstacle.obstacleHeader"
-    :obstacle-description="obstacle.obstacleDescription"
-    :obstacle-importance="obstacle.obstacleImportance"
+    :index="index"
+    :header="obstacle.header"
+    :description="obstacle.description"
+    :importance="obstacle.importance"
+    property="obstacles"
   />
   <h2>Resources</h2>
   <MyButton
@@ -149,34 +129,62 @@ const saveNewResource = async () => {
     <p>
       <input type="text" placeholder="New resource description" v-model="newResourceDescription" />
     </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveNewResource" />
+    <MyButton
+      btn-style="standard"
+      btn-text="Save"
+      @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
+    />
   </div>
-  <UserResource
+  <UserValue
     v-for="(resource, index) in userData?.resources"
-    :key="resource.resourceHeader"
+    :key="resource.header"
     :db="db"
     :auth="auth.auth"
     :user-data="userData"
-    :resource-index="index"
-    :resource-header="resource.resourceHeader"
-    :resource-description="resource.resourceDescription"
-    :resource-importance="resource.resourceImportance"
+    :index="index"
+    :header="resource.header"
+    :description="resource.description"
+    :importance="resource.importance"
+    property="resources"
   />
   <h2>Goals</h2>
+  <MyButton btn-style="standard" btn-text="Add new goal" @click="addNewGoal = !addNewGoal" />
+  <div v-if="addNewGoal">
+    <h3><input type="text" placeholder="Goal Header" v-model="newGoalHeader" /></h3>
+    <p><input type="text" placeholder="Goal description" v-model="newGoalDescription" /></p>
+  </div>
   <UserGoal
     v-for="(goal, index) in userData?.goals"
-    :key="goal.goalHeader"
+    :key="goal.header"
     :db="db"
     :auth="auth.auth"
     :user-data="userData"
-    :goal-header="goal.goalHeader"
-    :goal-description="goal.goalDescription"
-    :goal-importance="goal.goalImportance"
+    :header="goal.header"
+    :description="goal.description"
+    :importance="goal.importance"
     :goal-index="index"
-    :goal-measures="goal.goalMeasures"
-    :goal-price="goal.goalPrice"
-    :goal-urgency="goal.goalUrgency"
-    :goal-values="goal.goalValues"
+    :measures="goal.measures"
+    :prices="goal.prices"
+    :urgency="goal.urgency"
+    :values="goal.values"
+  />
+  <h2>Plans</h2>
+  <UserPlan
+    v-for="(plan, index) in userData?.plans"
+    :key="plan.header"
+    :db="db"
+    :auth="auth.auth"
+    :user-data="userData"
+    :header="plan.header"
+    :importance="plan.importance"
+    :plan-index="index"
+    :urgency="plan.urgency"
+    :values="plan.values"
+    :start-date="plan.startDate"
+    :deadline="plan.deadline"
+    :goals="plan.goals"
+    :obstacles="plan.obstacles"
+    :resources="plan.resources"
   />
   <p>Plans:</p>
   <p>Actions:</p>

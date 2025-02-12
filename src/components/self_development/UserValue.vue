@@ -1,7 +1,7 @@
 <template>
-  <h3>{{ valueHeader }}</h3>
-  <p>{{ valueDescription }}</p>
-  <p>{{ valueImportance }}</p>
+  <h3>{{ header }}</h3>
+  <p>{{ description }}</p>
+  <p>{{ importance }}</p>
   <MyButton btn-style="standard" btn-text="Edit" @click="valueEdit = !valueEdit" />
   <MyButton btn-style="standard" btn-text="Delete" @click="deleteValue" />
   <div v-if="valueEdit">
@@ -30,20 +30,24 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  valueIndex: {
+  index: {
     type: Number,
     required: true,
   },
-  valueHeader: {
+  header: {
     type: String,
     required: true,
   },
-  valueDescription: {
+  description: {
     type: String,
     required: true,
   },
-  valueImportance: {
+  importance: {
     type: Number,
+    required: true,
+  },
+  property: {
+    type: String,
     required: true,
   },
 })
@@ -52,24 +56,24 @@ const valueEdit = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
 // define access to passed props
-const { db, auth, userData, valueIndex, valueHeader, valueDescription, valueImportance } =
-  toRefs(props)
+const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
 // save function
 const saveValue = async () => {
+  const arrayName = property.value
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
-  const valueRef = userData.value.values[valueIndex.value]
+  const valueRef = userData.value[arrayName][index.value]
   if (newValueHeader.value.length != '' && newValueDescription.value.length != '') {
-    valueRef.valueHeader = newValueHeader.value
-    valueRef.valueDescription = newValueDescription.value
+    valueRef.header = newValueHeader.value
+    valueRef.description = newValueDescription.value
   } else if (newValueHeader.value.length != '') {
-    valueRef.valueHeader = newValueHeader.value
+    valueRef.header = newValueHeader.value
   } else {
-    valueRef.valueDescription = newValueDescription.value
+    valueRef.description = newValueDescription.value
   }
   try {
     await updateDoc(userRef, {
-      values: userData.value.values,
+      arrayName: userData.value[arrayName],
     })
     valueEdit.value = false
   } catch (err) {
@@ -78,12 +82,13 @@ const saveValue = async () => {
 }
 // delete function
 const deleteValue = async () => {
+  const arrayName = property.value
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
-  const newValuesArray = userData.value.values.splice(valueIndex.value, 1)
+  const newValuesArray = userData.value[arrayName].splice(index.value, 1)
   try {
     await updateDoc(userRef, {
-      values: newValuesArray,
+      arrayName: newValuesArray,
     })
   } catch (err) {
     console.log('Error adding documents', err)
