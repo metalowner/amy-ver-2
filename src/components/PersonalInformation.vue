@@ -1,7 +1,6 @@
 <template>
   <h2>Username: {{ userData?.username }}</h2>
   <p>Date of birth: {{ userData?.dateOfBirth }}</p>
-  <p>Age:</p>
   <p>Gender: {{ userData?.gender }}</p>
   <p>Relationship status: {{ userData?.relationshipStatus }}</p>
   <p>Country: {{ userData?.country }}</p>

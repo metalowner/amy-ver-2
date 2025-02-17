@@ -11,19 +11,6 @@
   <div v-if="editGoal">
     <h3><input type="text" placeholder="New goal header" v-model="newGoalHeader" /></h3>
     <p><input type="text" placeholder="New goal description" v-model="newGoalDescription" /></p>
-    <select v-model="newGoalImportance">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
     <select v-model="newGoalUrgency">
       <option disabled value="">Please choose one</option>
       <option>1</option>
@@ -65,13 +52,6 @@
         @click="addValueToGoal(values, value.header, index)"
       />
     </p>
-    <p><input type="text" placeholder="New value header" v-model="newValue" /></p>
-    <p><input type="text" placeholder="New value description" v-model="newValueDescription" /></p>
-    <MyButton
-      btn-style="standard"
-      btn-text="Add"
-      @click="addNewValue(values, newValue, newValueDescription)"
-    />
     <MyButton btn-style="standard" btn-text="Save" @click="saveGoal" />
   </div>
 </template>
@@ -148,9 +128,6 @@ const newGoalHeader = ref('')
 const newGoalDescription = ref('')
 const newGoalMeasure = ref('')
 const newPrice = ref('')
-const newValue = ref('')
-const newValueDescription = ref('')
-const newGoalImportance = ref('')
 const newGoalUrgency = ref('')
 const editableValues = ref([])
 // define methods
@@ -174,7 +151,6 @@ const saveGoal = async () => {
   const resourceRef = userData.value.goals[goalIndex.value]
   resourceRef.header = newGoalHeader.value
   resourceRef.description = newGoalDescription.value
-  resourceRef.importance = parseInt(newGoalImportance.value)
   resourceRef.urgency = parseInt(newGoalUrgency.value)
   resourceRef.measures = measures.value
   resourceRef.prices = prices.value
@@ -212,7 +188,6 @@ const editGoalDetails = () => {
   }
   newGoalHeader.value = header.value
   newGoalDescription.value = description.value
-  newGoalImportance.value = importance.value
   newGoalUrgency.value = urgency.value
 }
 //add new value to goal values
@@ -221,24 +196,5 @@ const addValueToGoal = (array, text, index) => {
   const valueToUpdate = userData.value.values.find(({ header }) => header === text)
   valueToUpdate.importance += 1
   deleteByIndex(editableValues.value, index)
-}
-// add new value
-const addNewValue = async (array, valueHeader, valueDescription) => {
-  const userUid = auth.value.currentUser.uid
-  const userRef = doc(db.value, 'users', userUid)
-  array.push(valueHeader)
-  const newValueObject = {
-    header: valueHeader,
-    description: valueDescription,
-    importance: 2,
-  }
-  userData.value.values.push(newValueObject)
-  try {
-    await updateDoc(userRef, {
-      values: userData.value.values,
-    })
-  } catch (err) {
-    console.log('Error adding documents', err)
-  }
 }
 </script>

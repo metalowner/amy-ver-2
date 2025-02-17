@@ -1,35 +1,79 @@
 @import './base.css';
 
+html {
+  background-color: #fafaf2ff;
+}
+
 #app {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   font-weight: normal;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+nav {
+  display: flex;
+  align-items: center;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.white {
+  color: rgba(#fafaf2ff);
+}
+
+.gray {
+  color: rgba(#7f7f7fff);
+}
+
+.black {
+  color: rgba(#101010ff);
+}
+
+.blue {
+  color: rgba(#00bbbbff);
+}
+
+select {
+  border: none;
+  padding: 7px 1em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  outline: none;
+}
+
+a {
+  text-decoration: none;
+  color: #fafaf2ff;
+  transition: 0.4s;
+  padding: 3px 1em;
+  border-bottom: 1px solid #00bbbb00;
+  cursor: pointer;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  padding: 10px 1em;
+  margin: 3px;
+  outline: none;
+}
+
+input:focus {
+  box-shadow:
+    rgba(0, 145, 255, 0.3) 0px 1px 2px 0px,
+    rgba(0, 145, 255, 0.15) 0px 1px 3px 1px;
+}
+
+a:hover {
+  border-color: #fafaf2ff;
+}
+a:active {
+  border-color: #101010ff;
+}
+.router-link-active {
+  border-color: #fafaf2ff;
 }
 
 @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
 }

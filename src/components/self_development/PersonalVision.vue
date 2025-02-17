@@ -32,7 +32,7 @@ const visionText = ref('')
 onMounted(() => {
   setTimeout(() => {
     visionText.value = userData.value.vision
-  }, 1000)
+  }, 3000)
 })
 // save function
 const saveVision = async () => {

@@ -1,30 +1,30 @@
 <template>
-  <div v-show="!userLoggedIn">
+  <div class="signInBtn" v-show="!userLoggedIn">
     <MyButton
-      btn-style="standard"
+      btn-style="navLink"
       btn-text="Login"
       @click="((loginActive = !loginActive), (registerActive = false))"
     />
     <MyButton
-      btn-style="standard"
+      btn-style="navLink"
       btn-text="Register"
       @click="((registerActive = !registerActive), (loginActive = false))"
     />
   </div>
-  <div v-show="userLoggedIn">
-    <MyButton btn-style="standard" btn-text="Logout" @click="userLogout" />
+  <div class="signInBtn" v-show="userLoggedIn">
+    <MyButton btn-style="navLink" btn-text="Logout" @click="userLogout" />
   </div>
-  <div v-if="registerActive">
+  <div class="popUp" v-if="registerActive">
     <h1>Create an Account</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><button @click="register">Submit</button></p>
+    <p><MyButton btn-style="standard" btn-text="Submit" @click="register" /></p>
   </div>
-  <div v-if="loginActive">
+  <div class="popUp" v-if="loginActive">
     <h1>Login to account</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><button @click="login">Submit</button></p>
+    <p><MyButton btn-style="standard" btn-text="Submit" @click="login" /></p>
   </div>
 </template>
 
@@ -97,7 +97,7 @@ const register = () => {
             description: 'Get first results from this app',
             values: ['Self-development'],
             measures: ['Filled fields'],
-            importance: 10,
+            importance: 1,
             urgency: 10,
             prices: ['Time', 'Effort'],
           },
@@ -109,7 +109,7 @@ const register = () => {
             values: ['Pleasure'],
             startDate: todayDate,
             deadline: nextYear,
-            importance: 10,
+            importance: 1,
             urgency: 10,
             obstacles: ['Fear of change'],
             resources: ['Friends'],
@@ -120,9 +120,10 @@ const register = () => {
             header: 'Fill the fields',
             plans: ['Start getting results'],
             duration: 'Daily',
-            importance: 10,
+            importance: 1,
             urgency: 10,
-            type: 'Learn',
+            actionType: 'Learn',
+            startDate: todayDate,
           },
         ],
       })
@@ -170,3 +171,25 @@ defineExpose({
   userLoggedIn,
 })
 </script>
+
+<style scoped>
+.signInBtn {
+  margin-left: auto;
+  border-left: 1px solid #fafaf2ff;
+}
+.popUp {
+  display: block;
+  position: fixed;
+  top: 40%;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 1em;
+  text-align: center;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+</style>
