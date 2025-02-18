@@ -1,13 +1,13 @@
 <template>
   <h3>{{ header }}</h3>
   <p>{{ description }}</p>
-  <p>{{ importance }}</p>
-  <MyButton btn-style="standard" btn-text="Edit" @click="valueEdit = !valueEdit" />
-  <MyButton btn-style="standard" btn-text="Delete" @click="deleteValue" />
+  <p>Важность: {{ importance }}</p>
+  <MyButton btn-style="standard" btn-text="Редактировать" @click="valueEdit = !valueEdit" />
+  <MyButton btn-style="standard" btn-text="Удалить" @click="deleteValue" />
   <div v-if="valueEdit">
-    <h3><input type="text" placeholder="New value header" v-model="newValueHeader" /></h3>
-    <p><input type="text" placeholder="New value description" v-model="newValueDescription" /></p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveValue" />
+    <h3><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></h3>
+    <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="saveValue" />
   </div>
 </template>
 

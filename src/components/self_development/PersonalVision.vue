@@ -1,12 +1,16 @@
 <template>
-  <h2>Vision</h2>
-  <p><input type="text" placeholder="Your motivating vision!" v-model="visionText" /></p>
-  <MyButton btn-style="standard" btn-text="Save" @click="saveVision" />
+  <h2>Видение идеальной жизни</h2>
+  <h3>{{ userData?.vision }}</h3>
+  <MyButton btn-style="standard" btn-text="Редактировать" @click="editVisionDetails" />
+  <div v-if="editVision">
+    <p><input type="text" placeholder="Мое мотивирующие видение" v-model="visionText" /></p>
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="saveVision" />
+  </div>
 </template>
 
 <script setup>
 import { doc, updateDoc } from 'firebase/firestore'
-import { onMounted, ref, toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 
 // define props
@@ -28,12 +32,12 @@ const props = defineProps({
 const { db, auth, userData } = toRefs(props)
 // declare variables
 const visionText = ref('')
-// update vision from database
-onMounted(() => {
-  setTimeout(() => {
-    visionText.value = userData.value.vision
-  }, 3000)
-})
+const editVision = ref(false)
+// edit function
+const editVisionDetails = () => {
+  editVision.value = !editVision.value
+  visionText.value = userData.value.vision
+}
 // save function
 const saveVision = async () => {
   const userUid = auth.value.currentUser.uid

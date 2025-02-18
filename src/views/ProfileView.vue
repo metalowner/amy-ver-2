@@ -222,353 +222,409 @@ function deleteByIndex(array, index) {
 </script>
 
 <template>
-  <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
-  <LifeStory :db="db" :auth="auth.auth" :userData="userData" />
-  <PersonalVision :db="db" :auth="auth.auth" :userData="userData" />
-  <h2>Values</h2>
-  <MyButton btn-style="standard" btn-text="Add value" @click="addNewValue = !addNewValue" />
-  <div v-if="addNewValue">
-    <h3><input type="text" placeholder="New value header" v-model="newValueHeader" /></h3>
-    <p><input type="text" placeholder="New value description" v-model="newValueDescription" /></p>
+  <div class="wrapper">
+    <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
+    <LifeStory :db="db" :auth="auth.auth" :userData="userData" />
+    <PersonalVision :db="db" :auth="auth.auth" :userData="userData" />
+    <h2>Ценности</h2>
     <MyButton
       btn-style="standard"
-      btn-text="Save"
-      @click="saveNewValue('values', newValueHeader, newValueDescription)"
+      btn-text="Добавить ценность"
+      @click="addNewValue = !addNewValue"
     />
-  </div>
-  <UserValue
-    v-for="(value, index) in userData?.values"
-    :key="value.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :index="index"
-    :header="value.header"
-    :description="value.description"
-    :importance="value.importance"
-    property="values"
-  />
-  <h2>Obstacles</h2>
-  <MyButton
-    btn-style="standard"
-    btn-text="Add obstacle"
-    @click="addNewObstacle = !addNewObstacle"
-  />
-  <div v-if="addNewObstacle">
-    <h3><input type="text" placeholder="New obstacle header" v-model="newObstacleHeader" /></h3>
-    <p>
-      <input type="text" placeholder="New obstacle description" v-model="newObstacleDescription" />
-    </p>
+    <div v-if="addNewValue">
+      <h3>
+        <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
+      </h3>
+      <p>
+        <input type="text" placeholder="Описания новой ценности" v-model="newValueDescription" />
+      </p>
+      <MyButton
+        btn-style="standard"
+        btn-text="Сохранить"
+        @click="saveNewValue('values', newValueHeader, newValueDescription)"
+      />
+    </div>
+    <UserValue
+      v-for="(value, index) in userData?.values"
+      :key="value.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :index="index"
+      :header="value.header"
+      :description="value.description"
+      :importance="value.importance"
+      property="values"
+    />
+    <h2>Припятствия</h2>
     <MyButton
       btn-style="standard"
-      btn-text="Save"
-      @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
+      btn-text="Добавить припятствия"
+      @click="addNewObstacle = !addNewObstacle"
     />
-  </div>
-  <UserValue
-    v-for="(obstacle, index) in userData?.obstacles"
-    :key="obstacle.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :index="index"
-    :header="obstacle.header"
-    :description="obstacle.description"
-    :importance="obstacle.importance"
-    property="obstacles"
-  />
-  <h2>Resources</h2>
-  <MyButton
-    btn-style="standard"
-    btn-text="Add resource"
-    @click="addNewResource = !addNewResource"
-  />
-  <div v-if="addNewResource">
-    <h3><input type="text" placeholder="New resource header" v-model="newResourceHeader" /></h3>
-    <p>
-      <input type="text" placeholder="New resource description" v-model="newResourceDescription" />
-    </p>
+    <div v-if="addNewObstacle">
+      <h3>
+        <input type="text" placeholder="Загаловок нового припятствия" v-model="newObstacleHeader" />
+      </h3>
+      <p>
+        <input
+          type="text"
+          placeholder="Описания нового припятствия"
+          v-model="newObstacleDescription"
+        />
+      </p>
+      <MyButton
+        btn-style="standard"
+        btn-text="Сохранить"
+        @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
+      />
+    </div>
+    <UserValue
+      v-for="(obstacle, index) in userData?.obstacles"
+      :key="obstacle.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :index="index"
+      :header="obstacle.header"
+      :description="obstacle.description"
+      :importance="obstacle.importance"
+      property="obstacles"
+    />
+    <h2>Ресурсы</h2>
     <MyButton
       btn-style="standard"
-      btn-text="Save"
-      @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
+      btn-text="Добавить ресурс"
+      @click="addNewResource = !addNewResource"
+    />
+    <div v-if="addNewResource">
+      <h3>
+        <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
+      </h3>
+      <p>
+        <input type="text" placeholder="Описания нового ресурса" v-model="newResourceDescription" />
+      </p>
+      <MyButton
+        btn-style="standard"
+        btn-text="Сохранить"
+        @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
+      />
+    </div>
+    <UserValue
+      v-for="(resource, index) in userData?.resources"
+      :key="resource.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :index="index"
+      :header="resource.header"
+      :description="resource.description"
+      :importance="resource.importance"
+      property="resources"
+    />
+    <h2>Цели</h2>
+    <MyButton btn-style="standard" btn-text="Добавить цель" @click="addNewGoalDetails" />
+    <div v-if="addNewGoal">
+      <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
+      <p><input type="text" placeholder="Описания цели" v-model="newGoalDescription" /></p>
+      <p>
+        Срочность:
+        <select v-model="newGoalUrgency">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+      </p>
+      <h4>Измерения</h4>
+      <p v-for="(measure, index) in newGoalMeasures" :key="measure">
+        {{ index + 1 }}. {{ measure }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newGoalMeasures, index)"
+        />
+      </p>
+      <p><input type="text" placeholder="Новое измерение цели" v-model="newGoalMeasure" /></p>
+      <MyButton
+        btn-style="standard"
+        btn-text="Добавить"
+        @click="addTextToArray(newGoalMeasures, newGoalMeasure)"
+      />
+      <h4>Цены</h4>
+      <p v-for="(price, index) in newGoalPrices" :key="price">
+        {{ index + 1 }}. {{ price }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newGoalPrices, index)"
+        />
+      </p>
+      <p><input type="text" placeholder="Новая цена" v-model="newGoalPrice" /></p>
+      <MyButton
+        btn-style="standard"
+        btn-text="Добавить"
+        @click="addTextToArray(newGoalPrices, newGoalPrice)"
+      />
+      <h4>Ценности</h4>
+      <p v-for="(value, index) in newGoalValues" :key="value">
+        {{ index + 1 }}. {{ value }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newGoalValues, index)"
+        />
+      </p>
+      <p v-for="(value, index) in editableGoalValues" :key="value.header">
+        {{ index + 1 }}. {{ value.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue('values', editableGoalValues, newGoalValues, value.header, index)
+          "
+        />
+      </p>
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveGoal" />
+    </div>
+    <UserGoal
+      v-for="(goal, index) in userData?.goals"
+      :key="goal.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :header="goal.header"
+      :description="goal.description"
+      :importance="goal.importance"
+      :goal-index="index"
+      :measures="goal.measures"
+      :prices="goal.prices"
+      :urgency="goal.urgency"
+      :values="goal.values"
+    />
+    <h2>Планы</h2>
+    <MyButton btn-style="standard" btn-text="Добавить план" @click="addNewPlanDetails" />
+    <div v-if="addNewPlan">
+      <h3><input type="text" placeholder="Заголок нового плана" v-model="newPlanHeader" /></h3>
+      <p>Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" /></p>
+      <p>
+        Дата завершения:<input
+          type="date"
+          placeholder="Дата завершения"
+          v-model="newPlanDeadline"
+        />
+      </p>
+      <p>
+        Срочность:
+        <select v-model="newPlanUrgency">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+      </p>
+      <h4>Цели</h4>
+      <p v-for="(goal, index) in newPlanGoals" :key="goal">
+        {{ index + 1 }}. {{ goal }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newPlanGoals, index)"
+        />
+      </p>
+      <p v-for="(goal, index) in newPlanEditableGoals" :key="goal.header">
+        {{ index + 1 }}. {{ goal.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue('goals', newPlanEditableGoals, newPlanGoals, goal.header, index)
+          "
+        />
+      </p>
+      <h4>Ценности</h4>
+      <p v-for="(value, index) in newPlanValues" :key="value">
+        {{ index + 1 }}. {{ value }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newPlanValues, index)"
+        />
+      </p>
+      <p v-for="(value, index) in newPlanEditableValues" :key="value.header">
+        {{ index + 1 }}. {{ value.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue('values', newPlanEditableValues, newPlanValues, value.header, index)
+          "
+        />
+      </p>
+      <h4>Припятствия</h4>
+      <p v-for="(obstacle, index) in newPlanObstacles" :key="obstacle">
+        {{ index + 1 }}. {{ obstacle }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newPlanObstacles, index)"
+        />
+      </p>
+      <p v-for="(obstacle, index) in newPlanEditableObstacles" :key="obstacle.header">
+        {{ index + 1 }}. {{ obstacle.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue(
+              'obstacles',
+              newPlanEditableObstacles,
+              newPlanObstacles,
+              obstacle.header,
+              index,
+            )
+          "
+        />
+      </p>
+      <h4>Ресурсы</h4>
+      <p v-for="(resource, index) in newPlanResources" :key="resource">
+        {{ index + 1 }}. {{ resource }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newPlanResources, index)"
+        />
+      </p>
+      <p v-for="(resource, index) in newPlanEditableResources" :key="resource.header">
+        {{ index + 1 }}. {{ resource.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue(
+              'resources',
+              newPlanEditableResources,
+              newPlanResources,
+              resource.header,
+              index,
+            )
+          "
+        />
+      </p>
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="savePlan" />
+    </div>
+    <UserPlan
+      v-for="(plan, index) in userData?.plans"
+      :key="plan.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :header="plan.header"
+      :importance="plan.importance"
+      :plan-index="index"
+      :urgency="plan.urgency"
+      :values="plan.values"
+      :start-date="plan.startDate"
+      :deadline="plan.deadline"
+      :goals="plan.goals"
+      :obstacles="plan.obstacles"
+      :resources="plan.resources"
+    />
+    <h2>Действия</h2>
+    <MyButton btn-style="standard" btn-text="Добавить действия" @click="addNewActionDetails" />
+    <div v-if="addNewAction">
+      <h3>
+        <input type="text" placeholder="Загаловок нового действия" v-model="newActionHeader" />
+      </h3>
+      <p>
+        Дата начала: <input type="date" placeholder="Дата начала" v-model="newActionStartDate" />
+      </p>
+      <p>
+        Срочность:
+        <select v-model="newActionUrgency">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7</option>
+          <option>8</option>
+          <option>9</option>
+          <option>10</option>
+        </select>
+      </p>
+      <p>
+        Тип:
+        <select v-model="newActionType">
+          <option>Учить</option>
+          <option>Планировать</option>
+          <option>Делать</option>
+        </select>
+      </p>
+      <p>
+        Повторяймость:
+        <select v-model="newActionDuration">
+          <option>Ежедневно</option>
+          <option>Еженедельно</option>
+          <option>Ежемесячно</option>
+          <option>Одноразово</option>
+        </select>
+      </p>
+      <h4>Планы</h4>
+      <p v-for="(plan, index) in newActionPlans" :key="plan">
+        {{ index + 1 }}. {{ plan }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Удалить"
+          @click="deleteByIndex(newActionPlans, index)"
+        />
+      </p>
+      <p v-for="(plan, index) in newActionEditablePlans" :key="plan.header">
+        {{ index + 1 }}. {{ plan.header }}
+        <MyButton
+          btn-style="standard"
+          btn-text="Добавить"
+          @click="
+            addAndUpdateValue('plans', newActionEditablePlans, newActionPlans, plan.header, index)
+          "
+        />
+      </p>
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveAction" />
+    </div>
+    <UserAction
+      v-for="(action, index) in userData?.actions"
+      :key="action.header"
+      :db="db"
+      :auth="auth.auth"
+      :user-data="userData"
+      :header="action.header"
+      :importance="action.importance"
+      :action-index="index"
+      :action-type="action.actionType"
+      :duration="action.duration"
+      :plans="action.plans"
+      :start-date="action.startDate"
+      :urgency="action.urgency"
     />
   </div>
-  <UserValue
-    v-for="(resource, index) in userData?.resources"
-    :key="resource.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :index="index"
-    :header="resource.header"
-    :description="resource.description"
-    :importance="resource.importance"
-    property="resources"
-  />
-  <h2>Goals</h2>
-  <MyButton btn-style="standard" btn-text="Add new goal" @click="addNewGoalDetails" />
-  <div v-if="addNewGoal">
-    <h3><input type="text" placeholder="Goal Header" v-model="newGoalHeader" /></h3>
-    <p><input type="text" placeholder="Goal description" v-model="newGoalDescription" /></p>
-    <select v-model="newGoalUrgency">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
-    <p v-for="(measure, index) in newGoalMeasures" :key="measure">
-      {{ index + 1 }}. {{ measure }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newGoalMeasures, index)"
-      />
-    </p>
-    <p><input type="text" placeholder="New goal measure" v-model="newGoalMeasure" /></p>
-    <MyButton
-      btn-style="standard"
-      btn-text="Add"
-      @click="addTextToArray(newGoalMeasures, newGoalMeasure)"
-    />
-    <p v-for="(price, index) in newGoalPrices" :key="price">
-      {{ index + 1 }}. {{ price }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newGoalPrices, index)"
-      />
-    </p>
-    <p><input type="text" placeholder="New price" v-model="newGoalPrice" /></p>
-    <MyButton
-      btn-style="standard"
-      btn-text="Add"
-      @click="addTextToArray(newGoalPrices, newGoalPrice)"
-    />
-    <p v-for="(value, index) in newGoalValues" :key="value">
-      {{ index + 1 }}. {{ value }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newGoalValues, index)"
-      />
-    </p>
-    <p v-for="(value, index) in editableGoalValues" :key="value.header">
-      {{ index + 1 }}. {{ value.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="addAndUpdateValue('values', editableGoalValues, newGoalValues, value.header, index)"
-      />
-    </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveGoal" />
-  </div>
-  <UserGoal
-    v-for="(goal, index) in userData?.goals"
-    :key="goal.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :header="goal.header"
-    :description="goal.description"
-    :importance="goal.importance"
-    :goal-index="index"
-    :measures="goal.measures"
-    :prices="goal.prices"
-    :urgency="goal.urgency"
-    :values="goal.values"
-  />
-  <h2>Plans</h2>
-  <MyButton btn-style="standard" btn-text="Add new plan" @click="addNewPlanDetails" />
-  <div v-if="addNewPlan">
-    <h3><input type="text" placeholder="New plan header" v-model="newPlanHeader" /></h3>
-    <p><input type="date" placeholder="Start date" v-model="newPlanStartDate" /></p>
-    <p><input type="date" placeholder="End date" v-model="newPlanDeadline" /></p>
-    <select v-model="newPlanUrgency">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
-    <p v-for="(goal, index) in newPlanGoals" :key="goal">
-      {{ index + 1 }}. {{ goal }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newPlanGoals, index)"
-      />
-    </p>
-    <p v-for="(goal, index) in newPlanEditableGoals" :key="goal.header">
-      {{ index + 1 }}. {{ goal.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="addAndUpdateValue('goals', newPlanEditableGoals, newPlanGoals, goal.header, index)"
-      />
-    </p>
-    <p v-for="(value, index) in newPlanValues" :key="value">
-      {{ index + 1 }}. {{ value }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newPlanValues, index)"
-      />
-    </p>
-    <p v-for="(value, index) in newPlanEditableValues" :key="value.header">
-      {{ index + 1 }}. {{ value.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="
-          addAndUpdateValue('values', newPlanEditableValues, newPlanValues, value.header, index)
-        "
-      />
-    </p>
-    <p v-for="(obstacle, index) in newPlanObstacles" :key="obstacle">
-      {{ index + 1 }}. {{ obstacle }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newPlanObstacles, index)"
-      />
-    </p>
-    <p v-for="(obstacle, index) in newPlanEditableObstacles" :key="obstacle.header">
-      {{ index + 1 }}. {{ obstacle.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="
-          addAndUpdateValue(
-            'obstacles',
-            newPlanEditableObstacles,
-            newPlanObstacles,
-            obstacle.header,
-            index,
-          )
-        "
-      />
-    </p>
-    <p v-for="(resource, index) in newPlanResources" :key="resource">
-      {{ index + 1 }}. {{ resource }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newPlanResources, index)"
-      />
-    </p>
-    <p v-for="(resource, index) in newPlanEditableResources" :key="resource.header">
-      {{ index + 1 }}. {{ resource.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="
-          addAndUpdateValue(
-            'resources',
-            newPlanEditableResources,
-            newPlanResources,
-            resource.header,
-            index,
-          )
-        "
-      />
-    </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="savePlan" />
-  </div>
-  <UserPlan
-    v-for="(plan, index) in userData?.plans"
-    :key="plan.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :header="plan.header"
-    :importance="plan.importance"
-    :plan-index="index"
-    :urgency="plan.urgency"
-    :values="plan.values"
-    :start-date="plan.startDate"
-    :deadline="plan.deadline"
-    :goals="plan.goals"
-    :obstacles="plan.obstacles"
-    :resources="plan.resources"
-  />
-  <h2>Actions</h2>
-  <MyButton btn-style="standard" btn-text="Add new action" @click="addNewActionDetails" />
-  <div v-if="addNewAction">
-    <h3><input type="text" placeholder="New action header" v-model="newActionHeader" /></h3>
-    <p><input type="date" placeholder="Start date" v-model="newActionStartDate" /></p>
-    <select v-model="newActionUrgency">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
-    <select v-model="newActionType">
-      <option disabled value="">Please choose one</option>
-      <option>Learn</option>
-      <option>Plan</option>
-      <option>Execute</option>
-    </select>
-    <select v-model="newActionDuration">
-      <option disabled value="">Please choose one</option>
-      <option>Daily</option>
-      <option>Weekly</option>
-      <option>Monthly</option>
-      <option>One time</option>
-    </select>
-    <p v-for="(plan, index) in newActionPlans" :key="plan">
-      {{ index + 1 }}. {{ plan }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Delete"
-        @click="deleteByIndex(newActionPlans, index)"
-      />
-    </p>
-    <p v-for="(plan, index) in newActionEditablePlans" :key="plan.header">
-      {{ index + 1 }}. {{ plan.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Add"
-        @click="
-          addAndUpdateValue('plans', newActionEditablePlans, newActionPlans, plan.header, index)
-        "
-      />
-    </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveAction" />
-  </div>
-  <UserAction
-    v-for="(action, index) in userData?.actions"
-    :key="action.header"
-    :db="db"
-    :auth="auth.auth"
-    :user-data="userData"
-    :header="action.header"
-    :importance="action.importance"
-    :action-index="index"
-    :action-type="action.actionType"
-    :duration="action.duration"
-    :plans="action.plans"
-    :start-date="action.startDate"
-    :urgency="action.urgency"
-  />
 </template>
+
+<style scoped>
+.wrapper {
+  padding: 1em;
+}
+</style>

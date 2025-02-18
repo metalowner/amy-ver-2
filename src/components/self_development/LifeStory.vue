@@ -1,9 +1,9 @@
 <template>
-  <h2>My Life Story</h2>
-  <MyButton btn-style="standard" btn-text="View" @click="viewLifeStory = !viewLifeStory" />
+  <h2>Моя история жизни</h2>
+  <MyButton btn-style="standard" btn-text="Смотреть" @click="viewLifeStory = !viewLifeStory" />
   <div v-show="viewLifeStory">
     <textarea id="text" v-model="lifeStoryText"></textarea>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveLifeStory" />
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="saveLifeStory" />
   </div>
 </template>
 

@@ -1,54 +1,63 @@
 <template>
   <h3>{{ header }}</h3>
-  <p>{{ importance }}</p>
-  <p>{{ urgency }}</p>
-  <p>{{ startDate }}</p>
-  <p>{{ actionType }}</p>
-  <p>{{ duration }}</p>
+  <p>Важность: {{ importance }}</p>
+  <p>Срочность: {{ urgency }}</p>
+  <p>Дата начала: {{ startDate }}</p>
+  <p>Тип: {{ actionType }}</p>
+  <p>Повторяймость: {{ duration }}</p>
+  <h4>Планы</h4>
   <p v-for="(plan, index) in plans" :key="plan">{{ index + 1 }}. {{ plan }}</p>
-  <MyButton btn-style="standard" btn-text="Edit" @click="editActionDetails" />
-  <MyButton btn-style="standard" btn-text="Delete" @click="deleteAction" />
+  <MyButton btn-style="standard" btn-text="Редактировать" @click="editActionDetails" />
+  <MyButton btn-style="standard" btn-text="Удалить" @click="deleteAction" />
   <div v-if="editAction">
-    <h3><input type="text" placeholder="New action header" v-model="newActionHeader" /></h3>
-    <select v-model="newActionUrgency">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
-    <select v-model="newActionType">
-      <option disabled value="">Please choose one</option>
-      <option>Learn</option>
-      <option>Plan</option>
-      <option>Execute</option>
-    </select>
-    <select v-model="newActionDuration">
-      <option disabled value="">Please choose one</option>
-      <option>Daily</option>
-      <option>Weekly</option>
-      <option>Monthly</option>
-      <option>One time</option>
-    </select>
+    <h3><input type="text" placeholder="Новый заголовок" v-model="newActionHeader" /></h3>
+    <p>
+      Срочность:
+      <select v-model="newActionUrgency">
+        <option disabled value="">Please choose one</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+      </select>
+    </p>
+    <p>
+      Тип:
+      <select v-model="newActionType">
+        <option>Учить</option>
+        <option>Планировать</option>
+        <option>Делать</option>
+      </select>
+    </p>
+    <p>
+      Повторяймость:
+      <select v-model="newActionDuration">
+        <option>Ежедневно</option>
+        <option>Еженедельно</option>
+        <option>Ежемесячно</option>
+        <option>Одноразово</option>
+      </select>
+    </p>
+    <h4>Планы</h4>
     <p v-for="(plan, index) in plans" :key="plan">
       {{ index + 1 }}. {{ plan }}
-      <MyButton btn-style="standard" btn-text="Delete" @click="deleteByIndex(plans, index)" />
+      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(plans, index)" />
     </p>
     <p v-for="(plan, index) in editablePlans" :key="plan.header">
       {{ index + 1 }}. {{ plan.header }}
       <MyButton
         btn-style="standard"
-        btn-text="Add"
+        btn-text="Добавить"
         @click="addValueToAction('plans', editablePlans, plans, plan.header, index)"
       />
     </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="saveAction" />
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="saveAction" />
   </div>
 </template>
 

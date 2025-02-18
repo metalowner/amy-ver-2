@@ -25,29 +25,24 @@ setTimeout(async () => {
 <template>
   <header>
     <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
-      <RouterLink to="/profile" v-if="signIn?.userLoggedIn">Profile</RouterLink>
+      <RouterLink to="/">Главная</RouterLink>
+      <RouterLink to="/about">О нас</RouterLink>
+      <RouterLink to="/profile" v-if="signIn?.userLoggedIn">Профиль</RouterLink>
       <SignIn ref="signIn" />
     </nav>
   </header>
-  <div class="wrapper">
-    <RouterView :auth="signIn" :userData="userData" />
-  </div>
-  <footer>All rights reserved</footer>
+  <RouterView :auth="signIn" :userData="userData" />
+  <footer>Все права защищены!</footer>
 </template>
 
 <style scoped>
 header {
   padding: 1em;
-  background-color: #00bbbbff;
+  background-color: #101010ff;
 }
 footer {
   background-color: #101010ff;
   color: #fafaf2ff;
   height: 5em;
-}
-.wrapper {
-  padding: 1em;
 }
 </style>

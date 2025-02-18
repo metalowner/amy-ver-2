@@ -1,79 +1,90 @@
 <template>
   <h3>{{ header }}</h3>
-  <p>{{ startDate }}</p>
-  <p>{{ deadline }}</p>
-  <p>{{ importance }}</p>
-  <p>{{ urgency }}</p>
+  <p>Дата начала: {{ startDate }}</p>
+  <p>Дата завершения: {{ deadline }}</p>
+  <p>Важность: {{ importance }}</p>
+  <p>Срочность: {{ urgency }}</p>
+  <h4>Цели</h4>
   <p v-for="(goal, index) in goals" :key="goal">{{ index + 1 }}. {{ goal }}</p>
+  <h4>Ценности</h4>
   <p v-for="(value, index) in values" :key="value">{{ index + 1 }}. {{ value }}</p>
+  <h4>Припятствия</h4>
   <p v-for="(obstacle, index) in obstacles" :key="obstacle">{{ index + 1 }}. {{ obstacle }}</p>
+  <h4>Ресурсы</h4>
   <p v-for="(resource, index) in resources" :key="resource">{{ index + 1 }}. {{ resource }}</p>
-  <MyButton btn-style="standard" btn-text="Delete" @click="deletePlan" />
-  <MyButton btn-style="standard" btn-text="Edit" @click="editPlanDetails" />
+  <MyButton btn-style="standard" btn-text="Редактировать" @click="editPlanDetails" />
+  <MyButton btn-style="standard" btn-text="Удалить" @click="deletePlan" />
   <div v-if="editPlan">
-    <h3><input type="text" placeholder="New plan header" v-model="newPlanHeader" /></h3>
-    <select v-model="newPlanUrgency">
-      <option disabled value="">Please choose one</option>
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-      <option>7</option>
-      <option>8</option>
-      <option>9</option>
-      <option>10</option>
-    </select>
+    <h3><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></h3>
+    <p>
+      Срочность:
+      <select v-model="newPlanUrgency">
+        <option disabled value="">Please choose one</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+      </select>
+    </p>
+    <h4>Цели</h4>
     <p v-for="(goal, index) in goals" :key="goal">
       {{ index + 1 }}. {{ goal }}
-      <MyButton btn-style="standard" btn-text="Delete" @click="deleteByIndex(goals, index)" />
+      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(goals, index)" />
     </p>
     <p v-for="(goal, index) in editableGoals" :key="goal.header">
       {{ index + 1 }}. {{ goal.header }}
       <MyButton
         btn-style="standard"
-        btn-text="Add"
+        btn-text="Добавить"
         @click="addValueToPlan('goals', goals, editableGoals, goal.header, index)"
       />
     </p>
+    <h4>Ценности</h4>
     <p v-for="(value, index) in values" :key="value">
       {{ index + 1 }}. {{ value }}
-      <MyButton btn-style="standard" btn-text="Delete" @click="deleteByIndex(values, index)" />
+      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(values, index)" />
     </p>
     <p v-for="(value, index) in editableValues" :key="value.header">
       {{ index + 1 }}. {{ value.header }}
       <MyButton
         btn-style="standard"
-        btn-text="Add"
+        btn-text="Добавить"
         @click="addValueToPlan('values', values, editableValues, value.header, index)"
       />
     </p>
+    <h4>Припятствия</h4>
     <p v-for="(obstacle, index) in obstacles" :key="obstacle">
       {{ index + 1 }}. {{ obstacle }}
-      <MyButton btn-style="standard" btn-text="Delete" @click="deleteByIndex(obstacles, index)" />
+      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(obstacles, index)" />
     </p>
     <p v-for="(obstacle, index) in editableObstacles" :key="obstacle.header">
       {{ index + 1 }}. {{ obstacle.header }}
       <MyButton
         btn-style="standard"
-        btn-text="Add"
+        btn-text="Добавить"
         @click="addValueToPlan('obstacles', obstacles, editableObstacles, obstacle.header, index)"
       />
     </p>
+    <h4>Ресурсы</h4>
     <p v-for="(resource, index) in resources" :key="resource">
       {{ index + 1 }}. {{ resource }}
-      <MyButton btn-style="standard" btn-text="Delete" @click="deleteByIndex(resources, index)" />
+      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(resources, index)" />
     </p>
     <p v-for="(resource, index) in editableResources" :key="resource.header">
       {{ index + 1 }}. {{ resource.header }}
       <MyButton
         btn-style="standard"
-        btn-text="Add"
+        btn-text="Добавить"
         @click="addValueToPlan('resources', resources, editableResources, resource.header, index)"
       />
     </p>
-    <MyButton btn-style="standard" btn-text="Save" @click="savePlan" />
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="savePlan" />
   </div>
 </template>
 

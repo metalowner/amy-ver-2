@@ -1,31 +1,37 @@
 <template>
-  <h2>Username: {{ userData?.username }}</h2>
-  <p>Date of birth: {{ userData?.dateOfBirth }}</p>
-  <p>Gender: {{ userData?.gender }}</p>
-  <p>Relationship status: {{ userData?.relationshipStatus }}</p>
-  <p>Country: {{ userData?.country }}</p>
-  <p>Region: {{ userData?.region }}</p>
-  <p>City: {{ userData?.city }}</p>
-  <MyButton btn-style="standard" btn-text="Edit" @click="editInfo" />
+  <h2>Имя: {{ userData?.username }}</h2>
+  <p>Дата рождения: {{ userData?.dateOfBirth }}</p>
+  <p>Пол: {{ userData?.gender }}</p>
+  <p>Отношения: {{ userData?.relationshipStatus }}</p>
+  <p>Страна: {{ userData?.country }}</p>
+  <p>Область: {{ userData?.region }}</p>
+  <p>Город: {{ userData?.city }}</p>
+  <MyButton btn-style="standard" btn-text="Редактировать" @click="editInfo" />
   <div v-if="editPersonalInfo">
-    <p><input type="text" placeholder="Username" v-model="username" /></p>
-    <p><input type="date" placeholder="Birth date" v-model="birthDate" /></p>
-    <select v-model="gender">
-      <option disabled value="">Please select one</option>
-      <option>Male</option>
-      <option>Female</option>
-      <option>Other</option>
-    </select>
-    <select v-model="relationship">
-      <option disabled value="">Please select one</option>
-      <option>Married</option>
-      <option>In a relationship</option>
-      <option>Not in a relationship</option>
-    </select>
-    <p><input type="text" placeholder="Country" v-model="country" /></p>
-    <p><input type="text" placeholder="Region" v-model="region" /></p>
-    <p><input type="text" placeholder="City" v-model="city" /></p>
-    <MyButton btn-style="standard" btn-text="Save" @click="savePersonalInformation" />
+    <p><input type="text" placeholder="Имя" v-model="username" /></p>
+    <p>Дата рождения: <input type="date" placeholder="Дата рождения" v-model="birthDate" /></p>
+    <p>
+      Пол:
+      <select v-model="gender">
+        <option disabled value="">Выберите один</option>
+        <option>Мужчина</option>
+        <option>Женщина</option>
+        <option>Другое</option>
+      </select>
+    </p>
+    <p>
+      Отношения:
+      <select v-model="relationship">
+        <option disabled value="">Выберите один</option>
+        <option>Женат \ Замужем</option>
+        <option>В отношениях</option>
+        <option>Не в отношениях</option>
+      </select>
+    </p>
+    <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
+    <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
+    <p>Город: <input type="text" placeholder="Город" v-model="city" /></p>
+    <MyButton btn-style="standard" btn-text="Сохранить" @click="savePersonalInformation" />
   </div>
 </template>
 

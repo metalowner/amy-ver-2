@@ -2,29 +2,29 @@
   <div class="signInBtn" v-show="!userLoggedIn">
     <MyButton
       btn-style="navLink"
-      btn-text="Login"
+      btn-text="Войти"
       @click="((loginActive = !loginActive), (registerActive = false))"
     />
     <MyButton
       btn-style="navLink"
-      btn-text="Register"
+      btn-text="Регистрация"
       @click="((registerActive = !registerActive), (loginActive = false))"
     />
   </div>
   <div class="signInBtn" v-show="userLoggedIn">
-    <MyButton btn-style="navLink" btn-text="Logout" @click="userLogout" />
+    <MyButton btn-style="navLink" btn-text="Выйти" @click="userLogout" />
   </div>
   <div class="popUp" v-if="registerActive">
-    <h1>Create an Account</h1>
+    <h1>Создать аккаунт</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><MyButton btn-style="standard" btn-text="Submit" @click="register" /></p>
+    <p><MyButton btn-style="standard" btn-text="Отправить" @click="register" /></p>
   </div>
   <div class="popUp" v-if="loginActive">
-    <h1>Login to account</h1>
+    <h1>Войти в аккаунт</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><MyButton btn-style="standard" btn-text="Submit" @click="login" /></p>
+    <p><MyButton btn-style="standard" btn-text="Отправить" @click="login" /></p>
   </div>
 </template>
 
@@ -63,66 +63,66 @@ const register = () => {
         today.getFullYear() + 1 + '-' + (today.getMonth() + 1) + '-' + today.getDate()
       // ...
       await setDoc(doc(db, 'users', user.uid), {
-        lifeStory: 'Your awesome story',
-        vision: 'Your motivating vision',
+        lifeStory: 'Ваша история...',
+        vision: 'Жить удовлетворительную жизнь',
         values: [
           {
-            header: 'Self-development',
-            description: 'The will to learn, adapt and transform.',
+            header: 'Саморазвития',
+            description: 'Желание учится, приспосабливаться и трансформироваться',
             importance: 2,
           },
           {
-            header: 'Pleasure',
-            description: 'Every action and path I take should be pleasant.',
+            header: 'Удовлетворение',
+            description: 'Всё что делается, делается ради каких-то результатов',
             importance: 2,
           },
         ],
         obstacles: [
           {
-            header: 'Fear of change',
-            description: 'Endless excuses whenever comes the time to take action.',
+            header: 'Страх перемен',
+            description: 'Каждый раз выбирать привычные действия препятсвуя своему развитию',
             importance: 1,
           },
         ],
         resources: [
           {
-            header: 'Friends',
-            description: 'Friends that can help overcome my fear of changes.',
+            header: 'Друзья',
+            description: 'Кторые поддержат, подскажут и помогут',
             importance: 1,
           },
         ],
         goals: [
           {
-            header: 'Results!',
-            description: 'Get first results from this app',
-            values: ['Self-development'],
-            measures: ['Filled fields'],
+            header: 'Саморазвития!',
+            description: 'Раскрыть свой потенциал',
+            values: ['Саморазвития'],
+            measures: ['Заполненые поля', 'Уделённое время'],
             importance: 1,
             urgency: 10,
-            prices: ['Time', 'Effort'],
+            prices: ['Время', 'Усилия'],
           },
         ],
         plans: [
           {
-            header: 'Start getting results',
-            goals: ['Results!'],
-            values: ['Pleasure'],
+            header: 'Развить навык саморазвития в привычку',
+            goals: ['Саморазвития!'],
+            values: ['Удовлетворение'],
             startDate: todayDate,
             deadline: nextYear,
             importance: 1,
             urgency: 10,
-            obstacles: ['Fear of change'],
-            resources: ['Friends'],
+            obstacles: ['Страх перемен'],
+            resources: ['Друзья'],
           },
         ],
         actions: [
           {
-            header: 'Fill the fields',
-            plans: ['Start getting results'],
-            duration: 'Daily',
+            header: 'Заполнять и редактировать поля',
+            plans: ['Развить навык саморазвития в привычку'],
+            duration: 'Ежедневно',
             importance: 1,
             urgency: 10,
-            actionType: 'Learn',
+            actionType: 'Учить',
             startDate: todayDate,
           },
         ],
