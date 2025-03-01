@@ -178,6 +178,7 @@ defineExpose({
   border-left: 1px solid #fafaf2ff;
 }
 .popUp {
+  background-color: #fafaf2ff;
   display: block;
   position: fixed;
   top: 40%;

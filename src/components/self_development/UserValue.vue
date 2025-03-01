@@ -1,13 +1,17 @@
 <template>
-  <h3>{{ header }}</h3>
-  <p>{{ description }}</p>
-  <p>Важность: {{ importance }}</p>
-  <MyButton btn-style="standard" btn-text="Редактировать" @click="valueEdit = !valueEdit" />
-  <MyButton btn-style="standard" btn-text="Удалить" @click="deleteValue" />
-  <div v-if="valueEdit">
-    <h3><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></h3>
-    <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
-    <MyButton btn-style="standard" btn-text="Сохранить" @click="saveValue" />
+  <div class="valueCard">
+    <h3>{{ header }}</h3>
+    <p>{{ description }}</p>
+    <p>Важность: {{ importance }}</p>
+    <MyButton v-if="!valueEdit" btn-style="edit" @click="editValueDetails" />
+    <MyButton v-if="valueEdit" btn-style="cancelTop" @click="valueEdit = !valueEdit" />
+    <MyButton btn-style="delete" @click="deleteValue" />
+    <div class="editDiv" v-if="valueEdit">
+      <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
+      <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
+      <MyButton btn-style="save" @click="saveValue" />
+      <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
+    </div>
   </div>
 </template>
 
@@ -57,6 +61,12 @@ const newValueHeader = ref('')
 const newValueDescription = ref('')
 // define access to passed props
 const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
+// edit function
+const editValueDetails = () => {
+  valueEdit.value = !valueEdit.value
+  newValueHeader.value = header.value
+  newValueDescription.value = description.value
+}
 // save function
 const saveValue = async () => {
   const arrayName = property.value
@@ -95,3 +105,25 @@ const deleteValue = async () => {
   }
 }
 </script>
+
+<style scoped>
+.valueCard {
+  padding: 1em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+  position: relative;
+}
+
+h3 {
+  border-bottom: 1px solid #10101022;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+
+.editDiv {
+  padding-bottom: 2em;
+}
+</style>

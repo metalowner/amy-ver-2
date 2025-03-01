@@ -18,6 +18,26 @@ const router = createRouter({
       name: 'profile',
       component: () => import('../views/ProfileView.vue'),
     },
+    {
+      path: '/health',
+      name: 'health',
+      component: () => import('../views/HealthView.vue'),
+    },
+    {
+      path: '/social',
+      name: 'social',
+      component: () => import('../views/SocialView.vue'),
+    },
+    {
+      path: '/finances',
+      name: 'finances',
+      component: () => import('../views/FinancesView.vue'),
+    },
+    {
+      path: '/hobbies',
+      name: 'hobbies',
+      component: () => import('../views/HobbiesView.vue'),
+    },
   ],
 })
 

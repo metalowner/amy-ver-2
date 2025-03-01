@@ -29,6 +29,14 @@ nav {
 .blue {
   color: rgba(#00bbbbff);
 }
+.shadow {
+  padding: 1em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+}
 
 select {
   border: none;
@@ -39,13 +47,13 @@ select {
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   outline: none;
   margin: 3px;
+  width: 100%;
 }
 
 a {
   text-decoration: none;
   color: #fafaf2ff;
   transition: 0.4s;
-  padding: 3px 1em;
   border-bottom: 1px solid #00bbbb00;
   cursor: pointer;
 }
@@ -59,6 +67,14 @@ input {
   padding: 10px 1em;
   margin: 3px;
   outline: none;
+  width: 100%;
+}
+
+textarea {
+  border-radius: 5px;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
 input:focus {
@@ -67,12 +83,6 @@ input:focus {
     rgba(0, 145, 255, 0.15) 0px 1px 3px 1px;
 }
 
-a:hover {
-  border-color: #fafaf2ff;
-}
-a:active {
-  border-color: #101010ff;
-}
 .router-link-active {
   border-color: #fafaf2ff;
 }

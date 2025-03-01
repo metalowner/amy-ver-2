@@ -2,8 +2,6 @@
 import { db } from '@/main'
 import PersonalInformation from '@/components/PersonalInformation.vue'
 import { ref, toRefs } from 'vue'
-import LifeStory from '@/components/self_development/LifeStory.vue'
-import PersonalVision from '@/components/self_development/PersonalVision.vue'
 import UserValue from '@/components/self_development/UserValue.vue'
 import MyButton from '@/components/MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
@@ -224,105 +222,102 @@ function deleteByIndex(array, index) {
 <template>
   <div class="wrapper">
     <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
-    <LifeStory :db="db" :auth="auth.auth" :userData="userData" />
-    <PersonalVision :db="db" :auth="auth.auth" :userData="userData" />
-    <h2>Ценности</h2>
-    <MyButton
-      btn-style="standard"
-      btn-text="Добавить ценность"
-      @click="addNewValue = !addNewValue"
-    />
-    <div v-if="addNewValue">
-      <h3>
-        <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
-      </h3>
-      <p>
-        <input type="text" placeholder="Описания новой ценности" v-model="newValueDescription" />
-      </p>
-      <MyButton
-        btn-style="standard"
-        btn-text="Сохранить"
-        @click="saveNewValue('values', newValueHeader, newValueDescription)"
-      />
-    </div>
-    <UserValue
-      v-for="(value, index) in userData?.values"
-      :key="value.header"
-      :db="db"
-      :auth="auth.auth"
-      :user-data="userData"
-      :index="index"
-      :header="value.header"
-      :description="value.description"
-      :importance="value.importance"
-      property="values"
-    />
-    <h2>Припятствия</h2>
-    <MyButton
-      btn-style="standard"
-      btn-text="Добавить припятствия"
-      @click="addNewObstacle = !addNewObstacle"
-    />
-    <div v-if="addNewObstacle">
-      <h3>
-        <input type="text" placeholder="Загаловок нового припятствия" v-model="newObstacleHeader" />
-      </h3>
-      <p>
-        <input
-          type="text"
-          placeholder="Описания нового припятствия"
-          v-model="newObstacleDescription"
+    <div class="block">
+      <h2>Ценности</h2>
+      <MyButton btn-style="add" @click="addNewValue = !addNewValue" />
+      <div class="innerBlock shadow" v-if="addNewValue">
+        <h3>
+          <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
+        </h3>
+        <p>
+          <input type="text" placeholder="Описания новой ценности" v-model="newValueDescription" />
+        </p>
+        <MyButton
+          btn-style="save"
+          @click="saveNewValue('values', newValueHeader, newValueDescription)"
         />
-      </p>
-      <MyButton
-        btn-style="standard"
-        btn-text="Сохранить"
-        @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
+      </div>
+      <UserValue
+        v-for="(value, index) in userData?.values"
+        :key="value.header"
+        :db="db"
+        :auth="auth.auth"
+        :user-data="userData"
+        :index="index"
+        :header="value.header"
+        :description="value.description"
+        :importance="value.importance"
+        property="values"
       />
     </div>
-    <UserValue
-      v-for="(obstacle, index) in userData?.obstacles"
-      :key="obstacle.header"
-      :db="db"
-      :auth="auth.auth"
-      :user-data="userData"
-      :index="index"
-      :header="obstacle.header"
-      :description="obstacle.description"
-      :importance="obstacle.importance"
-      property="obstacles"
-    />
-    <h2>Ресурсы</h2>
-    <MyButton
-      btn-style="standard"
-      btn-text="Добавить ресурс"
-      @click="addNewResource = !addNewResource"
-    />
-    <div v-if="addNewResource">
-      <h3>
-        <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
-      </h3>
-      <p>
-        <input type="text" placeholder="Описания нового ресурса" v-model="newResourceDescription" />
-      </p>
-      <MyButton
-        btn-style="standard"
-        btn-text="Сохранить"
-        @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
+    <div class="block">
+      <h2>Припятствия</h2>
+      <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
+      <div class="innerBlock shadow" v-if="addNewObstacle">
+        <h3>
+          <input
+            type="text"
+            placeholder="Загаловок нового припятствия"
+            v-model="newObstacleHeader"
+          />
+        </h3>
+        <p>
+          <input
+            type="text"
+            placeholder="Описания нового припятствия"
+            v-model="newObstacleDescription"
+          />
+        </p>
+        <MyButton
+          btn-style="save"
+          @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
+        />
+      </div>
+      <UserValue
+        v-for="(obstacle, index) in userData?.obstacles"
+        :key="obstacle.header"
+        :db="db"
+        :auth="auth.auth"
+        :user-data="userData"
+        :index="index"
+        :header="obstacle.header"
+        :description="obstacle.description"
+        :importance="obstacle.importance"
+        property="obstacles"
       />
     </div>
-    <UserValue
-      v-for="(resource, index) in userData?.resources"
-      :key="resource.header"
-      :db="db"
-      :auth="auth.auth"
-      :user-data="userData"
-      :index="index"
-      :header="resource.header"
-      :description="resource.description"
-      :importance="resource.importance"
-      property="resources"
-    />
+    <div class="block">
+      <h2>Ресурсы</h2>
+      <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
+      <div class="innerBlock shadow" v-if="addNewResource">
+        <h3>
+          <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
+        </h3>
+        <p>
+          <input
+            type="text"
+            placeholder="Описания нового ресурса"
+            v-model="newResourceDescription"
+          />
+        </p>
+        <MyButton
+          btn-style="save"
+          @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
+        />
+      </div>
+      <UserValue
+        v-for="(resource, index) in userData?.resources"
+        :key="resource.header"
+        :db="db"
+        :auth="auth.auth"
+        :user-data="userData"
+        :index="index"
+        :header="resource.header"
+        :description="resource.description"
+        :importance="resource.importance"
+        property="resources"
+      />
+    </div>
     <h2>Цели</h2>
     <MyButton btn-style="standard" btn-text="Добавить цель" @click="addNewGoalDetails" />
     <div v-if="addNewGoal">
@@ -626,5 +621,20 @@ function deleteByIndex(array, index) {
 <style scoped>
 .wrapper {
   padding: 1em;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.block {
+  position: relative;
+}
+.block h2 {
+  margin-left: 3em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.innerBlock {
+  position: relative;
+  padding-bottom: 3em;
 }
 </style>

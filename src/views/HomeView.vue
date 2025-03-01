@@ -134,7 +134,8 @@ p {
   width: 20em;
   background-repeat: no-repeat;
   background-size: cover;
-  margin: 0px 1em;
+  margin-left: auto;
+  margin-right: auto;
 }
 .selfDev {
   background-image: url(../assets/selfdev.svg);
@@ -151,7 +152,7 @@ p {
     grid-template-columns: auto auto;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   .actionGrid {
     grid-template-columns: auto auto auto;
   }

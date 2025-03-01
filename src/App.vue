@@ -32,7 +32,13 @@ setTimeout(async () => {
     </nav>
   </header>
   <RouterView :auth="signIn" :userData="userData" />
-  <footer>Все права защищены!</footer>
+  <footer>
+    <div>
+      <a href="https://vk.com/simonmys">Вконтакте</a>
+      <p>Телефон: +7 961 435 90 49 Павел</p>
+    </div>
+    <p>Все права защищены!</p>
+  </footer>
 </template>
 
 <style scoped>
@@ -40,9 +46,16 @@ header {
   padding: 1em;
   background-color: #101010ff;
 }
+header a {
+  margin-right: 1em;
+}
 footer {
+  padding: 2em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: #101010ff;
   color: #fafaf2ff;
-  height: 5em;
+  border-top: 1px solid #fafaf2ff;
 }
 </style>
