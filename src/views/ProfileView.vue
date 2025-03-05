@@ -621,7 +621,6 @@ function deleteByIndex(array, index) {
 <style scoped>
 .wrapper {
   padding: 1em;
-  max-width: 50em;
   margin-left: auto;
   margin-right: auto;
 }

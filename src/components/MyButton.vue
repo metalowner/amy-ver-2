@@ -6,7 +6,7 @@ defineProps({
   },
   btnText: {
     type: String,
-    required: true,
+    required: false,
   },
 })
 </script>
@@ -84,5 +84,17 @@ defineProps({
   position: absolute;
   top: 0em;
   left: 1em;
+}
+.back {
+  background-image: url(../assets/back.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1.5em;
+  width: 1.5em;
+  position: absolute;
+  bottom: 1em;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
 }
 </style>

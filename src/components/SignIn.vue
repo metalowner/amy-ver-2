@@ -65,6 +65,34 @@ const register = () => {
       await setDoc(doc(db, 'users', user.uid), {
         lifeStory: 'Ваша история...',
         vision: 'Жить удовлетворительную жизнь',
+        health: {
+          physicalHealth: 0,
+          emotionalHealth: 0,
+          sleep: 8,
+          totalHealth: 0,
+          totalTime: 16,
+        },
+        social: {
+          family: 0,
+          love: 0,
+          friends: 0,
+          pals: 0,
+          strangers: 0,
+          totalSocial: 0,
+        },
+        finances: {
+          income: 0,
+          partners: 0,
+          education: 0,
+          profession: 0,
+          schedule: 0,
+          totalFinances: 0,
+        },
+        hobbies: {
+          hobbies: 100,
+          freeTime: 0,
+          totalHobbies: 50,
+        },
         values: [
           {
             header: 'Саморазвития',

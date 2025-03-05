@@ -115,6 +115,8 @@ const deleteValue = async () => {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
+  padding-right: 2em;
+  max-width: 25em;
 }
 
 h3 {

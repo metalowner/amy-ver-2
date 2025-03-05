@@ -29,6 +29,9 @@ nav {
 .blue {
   color: rgba(#00bbbbff);
 }
+.description {
+  opacity: 70%;
+}
 .shadow {
   padding: 1em;
   box-shadow:

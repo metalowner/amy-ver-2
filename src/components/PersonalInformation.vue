@@ -73,10 +73,34 @@
     </div>
     <h2>Сферы жизни</h2>
     <div class="lifeFieldsDiv">
-      <LifeField name="Здоровье" route-name="health" />
-      <LifeField name="Социум" route-name="social" />
-      <LifeField name="Финансы" route-name="finances" />
-      <LifeField name="Увлечения" route-name="hobbies" />
+      <LifeField
+        name="Здоровье"
+        route-name="health"
+        field-icon="health"
+        background="green"
+        :satisfaction="userData?.health?.totalHealth"
+      />
+      <LifeField
+        name="Социум"
+        route-name="social"
+        field-icon="social"
+        background="blue"
+        :satisfaction="userData?.social?.totalSocial"
+      />
+      <LifeField
+        name="Финансы"
+        route-name="finances"
+        field-icon="finances"
+        background="red"
+        :satisfaction="userData?.finances?.totalFinances"
+      />
+      <LifeField
+        name="Увлечения"
+        route-name="hobbies"
+        field-icon="hobbies"
+        background="yellow"
+        :satisfaction="userData?.hobbies?.totalHobbies"
+      />
     </div>
     <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
     <MyButton
@@ -211,11 +235,7 @@ h3 {
   background-size: cover;
   margin: 0.5em;
 }
-.lifeFieldsDiv {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 .lastStroke {
   margin-bottom: 1em;
 }
@@ -263,5 +283,12 @@ h3 {
 }
 .poligender {
   background-image: url(../assets/poligender.svg);
+}
+@media (min-width: 1024px) {
+  .lifeFieldsDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 </style>
