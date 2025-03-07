@@ -97,4 +97,14 @@ defineProps({
   right: 0;
   margin-inline: auto;
 }
+.arrowDown {
+  background-image: url(../assets/arrowDown.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1.5em;
+  width: 1.5em;
+  position: absolute;
+  right: 0px;
+  opacity: 0.7;
+}
 </style>

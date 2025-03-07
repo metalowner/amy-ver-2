@@ -53,6 +53,46 @@
       </div>
       <MyButton btn-style="save" @click="saveSocial" />
     </div>
+    <TimeCalc
+      :time="userData?.social?.time?.family"
+      label="Семья"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="social"
+    />
+    <TimeCalc
+      :time="userData?.social?.time?.love"
+      label="Половинка"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="social"
+    />
+    <TimeCalc
+      :time="userData?.social?.time?.friends"
+      label="Друзья"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="social"
+    />
+    <TimeCalc
+      :time="userData?.social?.time?.pals"
+      label="Знакомые"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="social"
+    />
+    <TimeCalc
+      :time="userData?.social?.time?.strangers"
+      label="Незнакомцы"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="social"
+    />
     <MyButton btn-style="back" @click="router.push('profile')" />
   </div>
 </template>
@@ -60,6 +100,7 @@
 <script setup>
 import MyButton from '@/components/MyButton.vue'
 import MyRange from '@/components/MyRange.vue'
+import TimeCalc from '@/components/self_development/TimeCalc.vue'
 import { db } from '@/main'
 import router from '@/router'
 import { doc, updateDoc } from 'firebase/firestore'
@@ -122,13 +163,16 @@ const saveSocial = async () => {
 </script>
 
 <style scoped>
+p {
+  text-align: center;
+}
 .wrapper {
   padding: 1em;
-
   position: relative;
+  max-width: 25em;
+  padding-bottom: 3em;
 }
 .satisfactionDiv {
-  max-width: 25em;
   position: relative;
   padding-bottom: 3em;
 }

@@ -10,10 +10,6 @@
         <p>Эмоцеональное здоровье</p>
         <MyRange :input-value="userData?.health?.emotionalHealth" :edit-enabled="false" />
       </div>
-      <div class="block">
-        <p>Сон: {{ userData?.health?.sleep }} ч/д</p>
-      </div>
-
       <MyButton btn-style="edit" @click="editHealthData" />
       <div class="block" v-if="editHealth">
         <p>Физическое здоровье</p>
@@ -28,9 +24,16 @@
           :input-value="userData?.health?.emotionalHealth"
           ref="emotionalHealth"
         />
-        <p>Сон: <input type="number" min="0" max="24" v-model="sleep" /></p>
         <MyButton btn-style="save" @click="saveHealth" />
       </div>
+      <TimeCalc
+        :time="userData?.health?.time?.sleep"
+        label="Сон"
+        :total="userData?.health?.time?.total"
+        :auth="auth.auth"
+        :user-data="userData"
+        field="health"
+      />
     </div>
 
     <MyButton btn-style="back" @click="router.push('profile')" />
@@ -44,6 +47,7 @@ import { ref, toRefs } from 'vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
 import MyRange from '@/components/MyRange.vue'
+import TimeCalc from '@/components/self_development/TimeCalc.vue'
 
 const props = defineProps({
   auth: {
@@ -61,22 +65,15 @@ const { auth, userData } = toRefs(props)
 const editHealth = ref(false)
 const physicalHealth = ref(Number)
 const emotionalHealth = ref(Number)
-const sleep = ref(Number)
 // declare functions
 const editHealthData = () => {
   editHealth.value = !editHealth.value
-  sleep.value = parseInt(userData.value.health.sleep)
 }
 const saveHealth = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
   const physicalInt = parseInt(physicalHealth.value.editableValue)
   const emotionalInt = parseInt(emotionalHealth.value.editableValue)
-  if (sleep.value != userData.value.health.sleep) {
-    userData.value.health.totalTime =
-      userData.value.health.totalTime - userData.value.health.sleep + sleep.value
-    userData.value.health.sleep = sleep.value
-  }
 
   if (
     userData.value.health.physicalHealth != physicalInt ||
@@ -101,6 +98,9 @@ const saveHealth = async () => {
 </script>
 
 <style scoped>
+p {
+  text-align: center;
+}
 .wrapper {
   padding: 1em;
   padding-bottom: 3em;

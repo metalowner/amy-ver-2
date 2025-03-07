@@ -1,9 +1,8 @@
 <template>
   <div class="wrapper" :class="achievementIcon">
-    <h4>{{ header }}</h4>
-    <p>{{ description }}</p>
-    <p>{{ score }}</p>
-    <p>{{ achievementIndex }}</p>
+    <p class="badgeHeader">{{ header }}</p>
+    <p class="badgeDescription">{{ description }}</p>
+    <p class="badgeScore">{{ score }}</p>
   </div>
 </template>
 
@@ -35,26 +34,42 @@ const props = defineProps({
 })
 // expose props
 const { header, description, score, achievementIndex, achievementIcon } = toRefs(props)
+console.log(achievementIndex.value)
 </script>
 
 <style scoped>
 .wrapper {
   padding: 1em;
-  border-radius: 5px;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  max-width: 10em;
+  width: 15em;
+  height: 9em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative;
 }
 
 .badge {
   background-image: url(../../assets/badge_0.svg);
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+}
+
+.badgeHeader {
+  position: absolute;
+  top: 1.6em;
+  color: #fafaf2ff;
+  opacity: 0;
+}
+.badgeDescription {
+  position: absolute;
+  top: 3.5em;
+}
+.badgeScore {
+  position: absolute;
+  color: #fafaf2ff;
+  font-size: 2em;
+  top: 2.5em;
 }
 </style>

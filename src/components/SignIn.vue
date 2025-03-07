@@ -54,8 +54,6 @@ const register = () => {
     .then(async (userCredential) => {
       // Signed up
       const user = userCredential.user
-      console.log(user)
-      router.push('/profile') // redirect to the profile
       registerActive.value = false
       const today = new Date()
       const todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
@@ -68,9 +66,24 @@ const register = () => {
         health: {
           physicalHealth: 0,
           emotionalHealth: 0,
-          sleep: 8,
           totalHealth: 0,
-          totalTime: 16,
+          time: {
+            sleep: {
+              minutes: 0,
+              hours: 8,
+              days: 0,
+              weeks: 0,
+              months: 0,
+              repetition: 'daily',
+            },
+            total: {
+              minutes: 0,
+              hours: 20,
+              days: 0,
+              weeks: 0,
+              months: 0,
+            },
+          },
         },
         social: {
           family: 0,
@@ -79,6 +92,48 @@ const register = () => {
           pals: 0,
           strangers: 0,
           totalSocial: 0,
+          time: {
+            family: {
+              minutes: 0,
+              hours: 1,
+              days: 1,
+              weeks: 0,
+              months: 0,
+              repetition: 'weekly',
+            },
+            love: {
+              minutes: 0,
+              hours: 2,
+              days: 0,
+              weeks: 0,
+              months: 0,
+              repetition: 'daily',
+            },
+            friends: {
+              minutes: 0,
+              hours: 1,
+              days: 1,
+              weeks: 0,
+              months: 0,
+              repetition: 'weekly',
+            },
+            pals: {
+              minutes: 0,
+              hours: 1,
+              days: 1,
+              weeks: 0,
+              months: 0,
+              repetition: 'monthly',
+            },
+            strangers: {
+              minutes: 0,
+              hours: 1,
+              days: 1,
+              weeks: 0,
+              months: 0,
+              repetition: 'monthly',
+            },
+          },
         },
         finances: {
           income: 0,
@@ -87,11 +142,39 @@ const register = () => {
           profession: 0,
           schedule: 0,
           totalFinances: 0,
+          time: {
+            work: {
+              minutes: 0,
+              hours: 8,
+              days: 0,
+              weeks: 0,
+              months: 0,
+              repetition: 'daily',
+            },
+            education: {
+              minutes: 0,
+              hours: 2,
+              days: 0,
+              weeks: 0,
+              months: 0,
+              repetition: 'daily',
+            },
+          },
         },
         hobbies: {
           hobbies: 100,
           freeTime: 0,
           totalHobbies: 50,
+          time: {
+            funTime: {
+              minutes: 0,
+              hours: 0,
+              days: 3,
+              weeks: 0,
+              months: 0,
+              repetition: 'monthly',
+            },
+          },
         },
         values: [
           {
@@ -201,9 +284,11 @@ defineExpose({
 </script>
 
 <style scoped>
+.navLink {
+  margin: 0px 0.5em;
+}
 .signInBtn {
   margin-left: auto;
-  border-left: 1px solid #fafaf2ff;
 }
 .popUp {
   background-color: #fafaf2ff;

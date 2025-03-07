@@ -52,7 +52,6 @@ select {
   margin: 3px;
   width: 100%;
 }
-
 a {
   text-decoration: none;
   color: #fafaf2ff;
@@ -72,7 +71,9 @@ input {
   outline: none;
   width: 100%;
 }
-
+input[type='checkbox'] {
+  width: 2em;
+}
 textarea {
   border-radius: 5px;
   box-shadow:

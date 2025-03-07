@@ -9,6 +9,7 @@
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
+      <p>Важность<input type="number" min="1" max="10" v-model="newImportance" /></p>
       <MyButton btn-style="save" @click="saveValue" />
       <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
     </div>
@@ -59,6 +60,7 @@ const props = defineProps({
 const valueEdit = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
+const newImportance = ref(1)
 // define access to passed props
 const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
 // edit function
@@ -66,6 +68,7 @@ const editValueDetails = () => {
   valueEdit.value = !valueEdit.value
   newValueHeader.value = header.value
   newValueDescription.value = description.value
+  newImportance.value = importance.value
 }
 // save function
 const saveValue = async () => {
@@ -73,17 +76,13 @@ const saveValue = async () => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
   const valueRef = userData.value[arrayName][index.value]
-  if (newValueHeader.value.length != '' && newValueDescription.value.length != '') {
-    valueRef.header = newValueHeader.value
-    valueRef.description = newValueDescription.value
-  } else if (newValueHeader.value.length != '') {
-    valueRef.header = newValueHeader.value
-  } else {
-    valueRef.description = newValueDescription.value
-  }
+
+  valueRef.header = newValueHeader.value
+  valueRef.description = newValueDescription.value
+  valueRef.importance = newImportance.value
   try {
     await updateDoc(userRef, {
-      arrayName: userData.value[arrayName],
+      [arrayName]: userData.value[arrayName],
     })
     valueEdit.value = false
   } catch (err) {
@@ -95,10 +94,10 @@ const deleteValue = async () => {
   const arrayName = property.value
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
-  const newValuesArray = userData.value[arrayName].splice(index.value, 1)
+  userData.value[arrayName].splice(index.value, 1)
   try {
     await updateDoc(userRef, {
-      arrayName: newValuesArray,
+      [arrayName]: userData.value[arrayName],
     })
   } catch (err) {
     console.log('Error adding documents', err)
@@ -115,17 +114,20 @@ const deleteValue = async () => {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
-  padding-right: 2em;
+  padding-right: 3em;
   max-width: 25em;
 }
 
 h3 {
-  border-bottom: 1px solid #10101022;
+  border-bottom: 1px solid #10101044;
   padding-bottom: 3px;
   margin-bottom: 3px;
 }
 
 .editDiv {
-  padding-bottom: 2em;
+  padding-bottom: 3em;
+  border-top: 1px solid #10101011;
+  margin-top: 1em;
+  padding-top: 1em;
 }
 </style>

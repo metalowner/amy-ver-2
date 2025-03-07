@@ -17,6 +17,14 @@
       <MyRange :edit-enabled="true" :input-value="userData?.hobbies?.freeTime" ref="freeTime" />
       <MyButton btn-style="save" @click="saveHobbies" />
     </div>
+    <TimeCalc
+      :time="userData?.hobbies?.time?.funTime"
+      label="Занятия увлечением"
+      :total="userData?.health?.time?.total"
+      :auth="auth.auth"
+      :user-data="userData"
+      field="hobbies"
+    />
     <MyButton btn-style="back" @click="router.push('profile')" />
   </div>
 </template>
@@ -24,6 +32,7 @@
 <script setup>
 import MyButton from '@/components/MyButton.vue'
 import MyRange from '@/components/MyRange.vue'
+import TimeCalc from '@/components/self_development/TimeCalc.vue'
 import { db } from '@/main'
 import router from '@/router'
 import { doc, updateDoc } from 'firebase/firestore'
