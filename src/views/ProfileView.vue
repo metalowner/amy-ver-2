@@ -7,7 +7,8 @@ import MyButton from '@/components/MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import UserGoal from '@/components/self_development/UserGoal.vue'
 import UserPlan from '@/components/self_development/UserPlan.vue'
-import UserAction from '@/components/self_development/UserAction.vue'
+import MyCounter from '@/components/MyCounter.vue'
+import TimeCalc from '@/components/self_development/TimeCalc.vue'
 
 const props = defineProps({
   auth: {
@@ -45,26 +46,16 @@ const newGoalLifeFields = ref([])
 // declare plan variables
 const addNewPlan = ref(false)
 const newPlanHeader = ref('')
-const newPlanUrgency = ref('')
-const newPlanDeadline = ref(Date)
+const newPlanUrgency = ref(Number)
+const newPlanImportance = ref(Number)
 const newPlanStartDate = ref(Date)
 const newPlanGoals = ref([])
-const newPlanEditableGoals = ref([])
 const newPlanValues = ref([])
-const newPlanEditableValues = ref([])
 const newPlanObstacles = ref([])
-const newPlanEditableObstacles = ref([])
 const newPlanResources = ref([])
-const newPlanEditableResources = ref([])
-// declare action variables
-const addNewAction = ref(false)
-const newActionDuration = ref('')
-const newActionHeader = ref('')
-const newActionStartDate = ref(Date)
-const newActionType = ref('')
-const newActionPlans = ref([])
-const newActionEditablePlans = ref([])
-const newActionUrgency = ref('')
+const newPlanTime = ref(Object)
+const newPlanTimeObject = ref({})
+
 // declare simple value save methods
 const saveNewValue = async (array, newHeader, newDescription) => {
   const userUid = auth.value.auth.currentUser.uid
@@ -95,110 +86,78 @@ const saveNewValue = async (array, newHeader, newDescription) => {
 const addNewGoalDetails = () => {
   updateEditableArray(editableGoalValues.value, newGoalValues.value, userData.value.values)
   addNewGoal.value = !addNewGoal.value
+  newGoalImportance.value = 0
+  newGoalUrgency.value = 0
 }
 // add new plan
 const addNewPlanDetails = () => {
   addNewPlan.value = !addNewPlan.value
-  updateEditableArray(newPlanEditableGoals.value, newPlanGoals.value, userData.value.goals)
-  updateEditableArray(newPlanEditableValues.value, newPlanValues.value, userData.value.values)
-  updateEditableArray(
-    newPlanEditableObstacles.value,
-    newPlanObstacles.value,
-    userData.value.obstacles,
-  )
-  updateEditableArray(
-    newPlanEditableResources.value,
-    newPlanResources.value,
-    userData.value.resources,
-  )
-}
-// add new action
-const addNewActionDetails = () => {
-  addNewAction.value = !addNewAction.value
-  updateEditableArray(newActionEditablePlans.value, newActionPlans.value, userData.value.plans)
-}
-// save new action
-const saveAction = async () => {
-  const userUid = auth.value.auth.currentUser.uid
-  const userRef = doc(db, 'users', userUid)
-  const newActionObject = {
-    actionType: newActionType.value,
-    duration: newActionDuration.value,
-    header: newActionHeader.value,
-    importance: 1,
-    plans: newActionPlans.value,
-    urgency: parseInt(newActionUrgency.value),
-    startDate: newActionStartDate,
-  }
-  userData.value.actions.push(newActionObject)
-  try {
-    await updateDoc(userRef, {
-      plans: userData.value.plans,
-      actions: userData.value.actions,
-    })
-    addNewAction.value = false
-  } catch (err) {
-    console.log('Error adding documents', err)
+  newPlanStartDate.value = new Date()
+  newPlanTimeObject.value = {
+    repetition: 'daily',
+    months: 0,
+    weeks: 0,
+    days: 0,
+    hours: 0,
+    minutes: 15,
   }
 }
 // save new plan
 const savePlan = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-  const newPlanObject = {
-    header: newPlanHeader.value,
-    urgency: parseInt(newPlanUrgency.value),
-    importance: 1,
-    startDate: newPlanStartDate,
-    deadline: newPlanDeadline,
-    goals: newPlanGoals.value,
-    values: newPlanValues.value,
-    obstacles: newPlanObstacles.value,
-    resources: newPlanResources.value,
-  }
-  userData.value.plans.push(newPlanObject)
-  try {
-    await updateDoc(userRef, {
-      plans: userData.value.plans,
-      goals: userData.value.goals,
-      values: userData.value.values,
-      obstacles: userData.value.obstacles,
-      resources: userData.value.resources,
-    })
-    addNewPlan.value = false
-  } catch (err) {
-    console.log('Error adding documents', err)
+  if (newPlanHeader.value != '') {
+    const newPlanObject = {
+      header: newPlanHeader.value,
+      urgency: parseInt(newPlanUrgency.value.editableValue),
+      importance: parseInt(newPlanImportance.value.editableValue),
+      startDate: newPlanStartDate,
+      goals: newPlanGoals.value,
+      values: newPlanValues.value,
+      obstacles: newPlanObstacles.value,
+      resources: newPlanResources.value,
+      time: newPlanTime.value.newTimeObject,
+    }
+    userData.value.plans.push(newPlanObject)
+    try {
+      await updateDoc(userRef, {
+        plans: userData.value.plans,
+      })
+      addNewPlan.value = false
+    } catch (err) {
+      console.log('Error adding documents', err)
+    }
+  } else {
+    alert('Нужен заколовок!')
   }
 }
 // save new goal
 const saveGoal = async () => {
-  const userUid = auth.value.currentUser.uid
-  const userRef = doc(db.value, 'users', userUid)
-  const newGoalObject = {
-    header: newGoalHeader.value,
-    description: newGoalDescription.value,
-    urgency: parseInt(newGoalUrgency.value),
-    values: newGoalValues.value,
-    importance: 1,
-  }
-  userData.value.goals.push(newGoalObject)
-  try {
-    await updateDoc(userRef, {
-      goals: userData.value.goals,
-      values: userData.value.values,
-    })
-    addNewGoal.value = false
-  } catch (err) {
-    console.log('Error adding documents', err)
+  const userUid = auth.value.auth.currentUser.uid
+  const userRef = doc(db, 'users', userUid)
+  if (newGoalHeader.value != '') {
+    const newGoalObject = {
+      header: newGoalHeader.value,
+      description: newGoalDescription.value,
+      lifeFields: newGoalLifeFields.value,
+      urgency: parseInt(newGoalUrgency.value.editableValue),
+      values: newGoalValues.value,
+      importance: parseInt(newGoalImportance.value.editableValue),
+    }
+    userData.value.goals.push(newGoalObject)
+    try {
+      await updateDoc(userRef, {
+        goals: userData.value.goals,
+      })
+      addNewGoal.value = false
+    } catch (err) {
+      console.log('Error adding documents', err)
+    }
+  } else {
+    alert('Нужен заколовок!')
   }
 }
-// add and update value
-const addAndUpdateValue = (array, editableArray, targetArray, text, index) => {
-  targetArray.push(text)
-  const valueToUpdate = userData.value[array].find(({ header }) => header === text)
-  valueToUpdate.importance += 1
-  deleteByIndex(editableArray, index)
-}
+
 // update editable array
 function updateEditableArray(editableArray, targetArray, dataArray) {
   editableArray.splice(0)
@@ -212,14 +171,6 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
     }
   }
 }
-// add to array
-function addTextToArray(array, text) {
-  array.push(text)
-}
-// delete from array by index
-function deleteByIndex(array, index) {
-  array.splice(index, 1)
-}
 </script>
 
 <template>
@@ -228,7 +179,7 @@ function deleteByIndex(array, index) {
     <div class="block">
       <h2>Ценности</h2>
       <MyButton btn-style="add" @click="addNewValue = !addNewValue" />
-      <div class="innerBlock shadow" v-if="addNewValue">
+      <div class="innerBlock" v-if="addNewValue">
         <h3>
           <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
         </h3>
@@ -256,7 +207,7 @@ function deleteByIndex(array, index) {
     <div class="block">
       <h2>Припятствия</h2>
       <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
-      <div class="innerBlock shadow" v-if="addNewObstacle">
+      <div class="innerBlock" v-if="addNewObstacle">
         <h3>
           <input
             type="text"
@@ -292,7 +243,7 @@ function deleteByIndex(array, index) {
     <div class="block">
       <h2>Ресурсы</h2>
       <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
-      <div class="innerBlock shadow" v-if="addNewResource">
+      <div class="innerBlock" v-if="addNewResource">
         <h3>
           <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
         </h3>
@@ -324,52 +275,45 @@ function deleteByIndex(array, index) {
     <div class="block">
       <h2>Цели</h2>
       <MyButton btn-style="add" @click="addNewGoalDetails" />
-      <div v-if="addNewGoal">
+      <div class="innerBlock" v-if="addNewGoal">
         <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
         <p><input type="text" placeholder="Описания цели" v-model="newGoalDescription" /></p>
-        <p v-for="field in newGoalLifeFields" :key="field">{{ field }}</p>
-        <p>
-          <input
-            type="checkbox"
-            id="Здоровье"
-            value="Здоровье"
-            v-model="newGoalLifeFields"
-          />Здоровье
-        </p>
-        <select multiple v-model="newGoalLifeFields">
-          <option>Здоровье</option>
-          <option>Социум</option>
-          <option>Финансы</option>
-          <option>Увлечения</option>
-        </select>
-        <p>
-          Срочность:
-          <input type="number" min="1" max="10" v-model="newGoalUrgency" />
-        </p>
-        <p>
-          Важность:
-          <input type="number" min="1" max="10" v-model="newGoalImportance" />
-        </p>
+        <h4>Сферы жизни</h4>
+        <div class="checkboxDiv">
+          <label class="container"
+            >Здоровье
+            <input value="Здоровье" type="checkbox" v-model="newGoalLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Социум
+            <input value="Социум" type="checkbox" v-model="newGoalLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Финансы
+            <input value="Финансы" type="checkbox" v-model="newGoalLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Увлечения
+            <input value="Увлечения" type="checkbox" v-model="newGoalLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="counterDiv">
+          <p><MyCounter label="Срочность" :input-value="1" ref="newGoalUrgency" /></p>
+          <p><MyCounter label="Важность" :input-value="1" ref="newGoalImportance" /></p>
+        </div>
         <h4>Ценности</h4>
-        <p v-for="(value, index) in newGoalValues" :key="value">
-          {{ index + 1 }}. {{ value }}
-          <MyButton
-            btn-style="standard"
-            btn-text="Удалить"
-            @click="deleteByIndex(newGoalValues, index)"
-          />
-        </p>
-        <p v-for="(value, index) in editableGoalValues" :key="value.header">
-          {{ index + 1 }}. {{ value.header }}
-          <MyButton
-            btn-style="standard"
-            btn-text="Добавить"
-            @click="
-              addAndUpdateValue('values', editableGoalValues, newGoalValues, value.header, index)
-            "
-          />
-        </p>
-        <MyButton btn-style="standard" btn-text="Сохранить" @click="saveGoal" />
+        <div class="checkboxDiv">
+          <label class="container" v-for="value in userData?.values" :key="value"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newGoalValues" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <MyButton btn-style="save" @click="saveGoal" />
       </div>
       <UserGoal
         v-for="(goal, index) in userData?.goals"
@@ -388,218 +332,80 @@ function deleteByIndex(array, index) {
         :life-fields="goal.lifeFields"
       />
     </div>
+    <div class="block">
+      <h2>Планы</h2>
+      <MyButton btn-style="add" @click="addNewPlanDetails" />
+      <div class="innerBlock" v-if="addNewPlan">
+        <h4>Ваши цели</h4>
+        <div class="checkboxDiv">
+          <label class="container" v-for="value in userData?.goals" :key="value.header"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newPlanGoals" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <p><input type="text" placeholder="Ваше действие" v-model="newPlanHeader" /></p>
+        <TimeCalc
+          :time="newPlanTimeObject"
+          label="Повторяймость"
+          :total="userData?.health?.time?.total"
+          :auth="auth.auth"
+          :user-data="userData"
+          field="plans"
+          ref="newPlanTime"
+        />
+        <p>
+          Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" />
+        </p>
+        <div class="counterDiv">
+          <p><MyCounter label="Срочность" :input-value="1" ref="newPlanUrgency" /></p>
+          <p><MyCounter label="Важность" :input-value="1" ref="newPlanImportance" /></p>
+        </div>
 
-    <h2>Планы</h2>
-    <MyButton btn-style="standard" btn-text="Добавить план" @click="addNewPlanDetails" />
-    <div v-if="addNewPlan">
-      <h3><input type="text" placeholder="Заголок нового плана" v-model="newPlanHeader" /></h3>
-      <p>Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" /></p>
-      <p>
-        Дата завершения:<input
-          type="date"
-          placeholder="Дата завершения"
-          v-model="newPlanDeadline"
-        />
-      </p>
-      <p>
-        Срочность:
-        <select v-model="newPlanUrgency">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-        </select>
-      </p>
-      <h4>Цели</h4>
-      <p v-for="(goal, index) in newPlanGoals" :key="goal">
-        {{ index + 1 }}. {{ goal }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Удалить"
-          @click="deleteByIndex(newPlanGoals, index)"
-        />
-      </p>
-      <p v-for="(goal, index) in newPlanEditableGoals" :key="goal.header">
-        {{ index + 1 }}. {{ goal.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="
-            addAndUpdateValue('goals', newPlanEditableGoals, newPlanGoals, goal.header, index)
-          "
-        />
-      </p>
-      <h4>Ценности</h4>
-      <p v-for="(value, index) in newPlanValues" :key="value">
-        {{ index + 1 }}. {{ value }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Удалить"
-          @click="deleteByIndex(newPlanValues, index)"
-        />
-      </p>
-      <p v-for="(value, index) in newPlanEditableValues" :key="value.header">
-        {{ index + 1 }}. {{ value.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="
-            addAndUpdateValue('values', newPlanEditableValues, newPlanValues, value.header, index)
-          "
-        />
-      </p>
-      <h4>Припятствия</h4>
-      <p v-for="(obstacle, index) in newPlanObstacles" :key="obstacle">
-        {{ index + 1 }}. {{ obstacle }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Удалить"
-          @click="deleteByIndex(newPlanObstacles, index)"
-        />
-      </p>
-      <p v-for="(obstacle, index) in newPlanEditableObstacles" :key="obstacle.header">
-        {{ index + 1 }}. {{ obstacle.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="
-            addAndUpdateValue(
-              'obstacles',
-              newPlanEditableObstacles,
-              newPlanObstacles,
-              obstacle.header,
-              index,
-            )
-          "
-        />
-      </p>
-      <h4>Ресурсы</h4>
-      <p v-for="(resource, index) in newPlanResources" :key="resource">
-        {{ index + 1 }}. {{ resource }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Удалить"
-          @click="deleteByIndex(newPlanResources, index)"
-        />
-      </p>
-      <p v-for="(resource, index) in newPlanEditableResources" :key="resource.header">
-        {{ index + 1 }}. {{ resource.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="
-            addAndUpdateValue(
-              'resources',
-              newPlanEditableResources,
-              newPlanResources,
-              resource.header,
-              index,
-            )
-          "
-        />
-      </p>
-      <MyButton btn-style="standard" btn-text="Сохранить" @click="savePlan" />
+        <h4>Ценности</h4>
+        <div class="checkboxDiv">
+          <label class="container" v-for="value in userData?.values" :key="value"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newPlanValues" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <h4>Припятствия</h4>
+        <div class="checkboxDiv">
+          <label class="container" v-for="value in userData?.obstacles" :key="value"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newPlanObstacles" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <h4>Ресурсы</h4>
+        <div class="checkboxDiv">
+          <label class="container" v-for="value in userData?.resources" :key="value"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newPlanResources" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <MyButton btn-style="save" @click="savePlan" />
+      </div>
+      <UserPlan
+        v-for="(plan, index) in userData?.plans"
+        :key="plan.header"
+        :db="db"
+        :auth="auth.auth"
+        :user-data="userData"
+        :header="plan.header"
+        :importance="plan.importance"
+        :plan-index="index"
+        :urgency="plan.urgency"
+        :values="plan.values"
+        :start-date="plan.startDate"
+        :goals="plan.goals"
+        :obstacles="plan.obstacles"
+        :resources="plan.resources"
+        :time="plan.time"
+      />
     </div>
-    <UserPlan
-      v-for="(plan, index) in userData?.plans"
-      :key="plan.header"
-      :db="db"
-      :auth="auth.auth"
-      :user-data="userData"
-      :header="plan.header"
-      :importance="plan.importance"
-      :plan-index="index"
-      :urgency="plan.urgency"
-      :values="plan.values"
-      :start-date="plan.startDate"
-      :deadline="plan.deadline"
-      :goals="plan.goals"
-      :obstacles="plan.obstacles"
-      :resources="plan.resources"
-    />
-    <h2>Действия</h2>
-    <MyButton btn-style="standard" btn-text="Добавить действия" @click="addNewActionDetails" />
-    <div v-if="addNewAction">
-      <h3>
-        <input type="text" placeholder="Загаловок нового действия" v-model="newActionHeader" />
-      </h3>
-      <p>
-        Дата начала: <input type="date" placeholder="Дата начала" v-model="newActionStartDate" />
-      </p>
-      <p>
-        Срочность:
-        <select v-model="newActionUrgency">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-        </select>
-      </p>
-      <p>
-        Тип:
-        <select v-model="newActionType">
-          <option>Учить</option>
-          <option>Планировать</option>
-          <option>Делать</option>
-        </select>
-      </p>
-      <p>
-        Повторяймость:
-        <select v-model="newActionDuration">
-          <option>Ежедневно</option>
-          <option>Еженедельно</option>
-          <option>Ежемесячно</option>
-          <option>Одноразово</option>
-        </select>
-      </p>
-      <h4>Планы</h4>
-      <p v-for="(plan, index) in newActionPlans" :key="plan">
-        {{ index + 1 }}. {{ plan }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Удалить"
-          @click="deleteByIndex(newActionPlans, index)"
-        />
-      </p>
-      <p v-for="(plan, index) in newActionEditablePlans" :key="plan.header">
-        {{ index + 1 }}. {{ plan.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="
-            addAndUpdateValue('plans', newActionEditablePlans, newActionPlans, plan.header, index)
-          "
-        />
-      </p>
-      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveAction" />
-    </div>
-    <UserAction
-      v-for="(action, index) in userData?.actions"
-      :key="action.header"
-      :db="db"
-      :auth="auth.auth"
-      :user-data="userData"
-      :header="action.header"
-      :importance="action.importance"
-      :action-index="index"
-      :action-type="action.actionType"
-      :duration="action.duration"
-      :plans="action.plans"
-      :start-date="action.startDate"
-      :urgency="action.urgency"
-    />
   </div>
 </template>
 
@@ -620,6 +426,109 @@ function deleteByIndex(array, index) {
 }
 .innerBlock {
   position: relative;
+  padding: 1em;
   padding-bottom: 3em;
+  margin-bottom: 1em;
+}
+.checkboxDiv {
+  margin-top: 1em;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.counterDiv {
+  margin: 1em 0em;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+/* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #fafaf2ff;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #00bbbbff;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+input[type='number'] {
+  /*for absolutely positioning spinners*/
+  position: relative;
+  padding: 0.5em;
+  padding-right: 25px;
+  width: 5em;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: inner-spin-button !important;
+  width: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
 }
 </style>

@@ -30,27 +30,18 @@
     <div class="editData" v-if="editGoal">
       <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
-      <p>
-        Срочность:
-        <input type="number" min="1" max="10" v-model="newGoalUrgency" />
-      </p>
-      <p>
-        Важность
-        <input type="number" min="1" max="10" v-model="newGoalImportance" />
-      </p>
+      <div class="counterDiv">
+        <p><MyCounter label="Срочность" :input-value="urgency" ref="newGoalUrgency" /></p>
+        <p><MyCounter label="Важность" :input-value="importance" ref="newGoalImportance" /></p>
+      </div>
       <h4>Ценности</h4>
-      <p v-for="(value, index) in values" :key="value">
-        {{ index + 1 }}. {{ value }}
-        <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(values, index)" />
-      </p>
-      <p v-for="(value, index) in editableValues" :key="value.header">
-        {{ index + 1 }}. {{ value.header }}
-        <MyButton
-          btn-style="standard"
-          btn-text="Добавить"
-          @click="addValueToGoal(values, value.header, index)"
-        />
-      </p>
+      <div class="checkboxDiv">
+        <label v-for="value in userData.values" :key="value.header" class="container"
+          >{{ value.header }}
+          <input :value="value.header" type="checkbox" v-model="newGoalValues" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
       <MyButton btn-style="save" @click="saveGoal" />
     </div>
   </div>
@@ -60,6 +51,7 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
+import MyCounter from '../MyCounter.vue'
 
 // declare component props
 const props = defineProps({
@@ -113,7 +105,7 @@ const newGoalHeader = ref('')
 const newGoalDescription = ref('')
 const newGoalUrgency = ref(Number)
 const newGoalImportance = ref(Number)
-const editableValues = ref([])
+const newGoalValues = ref([])
 const displayValues = ref(false)
 const displayLifeFields = ref(false)
 const displayPriorities = ref(false)
@@ -122,10 +114,10 @@ const displayPriorities = ref(false)
 const deleteGoal = async () => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
-  const newGoalsArray = userData.value.goals.splice(goalIndex.value, 1)
+  userData.value.goals.splice(goalIndex.value, 1)
   try {
     await updateDoc(userRef, {
-      goals: newGoalsArray,
+      goals: userData.value.goals,
     })
   } catch (err) {
     console.log('Error adding documents', err)
@@ -138,47 +130,26 @@ const saveGoal = async () => {
   const resourceRef = userData.value.goals[goalIndex.value]
   resourceRef.header = newGoalHeader.value
   resourceRef.description = newGoalDescription.value
-  resourceRef.urgency = parseInt(newGoalUrgency.value)
-  resourceRef.importance = newGoalImportance.value
-  resourceRef.values = values.value
+  resourceRef.urgency = parseInt(newGoalUrgency.value.editableValue)
+  resourceRef.importance = parseInt(newGoalImportance.value.editableValue)
+  resourceRef.values = newGoalValues.value
   try {
     await updateDoc(userRef, {
       goals: userData.value.goals,
-      values: userData.value.values,
     })
     editGoal.value = false
   } catch (err) {
     console.log('Error adding documents', err)
   }
 }
-// delete from array by index
-function deleteByIndex(array, index) {
-  array.splice(index, 1)
-}
 // edit goal
 const editGoalDetails = () => {
-  editableValues.value = []
   editGoal.value = !editGoal.value
-  for (let index = 0; index < userData.value.values.length; index++) {
-    const element = userData.value.values[index]
-    var valueFound = values.value.find(function (valueHeader) {
-      return valueHeader === element.header
-    })
-    if (!valueFound) {
-      editableValues.value.push(element)
-    }
-  }
   newGoalHeader.value = header.value
   newGoalDescription.value = description.value
   newGoalUrgency.value = urgency.value
   newGoalImportance.value = importance.value
-}
-//add new value to goal values
-const addValueToGoal = (array, text, index) => {
-  array.push(text)
-  const valueToUpdate = userData.value.values.find(({ header }) => header === text)
-  valueToUpdate.importance += 1
-  deleteByIndex(editableValues.value, index)
+  newGoalValues.value = values.value
 }
 </script>
 
@@ -191,8 +162,8 @@ h3 {
 
 h4 {
   border-bottom: 1px solid #10101022;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
+  padding-bottom: 1em;
+  padding-top: 1em;
 }
 .goalWrapper {
   padding: 1em;

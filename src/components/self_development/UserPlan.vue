@@ -1,90 +1,107 @@
 <template>
-  <h3>{{ header }}</h3>
-  <p>Дата начала: {{ startDate }}</p>
-  <p>Дата завершения: {{ deadline }}</p>
-  <p>Важность: {{ importance }}</p>
-  <p>Срочность: {{ urgency }}</p>
-  <h4>Цели</h4>
-  <p v-for="(goal, index) in goals" :key="goal">{{ index + 1 }}. {{ goal }}</p>
-  <h4>Ценности</h4>
-  <p v-for="(value, index) in values" :key="value">{{ index + 1 }}. {{ value }}</p>
-  <h4>Припятствия</h4>
-  <p v-for="(obstacle, index) in obstacles" :key="obstacle">{{ index + 1 }}. {{ obstacle }}</p>
-  <h4>Ресурсы</h4>
-  <p v-for="(resource, index) in resources" :key="resource">{{ index + 1 }}. {{ resource }}</p>
-  <MyButton btn-style="standard" btn-text="Редактировать" @click="editPlanDetails" />
-  <MyButton btn-style="standard" btn-text="Удалить" @click="deletePlan" />
-  <div v-if="editPlan">
-    <h3><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></h3>
-    <p>
-      Срочность:
-      <select v-model="newPlanUrgency">
-        <option disabled value="">Please choose one</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-      </select>
-    </p>
-    <h4>Цели</h4>
-    <p v-for="(goal, index) in goals" :key="goal">
-      {{ index + 1 }}. {{ goal }}
-      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(goals, index)" />
-    </p>
-    <p v-for="(goal, index) in editableGoals" :key="goal.header">
-      {{ index + 1 }}. {{ goal.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Добавить"
-        @click="addValueToPlan('goals', goals, editableGoals, goal.header, index)"
+  <div class="planWrapper">
+    <h3>{{ header }}</h3>
+    <TimeCalc label="Повторяймость" :time="time" field="planDisplay" />
+    <p>Дата начала: {{ startDate }}</p>
+    <h4 class="infoHeader">
+      Приоритетность
+      <MyButton btn-style="arrowDown" @click="displayPriorities = !displayPriorities" />
+    </h4>
+    <div v-if="displayPriorities" class="infoBlock">
+      <p>Важность: {{ importance }}</p>
+      <p>Срочность: {{ urgency }}</p>
+    </div>
+    <h4 class="infoHeader">
+      Успешность <MyButton btn-style="arrowDown" @click="displaySuccess = !displaySuccess" />
+    </h4>
+    <div v-if="displaySuccess" class="infoBlock">
+      <p>Действий</p>
+      <MyRange :edit-enabled="false" :input-value="100" />
+      <p>Результатов</p>
+      <MyRange :edit-enabled="false" :input-value="100" />
+    </div>
+
+    <h4 class="infoHeader">
+      Цели <MyButton btn-style="arrowDown" @click="displayGoals = !displayGoals" />
+    </h4>
+    <div v-if="displayGoals" class="infoBlock">
+      <p v-for="(goal, index) in goals" :key="goal">{{ index + 1 }}. {{ goal }}</p>
+    </div>
+
+    <h4 class="infoHeader">
+      Ценности <MyButton btn-style="arrowDown" @click="displayValues = !displayValues" />
+    </h4>
+    <div v-if="displayValues" class="infoBlock">
+      <p v-for="(value, index) in values" :key="value">{{ index + 1 }}. {{ value }}</p>
+    </div>
+
+    <h4 class="infoHeader">
+      Припятствия <MyButton btn-style="arrowDown" @click="displayObstacles = !displayObstacles" />
+    </h4>
+    <div v-if="displayObstacles" class="infoBlock">
+      <p v-for="(obstacle, index) in obstacles" :key="obstacle">{{ index + 1 }}. {{ obstacle }}</p>
+    </div>
+
+    <h4 class="infoHeader">
+      Ресурсы <MyButton btn-style="arrowDown" @click="displayResources = !displayResources" />
+    </h4>
+    <div v-if="displayResources" class="infoBlock">
+      <p v-for="(resource, index) in resources" :key="resource">{{ index + 1 }}. {{ resource }}</p>
+    </div>
+
+    <MyButton btn-style="edit" @click="editPlanDetails" />
+    <MyButton btn-style="delete" @click="deletePlan" />
+    <div class="editData" v-if="editPlan">
+      <p><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></p>
+      <TimeCalc
+        :time="time"
+        label="Повторяймость"
+        :total="userData?.health?.time?.total"
+        :auth="auth.auth"
+        :user-data="userData"
+        field="plans"
+        ref="newPlanTime"
       />
-    </p>
-    <h4>Ценности</h4>
-    <p v-for="(value, index) in values" :key="value">
-      {{ index + 1 }}. {{ value }}
-      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(values, index)" />
-    </p>
-    <p v-for="(value, index) in editableValues" :key="value.header">
-      {{ index + 1 }}. {{ value.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Добавить"
-        @click="addValueToPlan('values', values, editableValues, value.header, index)"
-      />
-    </p>
-    <h4>Припятствия</h4>
-    <p v-for="(obstacle, index) in obstacles" :key="obstacle">
-      {{ index + 1 }}. {{ obstacle }}
-      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(obstacles, index)" />
-    </p>
-    <p v-for="(obstacle, index) in editableObstacles" :key="obstacle.header">
-      {{ index + 1 }}. {{ obstacle.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Добавить"
-        @click="addValueToPlan('obstacles', obstacles, editableObstacles, obstacle.header, index)"
-      />
-    </p>
-    <h4>Ресурсы</h4>
-    <p v-for="(resource, index) in resources" :key="resource">
-      {{ index + 1 }}. {{ resource }}
-      <MyButton btn-style="standard" btn-text="Удалить" @click="deleteByIndex(resources, index)" />
-    </p>
-    <p v-for="(resource, index) in editableResources" :key="resource.header">
-      {{ index + 1 }}. {{ resource.header }}
-      <MyButton
-        btn-style="standard"
-        btn-text="Добавить"
-        @click="addValueToPlan('resources', resources, editableResources, resource.header, index)"
-      />
-    </p>
-    <MyButton btn-style="standard" btn-text="Сохранить" @click="savePlan" />
+      <div class="counterDiv">
+        <p><MyCounter label="Срочность" :input-value="urgency" ref="newPlanUrgency" /></p>
+        <p><MyCounter label="Важность" :input-value="importance" ref="newPlanImportance" /></p>
+      </div>
+      <h4>Цели</h4>
+      <div class="checkboxDiv">
+        <label v-for="goal in userData.goals" :key="goal.header" class="container"
+          >{{ goal.header }}
+          <input :value="goal.header" type="checkbox" v-model="newPlanGoals" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <h4>Ценности</h4>
+      <div class="checkboxDiv">
+        <label v-for="value in userData.values" :key="value.header" class="container"
+          >{{ value.header }}
+          <input :value="value.header" type="checkbox" v-model="newPlanValues" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <h4>Припятствия</h4>
+      <div class="checkboxDiv">
+        <label v-for="obstacle in userData.obstacles" :key="obstacle.header" class="container"
+          >{{ obstacle.header }}
+          <input :value="obstacle.header" type="checkbox" v-model="newPlanObstacles" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <h4>Ресурсы</h4>
+      <div class="checkboxDiv">
+        <label v-for="resource in userData.resources" :key="resource.header" class="container"
+          >{{ resource.header }}
+          <input :value="resource.header" type="checkbox" v-model="newPlanResources" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
+
+      <MyButton btn-style="save" @click="savePlan" />
+    </div>
   </div>
 </template>
 
@@ -92,6 +109,9 @@
 import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
+import MyRange from '../MyRange.vue'
+import MyCounter from '../MyCounter.vue'
+import TimeCalc from './TimeCalc.vue'
 
 // declare component props
 const props = defineProps({
@@ -127,10 +147,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  deadline: {
-    type: String,
-    required: true,
-  },
   obstacles: {
     type: Array,
     required: true,
@@ -141,6 +157,10 @@ const props = defineProps({
   },
   values: {
     type: Array,
+    required: true,
+  },
+  time: {
+    type: Object,
     required: true,
   },
   planIndex: {
@@ -157,7 +177,6 @@ const {
   importance,
   urgency,
   values,
-  deadline,
   goals,
   obstacles,
   resources,
@@ -168,41 +187,28 @@ const {
 const editPlan = ref(false)
 const newPlanHeader = ref('')
 const newPlanUrgency = ref(Number)
-const editableGoals = ref([])
-const editableValues = ref([])
-const editableObstacles = ref([])
-const editableResources = ref([])
+const newPlanImportance = ref(Number)
+const newPlanGoals = ref([])
+const newPlanValues = ref([])
+const newPlanObstacles = ref([])
+const newPlanResources = ref([])
+const displayPriorities = ref(false)
+const displaySuccess = ref(false)
+const displayGoals = ref(false)
+const displayValues = ref(false)
+const displayObstacles = ref(false)
+const displayResources = ref(false)
+const newPlanTime = ref({})
 // methods
 // edit goal
 const editPlanDetails = () => {
+  editPlan.value = !editPlan.value
   newPlanHeader.value = header.value
   newPlanUrgency.value = urgency.value
-  editPlan.value = !editPlan.value
-  parseTime(startDate.value, deadline.value)
-  updateEditableArray(editableGoals.value, goals.value, userData.value.goals)
-  updateEditableArray(editableValues.value, values.value, userData.value.values)
-  updateEditableArray(editableObstacles.value, obstacles.value, userData.value.obstacles)
-  updateEditableArray(editableResources.value, resources.value, userData.value.resources)
-}
-//add new value to goal values
-const addValueToPlan = (array, targetArray, editableArray, text, index) => {
-  targetArray.push(text)
-  const valueToUpdate = userData.value[array].find(({ header }) => header === text)
-  valueToUpdate.importance += 1
-  deleteByIndex(editableArray, index)
-}
-// update editable array
-const updateEditableArray = (editableArray, targetArray, dataArray) => {
-  editableArray.splice(0)
-  for (let index = 0; index < dataArray.length; index++) {
-    const element = dataArray[index]
-    var elementFound = targetArray.find(function (value) {
-      return value === element.header
-    })
-    if (!elementFound) {
-      editableArray.push(element)
-    }
-  }
+  newPlanGoals.value = goals.value
+  newPlanValues.value = values.value
+  newPlanObstacles.value = obstacles.value
+  newPlanResources.value = resources.value
 }
 // save function
 const savePlan = async () => {
@@ -210,18 +216,16 @@ const savePlan = async () => {
   const userRef = doc(db.value, 'users', userUid)
   const resourceRef = userData.value.plans[planIndex.value]
   resourceRef.header = newPlanHeader.value
-  resourceRef.urgency = parseInt(newPlanUrgency.value)
-  resourceRef.values = values.value
-  resourceRef.goals = goals.value
-  resourceRef.obstacles = obstacles.value
-  resourceRef.resources = resources.value
+  resourceRef.urgency = parseInt(newPlanUrgency.value.editableValue)
+  resourceRef.importance = parseInt(newPlanImportance.value.editableValue)
+  resourceRef.values = newPlanValues.value
+  resourceRef.goals = newPlanGoals.value
+  resourceRef.obstacles = newPlanObstacles.value
+  resourceRef.resources = newPlanResources.value
+  resourceRef.time = newPlanTime.value.newTimeObject
   try {
     await updateDoc(userRef, {
       plans: userData.value.plans,
-      goals: userData.value.goals,
-      values: userData.value.values,
-      obstacles: userData.value.obstacles,
-      resources: userData.value.resources,
     })
     editPlan.value = false
   } catch (err) {
@@ -232,18 +236,14 @@ const savePlan = async () => {
 const deletePlan = async () => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
-  const newPlansArray = userData.value.plans.splice(planIndex.value, 1)
+  userData.value.plans.splice(planIndex.value, 1)
   try {
     await updateDoc(userRef, {
-      plans: newPlansArray,
+      plans: userData.value.plans,
     })
   } catch (err) {
     console.log('Error adding documents', err)
   }
-}
-// delete from array by index
-function deleteByIndex(array, index) {
-  array.splice(index, 1)
 }
 // ellapsed time function
 function parseTime(startDate, deadline) {
@@ -262,3 +262,45 @@ function differenceInDays(difference) {
   return result
 }
 </script>
+
+<style scoped>
+h3 {
+  border-bottom: 1px solid #10101044;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+}
+
+h4 {
+  border-bottom: 1px solid #10101022;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+.planWrapper {
+  padding: 1em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+  position: relative;
+  padding-right: 3em;
+  padding-bottom: 3em;
+  max-width: 25em;
+}
+.editData {
+  position: relative;
+  padding-bottom: 3em;
+  border-top: 1px solid #10101011;
+  margin-top: 1em;
+  padding-top: 1em;
+  border-bottom: 1px solid #10101011;
+}
+.infoBlock {
+  display: grid;
+  grid-template-columns: auto auto;
+  padding: 1em;
+}
+.infoHeader {
+  position: relative;
+}
+</style>

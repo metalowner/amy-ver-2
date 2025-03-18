@@ -1,6 +1,6 @@
 <template>
   <div class="timeDiv">
-    <h3>{{ label }}</h3>
+    <h4>{{ label }}</h4>
     <div class="display">
       <select :value="time?.repetition" disabled>
         <option value="daily">Ежедневно</option>
@@ -23,7 +23,7 @@
         {{ time?.minutes }}<span class="measure">м</span>
       </p>
     </div>
-    <MyButton btn-style="edit" @click="editTimeData" />
+    <MyButton btn-style="edit" @click="editTimeData" v-if="field != 'planDisplay'" />
     <div class="edit" v-if="editTime">
       <select v-model="repetition">
         <option value="daily">Ежедневно</option>
@@ -56,27 +56,27 @@ import { db } from '@/main'
 const props = defineProps({
   auth: {
     type: Object,
-    required: true,
+    required: false,
   },
   time: {
     type: Object,
-    required: true,
+    required: false,
   },
   label: {
     type: String,
-    required: true,
+    required: false,
   },
   total: {
     type: Object,
-    required: true,
+    required: false,
   },
   userData: {
     type: Object,
-    required: true,
+    required: false,
   },
   field: {
     type: String,
-    required: true,
+    required: false,
   },
 })
 const { time, auth, total, userData, field } = toRefs(props)
@@ -87,6 +87,14 @@ const hours = ref(0)
 const days = ref(0)
 const weeks = ref(0)
 const months = ref(0)
+const newTimeObject = ref({
+  repetition: repetition.value,
+  months: months.value,
+  weeks: weeks.value,
+  days: days.value,
+  hours: hours.value,
+  minutes: minutes.value,
+})
 
 const editTimeData = () => {
   editTime.value = !editTime.value
@@ -99,43 +107,59 @@ const editTimeData = () => {
 }
 
 const saveTime = async () => {
-  const userUid = auth.value.currentUser.uid
-  const userRef = doc(db, 'users', userUid)
-
-  if (
-    repetition.value != time.value.repetition ||
-    minutes.value != time.value.minutes ||
-    hours.value != time.value.hours ||
-    days.value != time.value.days ||
-    weeks.value != time.value.weeks ||
-    months.value != time.value.months
-  ) {
-    if (repetition.value == 'daily') {
-      total.value.minutes += minutes.value - time.value.minutes
-      total.value.hours += hours.value - time.value.hours
-      if (total.value.minutes > 60) {
-        total.value.hours += 1
-        total.value.minutes -= 60
-      }
-    }
+  if (field.value == 'plans') {
+    editTime.value = !editTime.value
+    newTimeObject.value.repetition = repetition.value
+    newTimeObject.value.minutes = minutes.value
+    newTimeObject.value.hours = hours.value
+    newTimeObject.value.days = days.value
+    newTimeObject.value.weeks = weeks.value
+    newTimeObject.value.months = months.value
     time.value.repetition = repetition.value
     time.value.minutes = minutes.value
     time.value.hours = hours.value
     time.value.days = days.value
     time.value.weeks = weeks.value
     time.value.months = months.value
+  } else {
+    const userUid = auth.value.currentUser.uid
+    const userRef = doc(db, 'users', userUid)
+    if (
+      repetition.value != time.value.repetition ||
+      minutes.value != time.value.minutes ||
+      hours.value != time.value.hours ||
+      days.value != time.value.days ||
+      weeks.value != time.value.weeks ||
+      months.value != time.value.months
+    ) {
+      if (repetition.value == 'daily') {
+        total.value.minutes += minutes.value - time.value.minutes
+        total.value.hours += hours.value - time.value.hours
+        if (total.value.minutes > 60) {
+          total.value.hours += 1
+          total.value.minutes -= 60
+        }
+      }
+      time.value.repetition = repetition.value
+      time.value.minutes = minutes.value
+      time.value.hours = hours.value
+      time.value.days = days.value
+      time.value.weeks = weeks.value
+      time.value.months = months.value
 
-    try {
-      await updateDoc(userRef, {
-        [field.value]: userData.value[field.value],
-        health: userData.value.health,
-      })
-    } catch (err) {
-      console.log('Error adding documents', err)
+      try {
+        await updateDoc(userRef, {
+          [field.value]: userData.value[field.value],
+          health: userData.value.health,
+        })
+      } catch (err) {
+        console.log('Error adding documents', err)
+      }
     }
+    editTime.value = !editTime.value
   }
-  editTime.value = !editTime.value
 }
+defineExpose({ newTimeObject })
 </script>
 
 <style scoped>

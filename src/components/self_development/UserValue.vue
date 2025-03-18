@@ -9,7 +9,7 @@
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
-      <p>Важность<input type="number" min="1" max="10" v-model="newImportance" /></p>
+      <MyCounter label="Важность" :input-value="importance" ref="newImportance" />
       <MyButton btn-style="save" @click="saveValue" />
       <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
     </div>
@@ -20,6 +20,7 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
+import MyCounter from '../MyCounter.vue'
 
 // define props
 const props = defineProps({
@@ -60,7 +61,7 @@ const props = defineProps({
 const valueEdit = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
-const newImportance = ref(1)
+const newImportance = ref(Number)
 // define access to passed props
 const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
 // edit function
@@ -68,7 +69,6 @@ const editValueDetails = () => {
   valueEdit.value = !valueEdit.value
   newValueHeader.value = header.value
   newValueDescription.value = description.value
-  newImportance.value = importance.value
 }
 // save function
 const saveValue = async () => {
@@ -79,7 +79,7 @@ const saveValue = async () => {
 
   valueRef.header = newValueHeader.value
   valueRef.description = newValueDescription.value
-  valueRef.importance = newImportance.value
+  valueRef.importance = newImportance.value.editableValue
   try {
     await updateDoc(userRef, {
       [arrayName]: userData.value[arrayName],

@@ -1,6 +1,6 @@
 <template>
   <div class="rangeDiv" v-if="!editEnabled">
-    <div class="icon sad"></div>
+    <div class="icon sad" :class="sadOpacity"></div>
     <input
       class="notEditable"
       :class="colorChange"
@@ -10,7 +10,7 @@
       :value="inputValue"
       disabled
     />
-    <div class="icon happy"></div>
+    <div class="icon happy" :class="happyOpacity"></div>
   </div>
 
   <input
@@ -61,10 +61,41 @@ const editableColor = computed(() => {
     : 'lightGreen'
 })
 
+const sadOpacity = computed(() => {
+  return parseInt(editableValue.value) < 75
+    ? parseInt(editableValue.value) < 50
+      ? parseInt(editableValue.value) < 25
+        ? 'visible'
+        : 'mediumVisible'
+      : 'lightVisible'
+    : 'noVisible'
+})
+
+const happyOpacity = computed(() => {
+  return parseInt(editableValue.value) < 75
+    ? parseInt(editableValue.value) < 50
+      ? parseInt(editableValue.value) < 25
+        ? 'noVisible'
+        : 'lightVisible'
+      : 'mediumVisible'
+    : 'visible'
+})
 defineExpose({ editableValue })
 </script>
 
 <style scoped>
+.visible {
+  opacity: 1;
+}
+.mediumVisible {
+  opacity: 0.75;
+}
+.lightVisible {
+  opacity: 0.5;
+}
+.noVisible {
+  opacity: 0.05;
+}
 .rangeDiv {
   display: grid;
   grid-template-columns: auto auto auto;
@@ -85,6 +116,7 @@ defineExpose({ editableValue })
   background-image: url(../assets/happy.svg);
 }
 .slider {
+  appearance: none;
   -webkit-appearance: none;
   width: 100%;
   height: 15px;
@@ -121,6 +153,7 @@ defineExpose({ editableValue })
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .notEditable {
+  appearance: none;
   -webkit-appearance: none;
   width: 100%;
   height: 15px;
