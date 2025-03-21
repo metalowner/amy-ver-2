@@ -26,6 +26,32 @@
     <p><input type="password" placeholder="Password" v-model="password" /></p>
     <p><MyButton btn-style="standard" btn-text="Отправить" @click="login" /></p>
   </div>
+  <div class="popUp" v-if="userData?.plans?.length > 0 && displayPlansProgress">
+    <h2>Как идут планы?</h2>
+    <div v-for="(plan, index) in userData?.plans" :key="plan.header">
+      <div v-if="plan.displayProgress == true">
+        <p>С момента начала {{ plan.header }} прошло {{ plan.daysPassed }} дней.</p>
+        <p>Как ваша успешность исполнения?</p>
+        <MyRange
+          :edit-enabled="true"
+          :input-value="0"
+          :ref="(el) => (successValues['process' + index] = el)"
+        />
+        <p>Как ваша удовлетворённость результатами?</p>
+        <MyRange
+          :edit-enabled="true"
+          :input-value="0"
+          :ref="(el) => (successValues['result' + index] = el)"
+        />
+      </div>
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveProgress" />
+      <MyButton
+        btn-style="standard"
+        btn-text="Закрыть"
+        @click="displayPlansProgress = !displayPlansProgress"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -38,8 +64,9 @@ import {
 } from 'firebase/auth'
 import { useRouter } from 'vue-router' // import router
 import MyButton from './MyButton.vue'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
+import MyRange from './MyRange.vue'
 
 const registerActive = ref(false)
 const loginActive = ref(false)
@@ -48,6 +75,9 @@ const email = ref('')
 const password = ref('')
 const router = useRouter() // get a reference to our vue router
 const auth = getAuth()
+const userData = ref({})
+const displayPlansProgress = ref(false)
+const successValues = ref({})
 
 const register = () => {
   createUserWithEmailAndPassword(auth, email.value, password.value)
@@ -57,12 +87,15 @@ const register = () => {
       registerActive.value = false
       const today = new Date()
       const todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
-      const nextYear =
-        today.getFullYear() + 1 + '-' + (today.getMonth() + 1) + '-' + today.getDate()
       // ...
       await setDoc(doc(db, 'users', user.uid), {
         lifeStory: 'Ваша история...',
         vision: 'Жить удовлетворительную жизнь',
+        achievements: {
+          finishedPlans: [],
+          resolvedObstacles: [],
+          achievedGoals: [],
+        },
         health: {
           physicalHealth: 0,
           emotionalHealth: 0,
@@ -207,10 +240,9 @@ const register = () => {
             header: 'Саморазвития!',
             description: 'Раскрыть свой потенциал',
             values: ['Саморазвития'],
-            measures: ['Заполненые поля', 'Уделённое время'],
             importance: 1,
             urgency: 10,
-            prices: ['Время', 'Усилия'],
+            lifeFields: ['Здоровье', 'Социум', 'Финансы', 'Увлечения'],
           },
         ],
         plans: [
@@ -219,22 +251,24 @@ const register = () => {
             goals: ['Саморазвития!'],
             values: ['Удовлетворение'],
             startDate: todayDate,
-            deadline: nextYear,
             importance: 1,
             urgency: 10,
             obstacles: ['Страх перемен'],
             resources: ['Друзья'],
-          },
-        ],
-        actions: [
-          {
-            header: 'Заполнять и редактировать поля',
-            plans: ['Развить навык саморазвития в привычку'],
-            duration: 'Ежедневно',
-            importance: 1,
-            urgency: 10,
-            actionType: 'Учить',
-            startDate: todayDate,
+            daysPassed: 0,
+            displayProgress: false,
+            success: {
+              processSuccess: 0,
+              resultsSuccess: 0,
+            },
+            time: {
+              days: null,
+              weeks: null,
+              months: null,
+              hours: 1,
+              minutes: 0,
+              repetition: 'daily',
+            },
           },
         ],
       })
@@ -250,7 +284,6 @@ const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then(() => {
       // Signed in
-      router.push('/profile')
       loginActive.value = false
       // ...
     })
@@ -266,10 +299,44 @@ const userLogout = () => {
   router.push('/') // redirect to home page
 }
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     // User is signed in
     userLoggedIn.value = true
+    const docRef = doc(db, 'users', auth.currentUser.uid)
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+      userData.value = docSnap.data()
+      if (userData.value.plans.length > 0) {
+        const plans = userData.value.plans
+
+        for (let i = 0; i < plans.length; i++) {
+          const element = plans[i]
+          const newDaysPassed = parseTime(element.startDate)
+          if (newDaysPassed - element.daysPassed < 6) {
+            return
+          } else {
+            if (element.time.repetition == 'monthly' && newDaysPassed - element.daysPassed > 29) {
+              element.daysPassed = newDaysPassed
+              element.displayProgress = true
+            } else if (
+              element.time.repetition == 'yearly' &&
+              newDaysPassed - element.daysPassed > 364
+            ) {
+              element.daysPassed = newDaysPassed
+              element.displayProgress = true
+            } else {
+              element.daysPassed = newDaysPassed
+              element.displayProgress = true
+            }
+            displayPlansProgress.value = true
+          }
+        }
+      }
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log('No such document!')
+    }
     // ...
   } else {
     // User is signed out
@@ -277,9 +344,44 @@ onAuthStateChanged(auth, (user) => {
     // ...
   }
 })
+// ellapsed time function
+function parseTime(startDate) {
+  let start = new Date(startDate)
+  let now = new Date()
+  let daysPassed = now.getTime() - start.getTime()
+
+  return differenceInDays(daysPassed)
+}
+// calculate ellapsed time in days
+function differenceInDays(difference) {
+  let result = Math.round(difference / (1000 * 3600 * 24))
+  return result
+}
+// save progress
+const saveProgress = async () => {
+  const userUid = auth.currentUser.uid
+  const userRef = doc(db, 'users', userUid)
+  for (let a = 0; a < userData.value.plans.length; a++) {
+    const element = userData.value.plans[a]
+    if (element.displayProgress == true) {
+      element.success.processSuccess = parseInt(successValues.value['process' + a].editableValue)
+      element.success.resultsSuccess = parseInt(successValues.value['result' + a].editableValue)
+      element.displayProgress = false
+    }
+  }
+  try {
+    await updateDoc(userRef, {
+      plans: userData.value.plans,
+    })
+    displayPlansProgress.value = false
+  } catch (err) {
+    console.log('Error adding documents', err)
+  }
+}
 defineExpose({
   auth,
   userLoggedIn,
+  userData,
 })
 </script>
 
@@ -289,21 +391,5 @@ defineExpose({
 }
 .signInBtn {
   margin-left: auto;
-}
-.popUp {
-  background-color: #fafaf2ff;
-  display: block;
-  position: fixed;
-  top: 40%;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  width: fit-content;
-  border-radius: 5px;
-  padding: 1em;
-  text-align: center;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 </style>

@@ -107,4 +107,16 @@ defineProps({
   right: 0px;
   opacity: 0.7;
 }
+.info {
+  background-image: url(../assets/info.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1em;
+  width: 1em;
+  border: 1px solid #101010ff;
+  border-radius: 5px;
+  position: absolute;
+  right: 0em;
+  top: 0.4em;
+}
 </style>

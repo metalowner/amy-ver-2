@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="115.69753mm"
+   height="89.884514mm"
+   viewBox="0 0 115.69753 89.884514"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="obstacleBadge.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.64126688"
+     inkscape:cx="123.97334"
+     inkscape:cy="169.19633"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-104.24582,-146.84375)">
+    <path
+       style="fill:#ffffff;stroke-width:0.264583"
+       d="m 189.06012,151.02443 h -53.93081 v 81.52315 h 53.93081 z"
+       id="path86" />
+    <g
+       id="g88"
+       transform="matrix(0.26458333,0,0,0.26458333,-383.41354,-262.66041)">
+      <path
+         id="polygon87"
+         style="fill:#e09500"
+         d="m 2183.68,1655.558 h 96.724 l -29.617,33.101 29.617,33.101 h -96.724 z"
+         sodipodi:nodetypes="cccccc" />
+      <path
+         id="polygon88"
+         style="fill:#e09500"
+         d="m 1945.847,1655.558 h -102.725 l 29.617,33.101 -29.617,33.101 h 96.725 z"
+         sodipodi:nodetypes="cccccc" />
+    </g>
+    <path
+       id="polygon89"
+       style="fill:#c17b00;stroke-width:0.264583"
+       d="m 207.03697,185.51359 -13.14609,-10.14095 v 17.51595 z"
+       sodipodi:nodetypes="cccc" />
+    <path
+       id="polygon90"
+       style="fill:#c17b00;stroke-width:0.264583"
+       d="m 117.15219,185.51359 13.14635,-10.14095 v 17.51595 z"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#293838;stroke-width:0.264583"
+       d="m 186.29443,152.37513 10.58334,78.82175 H 127.31166 L 137.895,152.37513 Z m 5.53138,-5.53138 h -59.46219 l -10.58334,89.88451 h 80.62887 z"
+       id="path90"
+       sodipodi:nodetypes="cccccccccc" />
+    <g
+       id="g91"
+       transform="matrix(0.26458333,0,0,0.26458333,-383.41354,-251.54784)">
+      <path
+         style="fill:#293838"
+         d="m 2134.063,1545.802 40,259.582 h -224.599 l 40,-259.582 z m 6.968,-6.969 h -158.536 l -40,273.52 h 238.536 z"
+         id="path91"
+         sodipodi:nodetypes="cccccccccc" />
+    </g>
+    <rect
+       x="117.15218"
+       y="185.51381"
+       style="fill:#f5ac09;stroke-width:0.264583"
+       width="89.884773"
+       height="17.515947"
+       id="rect91" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Yu Gothic';-inkscape-font-specification:'Yu Gothic';text-align:center;text-anchor:middle;white-space:pre;inline-size:113.031;display:inline;fill:#010e0e;stroke:#000000;stroke-width:0.79375;stroke-opacity:1"
+       x="144.90865"
+       y="180.96751"
+       id="text1"
+       transform="matrix(0.36769154,0,0,1.0083905,108.77278,41.038354)" />
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;font-family:'Yu Gothic';-inkscape-font-specification:'Yu Gothic';text-align:center;text-anchor:middle;fill:#f9ffff;stroke:none;stroke-width:0.79375"
+       x="162.45012"
+       y="197.25606"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="stroke:none;stroke-width:0.79375"
+         x="162.45012"
+         y="197.25606">Одоленно</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Yu Gothic';-inkscape-font-specification:'Yu Gothic';text-align:center;text-anchor:middle;white-space:pre;inline-size:103.586;display:inline;fill:#010e0e;stroke:#000000;stroke-width:0.79375;stroke-opacity:1"
+       x="144.90865"
+       y="180.96751"
+       id="text1-0"
+       transform="matrix(0.58800336,0,0,0.9855457,76.959786,39.621573)"><tspan
+         x="144.90865"
+         y="180.96751"
+         id="tspan2">ПРЕПЯТСТВИЕ</tspan></text>
+  </g>
+</svg>

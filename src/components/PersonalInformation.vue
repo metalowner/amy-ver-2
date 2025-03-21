@@ -1,6 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="infoContainer">
+      <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
+      <MyButton
+        v-if="editPersonalInfo"
+        btn-style="cancelTop"
+        @click="editPersonalInfo = !editPersonalInfo"
+      />
       <div class="userImg"></div>
       <div>
         <h2>{{ userData?.username }}</h2>
@@ -59,55 +65,69 @@
       <MyButton btn-style="save" @click="savePersonalInformation" />
       <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
     </div>
-    <h2>Достижения</h2>
-    <div class="achievements">
-      <UserAchievement
-        v-for="(achievement, index) in userData?.achievements"
-        :key="achievement.header"
-        :header="achievement.header"
-        :description="achievement.description"
-        :score="achievement.score"
-        :achievement-index="index"
-        achievement-icon="badge"
-      />
+    <div class="block">
+      <h2>
+        Достижения<MyButton
+          class="infoBtn"
+          btn-style="info"
+          @click="displayAchievementsInfo = !displayAchievementsInfo"
+        />
+      </h2>
+      <div class="popUp" v-if="displayAchievementsInfo">
+        <p>
+          Достижения это результаты ваших действий и важная часть мотивации. Они помогают продолжать
+          двигаться когда сложно.
+        </p>
+      </div>
+      <div class="achievements">
+        <UserAchievements :user-data="userData" />
+      </div>
     </div>
-    <h2>Сферы жизни</h2>
-    <div class="lifeFieldsDiv">
-      <LifeField
-        name="Здоровье"
-        route-name="health"
-        field-icon="health"
-        background="green"
-        :satisfaction="userData?.health?.totalHealth"
-      />
-      <LifeField
-        name="Социум"
-        route-name="social"
-        field-icon="social"
-        background="blue"
-        :satisfaction="userData?.social?.totalSocial"
-      />
-      <LifeField
-        name="Финансы"
-        route-name="finances"
-        field-icon="finances"
-        background="red"
-        :satisfaction="userData?.finances?.totalFinances"
-      />
-      <LifeField
-        name="Увлечения"
-        route-name="hobbies"
-        field-icon="hobbies"
-        background="yellow"
-        :satisfaction="userData?.hobbies?.totalHobbies"
-      />
+    <div class="block">
+      <h2>
+        Сферы жизни<MyButton
+          class="infoBtn"
+          btn-style="info"
+          @click="displayLifeFieldsInfo = !displayLifeFieldsInfo"
+        />
+      </h2>
+      <div class="popUp" v-if="displayLifeFieldsInfo">
+        <p>
+          Жизнь почти каждого человека можно отоброзить и описать четырмя сферами. Они состовляют
+          общую удовлитворительность жизни, помогают с принятием решений и выбором целей.
+        </p>
+      </div>
+      <div class="lifeFieldsDiv">
+        <LifeField
+          name="Здоровье"
+          route-name="health"
+          field-icon="health"
+          background="green"
+          :satisfaction="userData?.health?.totalHealth"
+        />
+        <LifeField
+          name="Социум"
+          route-name="social"
+          field-icon="social"
+          background="blue"
+          :satisfaction="userData?.social?.totalSocial"
+        />
+        <LifeField
+          name="Финансы"
+          route-name="finances"
+          field-icon="finances"
+          background="red"
+          :satisfaction="userData?.finances?.totalFinances"
+        />
+        <LifeField
+          name="Увлечения"
+          route-name="hobbies"
+          field-icon="hobbies"
+          background="yellow"
+          :satisfaction="userData?.hobbies?.totalHobbies"
+        />
+      </div>
     </div>
-    <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
-    <MyButton
-      v-if="editPersonalInfo"
-      btn-style="cancelTop"
-      @click="editPersonalInfo = !editPersonalInfo"
-    />
   </div>
 </template>
 
@@ -115,7 +135,7 @@
 import { ref, toRefs } from 'vue'
 import MyButton from './MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
-import UserAchievement from './self_development/UserAchievement.vue'
+import UserAchievements from './self_development/UserAchievements.vue'
 import LifeField from './self_development/LifeField.vue'
 // define props
 const props = defineProps({
@@ -144,6 +164,8 @@ const country = ref('')
 const region = ref('')
 const city = ref('')
 const editPersonalInfo = ref(false)
+const displayAchievementsInfo = ref(false)
+const displayLifeFieldsInfo = ref(false)
 
 const editInfo = () => {
   editPersonalInfo.value = !editPersonalInfo.value
@@ -188,20 +210,33 @@ const savePersonalInformation = async () => {
 </script>
 
 <style scoped>
+.infoBtn {
+  right: 0px;
+}
 h3 {
   border-bottom: 1px solid #10101022;
   padding-bottom: 3px;
   margin-bottom: 3px;
 }
+.popUp {
+  position: absolute;
+  top: 3em;
+  left: 0px;
+  right: auto;
+  margin-inline: inherit;
+  max-width: 25em;
+  text-align: start;
+}
+.block {
+  position: relative;
+}
 .wrapper {
   position: relative;
-  border-radius: 5px;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .editInfoDiv {
   padding-bottom: 2em;
+  max-width: 25em;
+  position: relative;
 }
 .userImg {
   border-radius: 5px;
@@ -218,6 +253,8 @@ h3 {
 .infoContainer {
   display: flex;
   align-items: center;
+  position: relative;
+  max-width: 25em;
 }
 .infoBlock {
   display: flex;

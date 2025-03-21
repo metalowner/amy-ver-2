@@ -6,6 +6,12 @@
     <MyButton v-if="!valueEdit" btn-style="edit" @click="editValueDetails" />
     <MyButton v-if="valueEdit" btn-style="cancelTop" @click="valueEdit = !valueEdit" />
     <MyButton btn-style="delete" @click="deleteValue" />
+    <MyButton
+      v-if="property == 'obstacles'"
+      btn-style="standard"
+      btn-text="Справиться"
+      @click="resolveObstacle"
+    />
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
@@ -98,6 +104,23 @@ const deleteValue = async () => {
   try {
     await updateDoc(userRef, {
       [arrayName]: userData.value[arrayName],
+    })
+  } catch (err) {
+    console.log('Error adding documents', err)
+  }
+}
+const resolveObstacle = async () => {
+  const userUid = auth.value.currentUser.uid
+  const userRef = doc(db.value, 'users', userUid)
+  const arrayName = property.value
+  const valueRef = userData.value[arrayName][index.value]
+
+  userData.value.achievements.resolvedObstacles.push(valueRef)
+  userData.value[arrayName].splice(index.value, 1)
+  try {
+    await updateDoc(userRef, {
+      [arrayName]: userData.value[arrayName],
+      achievements: userData.value.achievements,
     })
   } catch (err) {
     console.log('Error adding documents', err)

@@ -31,17 +31,29 @@
         <option value="monthly">Ежемесячно</option>
         <option value="yearly">Ежегодно</option>
       </select>
-      <p>Минуты: <input type="number" min="0" max="60" v-model="minutes" /></p>
-      <p>Часы: <input type="number" min="0" max="24" v-model="hours" /></p>
-      <p v-if="repetition == 'weekly' || repetition == 'monthly' || repetition == 'yearly'">
-        Дни: <input type="number" min="0" max="7" v-model="days" />
-      </p>
-      <p v-if="repetition == 'monthly' || repetition == 'yearly'">
-        Недели: <input type="number" min="0" max="4" v-model="weeks" />
-      </p>
-      <p v-if="repetition == 'yearly'">
-        Месяцы: <input type="number" min="0" max="12" v-model="months" />
-      </p>
+      <MyCounter label="Минуты" :input-value="time?.minutes" :max-value="60" ref="minutes" />
+      <MyCounter label="Часы" :input-value="time?.hours" :max-value="24" ref="hours" />
+      <MyCounter
+        v-if="repetition == 'weekly' || repetition == 'monthly' || repetition == 'yearly'"
+        label="Дни"
+        :input-value="time?.days"
+        :max-value="7"
+        ref="days"
+      />
+      <MyCounter
+        v-if="repetition == 'monthly' || repetition == 'yearly'"
+        label="Недели"
+        :input-value="time?.weeks"
+        :max-value="4"
+        ref="weeks"
+      />
+      <MyCounter
+        v-if="repetition == 'yearly'"
+        label="Месяцы"
+        :input-value="time?.months"
+        :max-value="12"
+        ref="months"
+      />
       <MyButton btn-style="save" @click="saveTime" />
     </div>
   </div>
@@ -52,6 +64,7 @@ import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
+import MyCounter from '../MyCounter.vue'
 
 const props = defineProps({
   auth: {
@@ -82,11 +95,11 @@ const props = defineProps({
 const { time, auth, total, userData, field } = toRefs(props)
 const editTime = ref(false)
 const repetition = ref('')
-const minutes = ref('')
-const hours = ref(0)
-const days = ref(0)
-const weeks = ref(0)
-const months = ref(0)
+const minutes = ref(null)
+const hours = ref(null)
+const days = ref(null)
+const weeks = ref(null)
+const months = ref(null)
 const newTimeObject = ref({
   repetition: repetition.value,
   months: months.value,
@@ -99,54 +112,99 @@ const newTimeObject = ref({
 const editTimeData = () => {
   editTime.value = !editTime.value
   repetition.value = time.value.repetition
-  minutes.value = time.value.minutes
-  hours.value = time.value.hours
-  days.value = time.value.days
-  weeks.value = time.value.weeks
-  months.value = time.value.months
 }
 
 const saveTime = async () => {
   if (field.value == 'plans') {
     editTime.value = !editTime.value
     newTimeObject.value.repetition = repetition.value
-    newTimeObject.value.minutes = minutes.value
-    newTimeObject.value.hours = hours.value
-    newTimeObject.value.days = days.value
-    newTimeObject.value.weeks = weeks.value
-    newTimeObject.value.months = months.value
     time.value.repetition = repetition.value
-    time.value.minutes = minutes.value
-    time.value.hours = hours.value
-    time.value.days = days.value
-    time.value.weeks = weeks.value
-    time.value.months = months.value
+    if (repetition.value == 'daily') {
+      newTimeObject.value.minutes = minutes.value.editableValue
+      newTimeObject.value.hours = hours.value.editableValue
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+    } else if (repetition.value == 'weekly') {
+      newTimeObject.value.minutes = minutes.value.editableValue
+      newTimeObject.value.hours = hours.value.editableValue
+      newTimeObject.value.days = days.value.editableValue
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+    } else if (repetition.value == 'monthly') {
+      newTimeObject.value.minutes = minutes.value.editableValue
+      newTimeObject.value.hours = hours.value.editableValue
+      newTimeObject.value.days = days.value.editableValue
+      newTimeObject.value.weeks = weeks.value.editableValue
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+      time.value.weeks = weeks.value.editableValue
+    } else {
+      newTimeObject.value.minutes = minutes.value.editableValue
+      newTimeObject.value.hours = hours.value.editableValue
+      newTimeObject.value.days = days.value.editableValue
+      newTimeObject.value.weeks = weeks.value.editableValue
+      newTimeObject.value.months = months.value.editableValue
+
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+      time.value.weeks = weeks.value.editableValue
+      time.value.months = months.value.editableValue
+    }
   } else {
     const userUid = auth.value.currentUser.uid
     const userRef = doc(db, 'users', userUid)
-    if (
-      repetition.value != time.value.repetition ||
-      minutes.value != time.value.minutes ||
-      hours.value != time.value.hours ||
-      days.value != time.value.days ||
-      weeks.value != time.value.weeks ||
-      months.value != time.value.months
-    ) {
-      if (repetition.value == 'daily') {
-        total.value.minutes += minutes.value - time.value.minutes
-        total.value.hours += hours.value - time.value.hours
-        if (total.value.minutes > 60) {
-          total.value.hours += 1
-          total.value.minutes -= 60
-        }
+    if (repetition.value == 'daily') {
+      total.value.minutes += minutes.value.editableValue - time.value.minutes
+      total.value.hours += hours.value.editableValue - time.value.hours
+      console.log(minutes.value.editableValue, hours.value.editableValue)
+      if (total.value.minutes > 60) {
+        total.value.hours += 1
+        total.value.minutes -= 60
       }
-      time.value.repetition = repetition.value
-      time.value.minutes = minutes.value
-      time.value.hours = hours.value
-      time.value.days = days.value
-      time.value.weeks = weeks.value
-      time.value.months = months.value
-
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      try {
+        await updateDoc(userRef, {
+          [field.value]: userData.value[field.value],
+          health: userData.value.health,
+        })
+      } catch (err) {
+        console.log('Error adding documents', err)
+      }
+    } else if (repetition.value == 'weekly') {
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+      try {
+        await updateDoc(userRef, {
+          [field.value]: userData.value[field.value],
+          health: userData.value.health,
+        })
+      } catch (err) {
+        console.log('Error adding documents', err)
+      }
+    } else if (repetition.value == 'monthly') {
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+      time.value.weeks = weeks.value.editableValue
+      try {
+        await updateDoc(userRef, {
+          [field.value]: userData.value[field.value],
+          health: userData.value.health,
+        })
+      } catch (err) {
+        console.log('Error adding documents', err)
+      }
+    } else {
+      time.value.minutes = minutes.value.editableValue
+      time.value.hours = hours.value.editableValue
+      time.value.days = days.value.editableValue
+      time.value.weeks = weeks.value.editableValue
+      time.value.months = months.value.editableValue
       try {
         await updateDoc(userRef, {
           [field.value]: userData.value[field.value],

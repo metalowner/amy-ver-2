@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="84.468231mm"
+   height="112.79716mm"
+   viewBox="0 0 84.468229 112.79717"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="registerBadge.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.64126688"
+     inkscape:cx="19.492664"
+     inkscape:cy="197.26576"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-132.02706,-139.43541)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46667px;font-family:'Yu Gothic';-inkscape-font-specification:'Yu Gothic';text-align:center;text-anchor:middle;white-space:pre;inline-size:113.031;display:inline;fill:#010e0e;stroke:#000000;stroke-width:0.79375;stroke-opacity:1"
+       x="144.90865"
+       y="180.96751"
+       id="text1"
+       transform="matrix(0.36769154,0,0,1.0083905,108.77278,41.038354)" />
+    <g
+       id="g25"
+       transform="matrix(0.26458333,0,0,0.26458333,-367.17977,-9.0050937)">&#10;	<g
+   id="g23">&#10;		<polygon
+   style="fill:#c17b00"
+   points="2029.18,947.198 2082.184,777.586 1998.983,751.586 1945.979,921.197 1997.452,902.603 "
+   id="polygon22" />
+&#10;		<polygon
+   style="fill:#f5ac09"
+   points="2084.507,987.355 1996.66,782.9 2079.86,756.9 2167.708,961.354 2116.234,942.76 "
+   id="polygon23" />
+&#10;	</g>
+&#10;	&#10;		<circle
+   transform="matrix(0.7071,-0.7071,0.7071,0.7071,90.7168,1657.3809)"
+   style="fill:#ffffff"
+   cx="2045.994"
+   cy="719.18597"
+   id="ellipse23"
+   r="133.27499" />
+&#10;	<g
+   id="g24">&#10;		<path
+   style="fill:#293838"
+   d="m 2046.391,605.983 c 63.234,0 114.679,51.445 114.679,114.679 0,63.234 -51.444,114.68 -114.679,114.68 -63.235,0 -114.68,-51.445 -114.68,-114.68 0,-63.235 51.445,-114.679 114.68,-114.679 z m 0,-6.969 c -67.185,0 -121.648,54.464 -121.648,121.648 0,67.185 54.464,121.648 121.648,121.648 67.184,0 121.647,-54.464 121.647,-121.648 0,-67.184 -54.463,-121.648 -121.647,-121.648 z"
+   id="path23" />
+&#10;	</g>
+&#10;	<path
+   style="fill:#293838"
+   d="m 2192.118,729.721 c 7.992,-2.094 13.898,-9.345 13.898,-17.994 0,-9.115 -6.553,-16.686 -15.201,-18.294 5.279,-3.287 8.806,-9.126 8.806,-15.803 0,-10.244 -8.273,-18.55 -18.502,-18.616 2.769,-3.25 4.448,-7.456 4.448,-12.06 0,-10.285 -8.338,-18.622 -18.622,-18.622 -1.318,0 -2.604,0.141 -3.845,0.402 1.15,-2.42 1.813,-5.117 1.813,-7.974 0,-10.285 -8.337,-18.622 -18.621,-18.622 -2.858,0 -5.555,0.663 -7.975,1.813 0.261,-1.241 0.402,-2.526 0.402,-3.845 0,-10.284 -8.337,-18.622 -18.622,-18.622 -4.604,0 -8.81,1.679 -12.06,4.447 -0.065,-10.229 -8.371,-18.501 -18.615,-18.501 -6.678,0 -12.517,3.526 -15.804,8.806 -1.607,-8.648 -9.18,-15.201 -18.294,-15.201 -8.648,0 -15.899,5.905 -17.993,13.897 -2.743,-6.866 -9.441,-11.723 -17.286,-11.723 -9.643,0 -17.573,7.328 -18.526,16.719 -3.413,-3.893 -8.409,-6.362 -13.992,-6.362 -10.285,0 -18.622,8.337 -18.622,18.622 0,0.614 0.034,1.219 0.092,1.817 -2.898,-1.861 -6.337,-2.953 -10.037,-2.953 -10.284,0 -18.622,8.337 -18.622,18.622 0,2.067 0.352,4.049 0.973,5.907 -1.857,-0.622 -3.84,-0.973 -5.907,-0.973 -10.284,0 -18.621,8.337 -18.621,18.622 0,3.7 1.092,7.139 2.953,10.037 -0.599,-0.058 -1.204,-0.092 -1.817,-0.092 -10.284,0 -18.622,8.337 -18.622,18.622 0,5.583 2.47,10.58 6.362,13.993 -9.391,0.953 -16.719,8.883 -16.719,18.526 0,7.845 4.857,14.543 11.723,17.286 -7.992,2.094 -13.897,9.345 -13.897,17.994 0,9.114 6.553,16.686 15.201,18.294 -5.279,3.287 -8.806,9.126 -8.806,15.803 0,10.244 8.272,18.55 18.501,18.616 -2.768,3.25 -4.447,7.456 -4.447,12.06 0,10.285 8.338,18.622 18.622,18.622 1.318,0 2.604,-0.142 3.845,-0.402 -1.15,2.42 -1.813,5.117 -1.813,7.975 0,10.285 8.338,18.622 18.622,18.622 2.857,0 5.555,-0.663 7.975,-1.813 -0.261,1.241 -0.402,2.526 -0.402,3.845 0,10.285 8.338,18.622 18.622,18.622 4.604,0 8.81,-1.68 12.06,-4.447 0.065,10.228 8.371,18.501 18.615,18.501 6.677,0 12.517,-3.526 15.803,-8.806 1.608,8.648 9.18,15.201 18.295,15.201 8.648,0 15.899,-5.905 17.993,-13.897 2.743,6.866 9.441,11.723 17.286,11.723 9.643,0 17.572,-7.329 18.525,-16.719 3.413,3.893 8.41,6.362 13.993,6.362 10.284,0 18.622,-8.337 18.622,-18.621 0,-0.614 -0.034,-1.219 -0.092,-1.817 2.898,1.86 6.337,2.953 10.037,2.953 10.284,0 18.621,-8.337 18.621,-18.622 0,-2.067 -0.35,-4.049 -0.972,-5.907 1.857,0.622 3.84,0.972 5.906,0.972 10.285,0 18.622,-8.337 18.622,-18.622 0,-3.7 -1.092,-7.139 -2.953,-10.037 0.599,0.058 1.204,0.092 1.817,0.092 10.285,0 18.622,-8.337 18.622,-18.622 0,-5.583 -2.471,-10.58 -6.362,-13.993 9.391,-0.953 16.719,-8.883 16.719,-18.525 -10e-4,-7.846 -4.859,-14.545 -11.725,-17.288 z m -145.727,121.495 c -72.104,0 -130.554,-58.451 -130.554,-130.554 0,-72.103 58.45,-130.554 130.554,-130.554 72.103,0 130.554,58.451 130.554,130.554 0,72.103 -58.452,130.554 -130.554,130.554 z"
+   id="path24" />
+&#10;</g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.8798px;font-family:'Yu Gothic UI';-inkscape-font-specification:'Yu Gothic UI';text-align:center;text-anchor:middle;fill:#000909;fill-opacity:1;stroke-width:1.82862"
+       x="173.58894"
+       y="196.36925"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.8798px;font-family:'Yu Gothic UI';-inkscape-font-specification:'Yu Gothic UI';fill:#000909;fill-opacity:1;stroke-width:1.82862"
+         x="173.58894"
+         y="196.36925">ШАГ</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.46021px;font-family:'Yu Gothic UI';-inkscape-font-specification:'Yu Gothic UI';text-align:center;text-anchor:middle;fill:#000909;fill-opacity:1;stroke-width:0.967523"
+       x="174.26579"
+       y="175.1265"
+       id="text4"><tspan
+         sodipodi:role="line"
+         id="tspan4"
+         style="stroke-width:0.967523"
+         x="174.26579"
+         y="175.1265">ПЕРВЫЙ</tspan></text>
+  </g>
+</svg>

@@ -2,7 +2,7 @@
   <p>{{ label }}</p>
   <div class="counter">
     <div class="counterButton decrement" @click="decrement">-</div>
-    <input min="0" max="10" type="number" v-model="editableValue" />
+    <input min="0" :max="maxValue" type="number" v-model="editableValue" />
     <div class="counterButton increment" @click="increment">+</div>
   </div>
 </template>
@@ -19,9 +19,13 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  maxValue: {
+    type: Number,
+    required: true,
+  },
 })
 
-const { inputValue } = toRefs(props)
+const { inputValue, maxValue } = toRefs(props)
 
 const editableValue = ref(inputValue.value)
 
@@ -32,7 +36,7 @@ const decrement = () => {
 }
 
 const increment = () => {
-  if (editableValue.value < 10) {
+  if (editableValue.value < maxValue.value) {
     editableValue.value += 1
   }
 }

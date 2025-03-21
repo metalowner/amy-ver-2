@@ -16,9 +16,9 @@
     </h4>
     <div v-if="displaySuccess" class="infoBlock">
       <p>Действий</p>
-      <MyRange :edit-enabled="false" :input-value="100" />
+      <MyRange :edit-enabled="false" :input-value="success.processSuccess" />
       <p>Результатов</p>
-      <MyRange :edit-enabled="false" :input-value="100" />
+      <MyRange :edit-enabled="false" :input-value="success.resultsSuccess" />
     </div>
 
     <h4 class="infoHeader">
@@ -48,6 +48,7 @@
     <div v-if="displayResources" class="infoBlock">
       <p v-for="(resource, index) in resources" :key="resource">{{ index + 1 }}. {{ resource }}</p>
     </div>
+    <MyButton btn-style="standard" btn-text="Завершить" @click="completePlan" />
 
     <MyButton btn-style="edit" @click="editPlanDetails" />
     <MyButton btn-style="delete" @click="deletePlan" />
@@ -63,8 +64,22 @@
         ref="newPlanTime"
       />
       <div class="counterDiv">
-        <p><MyCounter label="Срочность" :input-value="urgency" ref="newPlanUrgency" /></p>
-        <p><MyCounter label="Важность" :input-value="importance" ref="newPlanImportance" /></p>
+        <p>
+          <MyCounter
+            label="Срочность"
+            :input-value="urgency"
+            :max-value="10"
+            ref="newPlanUrgency"
+          />
+        </p>
+        <p>
+          <MyCounter
+            label="Важность"
+            :input-value="importance"
+            :max-value="10"
+            ref="newPlanImportance"
+          />
+        </p>
       </div>
       <h4>Цели</h4>
       <div class="checkboxDiv">
@@ -163,6 +178,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  success: {
+    type: Object,
+    required: false,
+  },
   planIndex: {
     type: Number,
     required: true,
@@ -182,6 +201,7 @@ const {
   resources,
   startDate,
   planIndex,
+  time,
 } = toRefs(props)
 // declate variables
 const editPlan = ref(false)
@@ -215,6 +235,7 @@ const savePlan = async () => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
   const resourceRef = userData.value.plans[planIndex.value]
+
   resourceRef.header = newPlanHeader.value
   resourceRef.urgency = parseInt(newPlanUrgency.value.editableValue)
   resourceRef.importance = parseInt(newPlanImportance.value.editableValue)
@@ -222,10 +243,17 @@ const savePlan = async () => {
   resourceRef.goals = newPlanGoals.value
   resourceRef.obstacles = newPlanObstacles.value
   resourceRef.resources = newPlanResources.value
-  resourceRef.time = newPlanTime.value.newTimeObject
+  if (
+    resourceRef.time != newPlanTime.value.newTimeObject &&
+    newPlanTime.value.newTimeObject != null
+  ) {
+    resourceRef.time = newPlanTime.value.newTimeObject
+  }
+
   try {
     await updateDoc(userRef, {
       plans: userData.value.plans,
+      health: userData.value.health,
     })
     editPlan.value = false
   } catch (err) {
@@ -245,21 +273,22 @@ const deletePlan = async () => {
     console.log('Error adding documents', err)
   }
 }
-// ellapsed time function
-function parseTime(startDate, deadline) {
-  let start = new Date(startDate)
-  let now = new Date()
-  let end = new Date(deadline)
-  let daysPassed = now.getTime() - start.getTime()
-  let daysRemaining = end.getTime() - now.getTime()
 
-  console.log(differenceInDays(daysPassed))
-  console.log(differenceInDays(daysRemaining))
-}
-// calculate ellapsed time in days
-function differenceInDays(difference) {
-  let result = Math.round(difference / (1000 * 3600 * 24))
-  return result
+const completePlan = async () => {
+  const userUid = auth.value.currentUser.uid
+  const userRef = doc(db.value, 'users', userUid)
+  const resourceRef = userData.value.plans[planIndex.value]
+
+  userData.value.achievements.finishedPlans.push(resourceRef)
+  userData.value.plans.splice(planIndex.value, 1)
+  try {
+    await updateDoc(userRef, {
+      plans: userData.value.plans,
+      achievements: userData.value.achievements,
+    })
+  } catch (err) {
+    console.log('Error adding documents', err)
+  }
 }
 </script>
 

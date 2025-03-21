@@ -27,12 +27,27 @@
 
     <MyButton btn-style="edit" @click="editGoalDetails" />
     <MyButton btn-style="delete" @click="deleteGoal" />
+    <MyButton btn-style="standard" btn-text="Достичь" @click="achieveGoal" />
     <div class="editData" v-if="editGoal">
       <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
       <div class="counterDiv">
-        <p><MyCounter label="Срочность" :input-value="urgency" ref="newGoalUrgency" /></p>
-        <p><MyCounter label="Важность" :input-value="importance" ref="newGoalImportance" /></p>
+        <p>
+          <MyCounter
+            label="Срочность"
+            :input-value="urgency"
+            :max-value="10"
+            ref="newGoalUrgency"
+          />
+        </p>
+        <p>
+          <MyCounter
+            label="Важность"
+            :input-value="importance"
+            :max-value="10"
+            ref="newGoalImportance"
+          />
+        </p>
       </div>
       <h4>Ценности</h4>
       <div class="checkboxDiv">
@@ -150,6 +165,24 @@ const editGoalDetails = () => {
   newGoalUrgency.value = urgency.value
   newGoalImportance.value = importance.value
   newGoalValues.value = values.value
+}
+
+const achieveGoal = async () => {
+  const userUid = auth.value.currentUser.uid
+  const userRef = doc(db.value, 'users', userUid)
+  const resourceRef = userData.value.goals[goalIndex.value]
+  userData.value.achievements.achievedGoals.push(resourceRef)
+  userData.value.goals.splice(goalIndex.value, 1)
+
+  try {
+    await updateDoc(userRef, {
+      goals: userData.value.goals,
+      achievements: userData.value.achievements,
+    })
+    editGoal.value = false
+  } catch (err) {
+    console.log('Error adding documents', err)
+  }
 }
 </script>
 

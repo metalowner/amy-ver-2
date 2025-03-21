@@ -39,7 +39,6 @@ const addNewGoal = ref(false)
 const newGoalHeader = ref('')
 const newGoalDescription = ref('')
 const newGoalValues = ref([])
-const editableGoalValues = ref([])
 const newGoalUrgency = ref(Number)
 const newGoalImportance = ref(Number)
 const newGoalLifeFields = ref([])
@@ -55,7 +54,12 @@ const newPlanObstacles = ref([])
 const newPlanResources = ref([])
 const newPlanTime = ref(Object)
 const newPlanTimeObject = ref({})
-
+// info vars
+const displayValuesInfo = ref(false)
+const displayObstaclesInfo = ref(false)
+const displayResourcesInfo = ref(false)
+const displayGoalsInfo = ref(false)
+const displayPlansInfo = ref(false)
 // declare simple value save methods
 const saveNewValue = async (array, newHeader, newDescription) => {
   const userUid = auth.value.auth.currentUser.uid
@@ -65,7 +69,13 @@ const saveNewValue = async (array, newHeader, newDescription) => {
     description: newDescription,
     importance: 1,
   }
-  userData.value[array].push(newValueObject)
+  if (
+    newValueObject.header != '' &&
+    containsObject(newValueObject.header, userData.value[array]) == false
+  ) {
+    userData.value[array].push(newValueObject)
+  }
+
   if (array == 'values') {
     addNewValue.value = false
   } else if (array == 'obstacles') {
@@ -84,7 +94,6 @@ const saveNewValue = async (array, newHeader, newDescription) => {
 
 // add new goal
 const addNewGoalDetails = () => {
-  updateEditableArray(editableGoalValues.value, newGoalValues.value, userData.value.values)
   addNewGoal.value = !addNewGoal.value
   newGoalImportance.value = 0
   newGoalUrgency.value = 0
@@ -106,7 +115,10 @@ const addNewPlanDetails = () => {
 const savePlan = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-  if (newPlanHeader.value != '') {
+  if (
+    newPlanHeader.value != '' &&
+    containsObject(newPlanHeader.value, userData.value.plans) == false
+  ) {
     const newPlanObject = {
       header: newPlanHeader.value,
       urgency: parseInt(newPlanUrgency.value.editableValue),
@@ -117,25 +129,39 @@ const savePlan = async () => {
       obstacles: newPlanObstacles.value,
       resources: newPlanResources.value,
       time: newPlanTime.value.newTimeObject,
+      daysPassed: 0,
+      displayProgress: false,
+    }
+    if (newPlanObject.time.repetition == 'daily') {
+      userData.value.health.time.total.minutes += newPlanObject.time.minutes
+      userData.value.health.time.total.hours += newPlanObject.time.hours
+      if (userData.value.health.time.total.minutes > 60) {
+        userData.value.health.time.total.hours += 1
+        userData.value.health.time.total.minutes -= 60
+      }
     }
     userData.value.plans.push(newPlanObject)
     try {
       await updateDoc(userRef, {
         plans: userData.value.plans,
+        health: userData.value.health,
       })
       addNewPlan.value = false
     } catch (err) {
       console.log('Error adding documents', err)
     }
   } else {
-    alert('Нужен заколовок!')
+    alert('Нужен закголовок!')
   }
 }
 // save new goal
 const saveGoal = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-  if (newGoalHeader.value != '') {
+  if (
+    newGoalHeader.value != '' &&
+    containsObject(newGoalHeader.value, userData.value.goals) == false
+  ) {
     const newGoalObject = {
       header: newGoalHeader.value,
       description: newGoalDescription.value,
@@ -154,22 +180,18 @@ const saveGoal = async () => {
       console.log('Error adding documents', err)
     }
   } else {
-    alert('Нужен заколовок!')
+    addNewGoal.value = false
   }
 }
-
-// update editable array
-function updateEditableArray(editableArray, targetArray, dataArray) {
-  editableArray.splice(0)
-  for (let index = 0; index < dataArray.length; index++) {
-    const element = dataArray[index]
-    var elementFound = targetArray.find(function (header) {
-      return header === element.header
-    })
-    if (!elementFound) {
-      editableArray.push(element)
+// check if array contains object
+const containsObject = (obj, list) => {
+  var i
+  for (i = 0; i < list.length; i++) {
+    if (list[i].header == obj) {
+      return true
     }
   }
+  return false
 }
 </script>
 
@@ -177,7 +199,14 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
   <div class="wrapper">
     <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
     <div class="block">
-      <h2>Ценности</h2>
+      <h2>Ценности<MyButton btn-style="info" @click="displayValuesInfo = !displayValuesInfo" /></h2>
+      <div class="popUp" v-if="displayValuesInfo">
+        <p>
+          Ценности это абстрактные состовляющие нашей мотивации в жизни и причина почему или для
+          чего мы делаем всё что делаем, выбираем то что выбираем и отказываемся от того чего
+          отказываемся.
+        </p>
+      </div>
       <MyButton btn-style="add" @click="addNewValue = !addNewValue" />
       <div class="innerBlock" v-if="addNewValue">
         <h3>
@@ -205,7 +234,18 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
       />
     </div>
     <div class="block">
-      <h2>Припятствия</h2>
+      <h2>
+        Припятствия<MyButton
+          btn-style="info"
+          @click="displayObstaclesInfo = !displayObstaclesInfo"
+        />
+      </h2>
+      <div class="popUp" v-if="displayObstaclesInfo">
+        <p>
+          Препятствия это главные причины из-за которых мы терпим неудачи как нездоровые привычки,
+          черты характера, загоны, и взгляды.
+        </p>
+      </div>
       <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
       <div class="innerBlock" v-if="addNewObstacle">
         <h3>
@@ -241,7 +281,15 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
       />
     </div>
     <div class="block">
-      <h2>Ресурсы</h2>
+      <h2>
+        Ресурсы<MyButton btn-style="info" @click="displayResourcesInfo = !displayResourcesInfo" />
+      </h2>
+      <div class="popUp" v-if="displayResourcesInfo">
+        <p>
+          Ресурсы это рычаги для достижения целей и преодоления препятствий как знания, умения,
+          навыки, знакомые, внешний вид и другие.
+        </p>
+      </div>
       <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
       <div class="innerBlock" v-if="addNewResource">
         <h3>
@@ -273,7 +321,13 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
       />
     </div>
     <div class="block">
-      <h2>Цели</h2>
+      <h2>Цели<MyButton btn-style="info" @click="displayGoalsInfo = !displayGoalsInfo" /></h2>
+      <div class="popUp" v-if="displayGoalsInfo">
+        <p>
+          Цели это конечные результаты которые нам нужны. Если вы можете ответить на вопрос "Что мне
+          это даст?" значит это не цель а промежуточный результат.
+        </p>
+      </div>
       <MyButton btn-style="add" @click="addNewGoalDetails" />
       <div class="innerBlock" v-if="addNewGoal">
         <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
@@ -302,8 +356,12 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
           </label>
         </div>
         <div class="counterDiv">
-          <p><MyCounter label="Срочность" :input-value="1" ref="newGoalUrgency" /></p>
-          <p><MyCounter label="Важность" :input-value="1" ref="newGoalImportance" /></p>
+          <p>
+            <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newGoalUrgency" />
+          </p>
+          <p>
+            <MyCounter label="Важность" :input-value="1" :max-value="10" ref="newGoalImportance" />
+          </p>
         </div>
         <h4>Ценности</h4>
         <div class="checkboxDiv">
@@ -333,7 +391,13 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
       />
     </div>
     <div class="block">
-      <h2>Планы</h2>
+      <h2>Планы<MyButton btn-style="info" @click="displayPlansInfo = !displayPlansInfo" /></h2>
+      <div class="popUp" v-if="displayPlansInfo">
+        <p>
+          План это описания пути к цели состоящий из действия, повторяймости, препятствий и
+          ресурсов.
+        </p>
+      </div>
       <MyButton btn-style="add" @click="addNewPlanDetails" />
       <div class="innerBlock" v-if="addNewPlan">
         <h4>Ваши цели</h4>
@@ -358,8 +422,12 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
           Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" />
         </p>
         <div class="counterDiv">
-          <p><MyCounter label="Срочность" :input-value="1" ref="newPlanUrgency" /></p>
-          <p><MyCounter label="Важность" :input-value="1" ref="newPlanImportance" /></p>
+          <p>
+            <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newPlanUrgency" />
+          </p>
+          <p>
+            <MyCounter label="Важность" :input-value="1" :max-value="10" ref="newPlanImportance" />
+          </p>
         </div>
 
         <h4>Ценности</h4>
@@ -404,6 +472,7 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
         :obstacles="plan.obstacles"
         :resources="plan.resources"
         :time="plan.time"
+        :success="plan.success"
       />
     </div>
   </div>
@@ -411,9 +480,16 @@ function updateEditableArray(editableArray, targetArray, dataArray) {
 
 <style scoped>
 .wrapper {
+  position: relative;
   padding: 1em;
   margin-left: auto;
   margin-right: auto;
+}
+.popUp {
+  position: absolute;
+  top: 3em;
+  max-width: 25m;
+  text-align: start;
 }
 .block {
   position: relative;
