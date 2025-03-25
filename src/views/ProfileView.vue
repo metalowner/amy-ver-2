@@ -202,7 +202,7 @@ const containsObject = (obj, list) => {
       <h2>Ценности<MyButton btn-style="info" @click="displayValuesInfo = !displayValuesInfo" /></h2>
       <div class="popUp" v-if="displayValuesInfo">
         <p>
-          Ценности это абстрактные состовляющие нашей мотивации в жизни и причина почему или для
+          Ценности - это абстрактные состовляющие нашей мотивации в жизни и причина почему или для
           чего мы делаем всё что делаем, выбираем то что выбираем и отказываемся от того чего
           отказываемся.
         </p>
@@ -235,15 +235,15 @@ const containsObject = (obj, list) => {
     </div>
     <div class="block">
       <h2>
-        Припятствия<MyButton
+        Препятствия<MyButton
           btn-style="info"
           @click="displayObstaclesInfo = !displayObstaclesInfo"
         />
       </h2>
       <div class="popUp" v-if="displayObstaclesInfo">
         <p>
-          Препятствия это главные причины из-за которых мы терпим неудачи как нездоровые привычки,
-          черты характера, загоны, и взгляды.
+          Препятствия - это главные причины из-за которых мы терпим неудачи, как нездоровые
+          привычки, черты характера, загоны и взгляды.
         </p>
       </div>
       <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
@@ -251,14 +251,14 @@ const containsObject = (obj, list) => {
         <h3>
           <input
             type="text"
-            placeholder="Загаловок нового припятствия"
+            placeholder="Заголовок нового препятствия"
             v-model="newObstacleHeader"
           />
         </h3>
         <p>
           <input
             type="text"
-            placeholder="Описания нового припятствия"
+            placeholder="Описание нового препятствия"
             v-model="newObstacleDescription"
           />
         </p>
@@ -286,8 +286,8 @@ const containsObject = (obj, list) => {
       </h2>
       <div class="popUp" v-if="displayResourcesInfo">
         <p>
-          Ресурсы это рычаги для достижения целей и преодоления препятствий как знания, умения,
-          навыки, знакомые, внешний вид и другие.
+          Ресурсы - это рычаги для достижения целей и преодоления препятствий, такие как знания,
+          умения, навыки, знакомые, внешний вид и другие.
         </p>
       </div>
       <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
@@ -298,7 +298,7 @@ const containsObject = (obj, list) => {
         <p>
           <input
             type="text"
-            placeholder="Описания нового ресурса"
+            placeholder="Описание нового ресурса"
             v-model="newResourceDescription"
           />
         </p>
@@ -324,14 +324,14 @@ const containsObject = (obj, list) => {
       <h2>Цели<MyButton btn-style="info" @click="displayGoalsInfo = !displayGoalsInfo" /></h2>
       <div class="popUp" v-if="displayGoalsInfo">
         <p>
-          Цели это конечные результаты которые нам нужны. Если вы можете ответить на вопрос "Что мне
-          это даст?" значит это не цель а промежуточный результат.
+          Цели - это конечные результаты, которые нам нужны. Если вы можете ответить на вопрос "Что
+          мне это даст?", значит это не цель, а промежуточный результат.
         </p>
       </div>
       <MyButton btn-style="add" @click="addNewGoalDetails" />
       <div class="innerBlock" v-if="addNewGoal">
         <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
-        <p><input type="text" placeholder="Описания цели" v-model="newGoalDescription" /></p>
+        <p><input type="text" placeholder="Описание цели" v-model="newGoalDescription" /></p>
         <h4>Сферы жизни</h4>
         <div class="checkboxDiv">
           <label class="container"
@@ -394,7 +394,7 @@ const containsObject = (obj, list) => {
       <h2>Планы<MyButton btn-style="info" @click="displayPlansInfo = !displayPlansInfo" /></h2>
       <div class="popUp" v-if="displayPlansInfo">
         <p>
-          План это описания пути к цели состоящий из действия, повторяймости, препятствий и
+          План - это описание пути к цели, состоящий из действия, повторяемости, препятствий и
           ресурсов.
         </p>
       </div>
@@ -411,7 +411,7 @@ const containsObject = (obj, list) => {
         <p><input type="text" placeholder="Ваше действие" v-model="newPlanHeader" /></p>
         <TimeCalc
           :time="newPlanTimeObject"
-          label="Повторяймость"
+          label="Повторяемость"
           :total="userData?.health?.time?.total"
           :auth="auth.auth"
           :user-data="userData"
@@ -438,7 +438,7 @@ const containsObject = (obj, list) => {
             <span class="checkmark"></span>
           </label>
         </div>
-        <h4>Припятствия</h4>
+        <h4>Препятствия</h4>
         <div class="checkboxDiv">
           <label class="container" v-for="value in userData?.obstacles" :key="value"
             >{{ value.header }}

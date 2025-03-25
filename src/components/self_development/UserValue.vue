@@ -15,7 +15,7 @@
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
-      <MyCounter label="Важность" :input-value="importance" ref="newImportance" />
+      <MyCounter :max-value="10" label="Важность" :input-value="importance" ref="newImportance" />
       <MyButton btn-style="save" @click="saveValue" />
       <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
     </div>

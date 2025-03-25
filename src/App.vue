@@ -17,29 +17,39 @@ const signIn = ref(null)
   </header>
   <RouterView :auth="signIn" :userData="signIn?.userData" />
   <footer>
-    <div>
-      <a href="https://vk.com/simonmys">Вконтакте</a>
+    <div class="footerContacts">
+      <a class="footerLink" target="_blank" href="https://vk.com/simonmys">Вконтакте</a>
       <p>Телефон: +7 961 435 90 49 Павел</p>
+      <p>Все права защищены!</p>
     </div>
-    <p>Все права защищены!</p>
   </footer>
 </template>
 
 <style scoped>
 header {
-  padding: 1em;
   background-color: #101010ff;
+}
+nav {
+  width: 100%;
+  border-bottom: 1px solid #fafaf222;
+  padding: 1em;
 }
 header a {
   margin-right: 1em;
 }
 footer {
-  padding: 2em 1em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-color: #101010ff;
   color: #fafaf2ff;
   border-top: 1px solid #fafaf2ff;
+}
+.footerContacts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+.footerLink {
+  border-bottom: 1px solid #fafaf222;
 }
 </style>

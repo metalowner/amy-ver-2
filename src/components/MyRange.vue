@@ -1,27 +1,29 @@
 <template>
-  <div class="rangeDiv" v-if="!editEnabled">
-    <div class="icon sad" :class="sadOpacity"></div>
+  <div>
+    <div class="rangeDiv" v-if="!editEnabled">
+      <div class="icon sad" :class="sadOpacity"></div>
+      <input
+        class="notEditable"
+        :class="colorChange"
+        type="range"
+        min="0"
+        max="100"
+        :value="inputValue"
+        disabled
+      />
+      <div class="icon happy" :class="happyOpacity"></div>
+    </div>
+
     <input
-      class="notEditable"
-      :class="colorChange"
+      class="slider"
+      :class="editableColor"
+      v-if="editEnabled"
       type="range"
       min="0"
       max="100"
-      :value="inputValue"
-      disabled
+      v-model="editableValue"
     />
-    <div class="icon happy" :class="happyOpacity"></div>
   </div>
-
-  <input
-    class="slider"
-    :class="editableColor"
-    v-if="editEnabled"
-    type="range"
-    min="0"
-    max="100"
-    v-model="editableValue"
-  />
 </template>
 
 <script setup>
@@ -38,13 +40,13 @@ const props = defineProps({
   },
 })
 const { inputValue, editEnabled } = toRefs(props)
-const inputProp = ref(props.inputValue)
+
 const editableValue = ref(props.inputValue)
 
 const colorChange = computed(() => {
-  return parseInt(inputProp.value) < 75
-    ? parseInt(inputProp.value) < 50
-      ? parseInt(inputProp.value) < 25
+  return parseInt(inputValue.value) < 75
+    ? parseInt(inputValue.value) < 50
+      ? parseInt(inputValue.value) < 25
         ? 'red'
         : 'lightRed'
       : 'green'
@@ -80,7 +82,7 @@ const happyOpacity = computed(() => {
       : 'mediumVisible'
     : 'visible'
 })
-defineExpose({ editableValue })
+defineExpose({ editableValue, colorChange })
 </script>
 
 <style scoped>

@@ -67,6 +67,7 @@ import MyButton from './MyButton.vue'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
 import MyRange from './MyRange.vue'
+import moment from 'moment'
 
 const registerActive = ref(false)
 const loginActive = ref(false)
@@ -211,35 +212,35 @@ const register = () => {
         },
         values: [
           {
-            header: 'Саморазвития',
-            description: 'Желание учится, приспосабливаться и трансформироваться',
+            header: 'Саморазвитие',
+            description: 'Желание учиться, приспосабливаться и трансформироваться',
             importance: 2,
           },
           {
             header: 'Удовлетворение',
-            description: 'Всё что делается, делается ради каких-то результатов',
+            description: 'Всё, что делается, делается ради каких-то результатов',
             importance: 2,
           },
         ],
         obstacles: [
           {
             header: 'Страх перемен',
-            description: 'Каждый раз выбирать привычные действия препятсвуя своему развитию',
+            description: 'Каждый раз выбирать привычные действия препятствуя своему развитию',
             importance: 1,
           },
         ],
         resources: [
           {
             header: 'Друзья',
-            description: 'Кторые поддержат, подскажут и помогут',
+            description: 'Которые поддержат, подскажут и помогут',
             importance: 1,
           },
         ],
         goals: [
           {
-            header: 'Саморазвития!',
+            header: 'Саморазвитие!',
             description: 'Раскрыть свой потенциал',
-            values: ['Саморазвития'],
+            values: ['Саморазвитие'],
             importance: 1,
             urgency: 10,
             lifeFields: ['Здоровье', 'Социум', 'Финансы', 'Увлечения'],
@@ -248,10 +249,10 @@ const register = () => {
         plans: [
           {
             header: 'Развить навык саморазвития в привычку',
-            goals: ['Саморазвития!'],
+            goals: ['Саморазвитие!'],
             values: ['Удовлетворение'],
             startDate: todayDate,
-            importance: 1,
+            importance: 10,
             urgency: 10,
             obstacles: ['Страх перемен'],
             resources: ['Друзья'],
@@ -312,8 +313,10 @@ onAuthStateChanged(auth, async (user) => {
 
         for (let i = 0; i < plans.length; i++) {
           const element = plans[i]
-          const newDaysPassed = parseTime(element.startDate)
-          if (newDaysPassed - element.daysPassed < 6) {
+          const newDaysPassed = parseInt(parseTime(element.startDate))
+          const newDays = newDaysPassed - element.daysPassed
+          console.log(newDays)
+          if (newDays < 6) {
             return
           } else {
             if (element.time.repetition == 'monthly' && newDaysPassed - element.daysPassed > 29) {
@@ -346,9 +349,9 @@ onAuthStateChanged(auth, async (user) => {
 })
 // ellapsed time function
 function parseTime(startDate) {
-  let start = new Date(startDate)
-  let now = new Date()
-  let daysPassed = now.getTime() - start.getTime()
+  let start = moment(startDate, 'YYYY-MM-DD')
+  let now = moment()
+  let daysPassed = now.valueOf() - start.valueOf()
 
   return differenceInDays(daysPassed)
 }

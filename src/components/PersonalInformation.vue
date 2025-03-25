@@ -1,70 +1,75 @@
 <template>
   <div class="wrapper">
     <div class="infoContainer">
+      <h2>
+        {{ userData?.username }}
+      </h2>
       <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
       <MyButton
         v-if="editPersonalInfo"
         btn-style="cancelTop"
         @click="editPersonalInfo = !editPersonalInfo"
       />
-      <div class="userImg"></div>
-      <div>
-        <h2>{{ userData?.username }}</h2>
-        <div class="infoBlock">
-          <div class="icon birthday"></div>
-          <p>{{ userData?.dateOfBirth }}</p>
-        </div>
-        <div class="infoBlock">
-          <div class="icon" :class="userData?.gender"></div>
-          <p>{{ userData?.relationshipStatus }}</p>
-        </div>
-        <div class="infoBlock">
-          <div class="icon profession"></div>
-          <p>{{ userData?.profession }}</p>
-        </div>
-        <div class="infoBlock">
-          <div class="icon location"></div>
-          <p>{{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}</p>
+      <div class="infoData">
+        <div class="userImg"></div>
+        <div>
+          <div class="infoBlock">
+            <div class="icon birthday"></div>
+            <p>{{ userData?.dateOfBirth }}</p>
+          </div>
+          <div class="infoBlock">
+            <div class="icon" :class="userData?.gender"></div>
+            <p>{{ userData?.relationshipStatus }}</p>
+          </div>
+          <div class="infoBlock">
+            <div class="icon profession"></div>
+            <p>{{ userData?.profession }}</p>
+          </div>
+          <div class="infoBlock">
+            <div class="icon location"></div>
+            <p>{{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}</p>
+          </div>
         </div>
       </div>
+      <div class="editInfoDiv" v-if="editPersonalInfo">
+        <p>Имя: <input type="text" placeholder="Имя" v-model="username" /></p>
+        <p>Дата рождения: <input type="date" placeholder="Дата рождения" v-model="birthDate" /></p>
+        <p>
+          Пол:
+          <select v-model="gender">
+            <option disabled value="">Выберите один</option>
+            <option value="male">Мужчина</option>
+            <option value="female">Женщина</option>
+            <option value="bigender">Бигендер</option>
+            <option value="androgyne">Андрогин</option>
+            <option value="neutrois">Агендер</option>
+            <option value="genderless">Бесгендер</option>
+            <option value="intergender">Интергендер</option>
+            <option value="demiboy">Демибой</option>
+            <option value="demigirl">Демигирл</option>
+            <option value="third_gender">Третий гендер</option>
+            <option value="non_binary">Недвоичный</option>
+            <option value="poligender">Полигендер</option>
+          </select>
+        </p>
+        <p>
+          Отношения:
+          <select v-model="relationship">
+            <option disabled value="">Выберите один</option>
+            <option>Женат \ Замужем</option>
+            <option>В отношениях</option>
+            <option>Не в отношениях</option>
+          </select>
+        </p>
+        <p>Профессия: <input type="text" placeholder="" v-model="profession" /></p>
+        <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
+        <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
+        <p class="lastStroke">Город: <input type="text" placeholder="Город" v-model="city" /></p>
+        <MyButton btn-style="save" @click="savePersonalInformation" />
+        <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
+      </div>
     </div>
-    <div class="editInfoDiv" v-if="editPersonalInfo">
-      <p>Имя: <input type="text" placeholder="Имя" v-model="username" /></p>
-      <p>Дата рождения: <input type="date" placeholder="Дата рождения" v-model="birthDate" /></p>
-      <p>
-        Пол:
-        <select v-model="gender">
-          <option disabled value="">Выберите один</option>
-          <option value="male">Мужчина</option>
-          <option value="female">Женщина</option>
-          <option value="bigender">Бигендер</option>
-          <option value="androgyne">Андрогин</option>
-          <option value="neutrois">Агендер</option>
-          <option value="genderless">Бесгендер</option>
-          <option value="intergender">Интергендер</option>
-          <option value="demiboy">Демибой</option>
-          <option value="demigirl">Демигирл</option>
-          <option value="third_gender">Третий гендер</option>
-          <option value="non_binary">Недвоичный</option>
-          <option value="poligender">Полигендер</option>
-        </select>
-      </p>
-      <p>
-        Отношения:
-        <select v-model="relationship">
-          <option disabled value="">Выберите один</option>
-          <option>Женат \ Замужем</option>
-          <option>В отношениях</option>
-          <option>Не в отношениях</option>
-        </select>
-      </p>
-      <p>Профессия: <input type="text" placeholder="" v-model="profession" /></p>
-      <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
-      <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
-      <p class="lastStroke">Город: <input type="text" placeholder="Город" v-model="city" /></p>
-      <MyButton btn-style="save" @click="savePersonalInformation" />
-      <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
-    </div>
+
     <div class="block">
       <h2>
         Достижения<MyButton
@@ -218,6 +223,20 @@ h3 {
   padding-bottom: 3px;
   margin-bottom: 3px;
 }
+.infoContainer {
+  position: relative;
+  padding-top: 0.5em;
+}
+
+.infoContainer h2 {
+  margin: 0px;
+}
+.infoData {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+}
 .popUp {
   position: absolute;
   top: 3em;
@@ -249,12 +268,6 @@ h3 {
   width: 8em;
   height: 8em;
   margin-right: 1em;
-}
-.infoContainer {
-  display: flex;
-  align-items: center;
-  position: relative;
-  max-width: 25em;
 }
 .infoBlock {
   display: flex;

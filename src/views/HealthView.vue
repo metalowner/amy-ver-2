@@ -4,22 +4,32 @@
       <h1>Здоровье!</h1>
       <div class="block">
         <p>Физическое здоровье</p>
-        <MyRange :input-value="userData?.health?.physicalHealth" :edit-enabled="false" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.health?.physicalHealth"
+          :edit-enabled="false"
+        />
       </div>
       <div class="block">
         <p>Эмоцеональное здоровье</p>
-        <MyRange :input-value="userData?.health?.emotionalHealth" :edit-enabled="false" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.health?.emotionalHealth"
+          :edit-enabled="false"
+        />
       </div>
       <MyButton btn-style="edit" @click="editHealthData" />
       <div class="block" v-if="editHealth">
         <p>Физическое здоровье</p>
         <MyRange
+          :max-value="100"
           :edit-enabled="true"
           :input-value="userData?.health?.physicalHealth"
           ref="physicalHealth"
         />
         <p>Эмоцеональное здоровье</p>
         <MyRange
+          :max-value="100"
           :edit-enabled="true"
           :input-value="userData?.health?.emotionalHealth"
           ref="emotionalHealth"

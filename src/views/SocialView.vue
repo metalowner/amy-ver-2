@@ -4,23 +4,27 @@
       <h1>Социум!</h1>
       <div class="block">
         <p>Семья</p>
-        <MyRange :input-value="userData?.social?.family" :edit-enabled="false" />
+        <MyRange :max-value="100" :input-value="userData?.social?.family" :edit-enabled="false" />
       </div>
       <div class="block">
         <p>Партнёр \ Партнёрша</p>
-        <MyRange :input-value="userData?.social?.love" :edit-enabled="false" />
+        <MyRange :max-value="100" :input-value="userData?.social?.love" :edit-enabled="false" />
       </div>
       <div class="block">
         <p>Друзья</p>
-        <MyRange :input-value="userData?.social?.friends" :edit-enabled="false" />
+        <MyRange :max-value="100" :input-value="userData?.social?.friends" :edit-enabled="false" />
       </div>
       <div class="block">
         <p>Знакомые</p>
-        <MyRange :input-value="userData?.social?.pals" :edit-enabled="false" />
+        <MyRange :max-value="100" :input-value="userData?.social?.pals" :edit-enabled="false" />
       </div>
       <div class="block">
         <p>Незнакомцы</p>
-        <MyRange :input-value="userData?.social?.strangers" :edit-enabled="false" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.social?.strangers"
+          :edit-enabled="false"
+        />
       </div>
       <MyButton btn-style="edit" @click="editSocial = !editSocial" />
     </div>
@@ -29,23 +33,44 @@
       <h1>Социум!</h1>
       <div class="block">
         <p>Семья</p>
-        <MyRange :input-value="userData?.social?.family" :edit-enabled="true" ref="familyScore" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.social?.family"
+          :edit-enabled="true"
+          ref="familyScore"
+        />
       </div>
       <div class="block">
         <p>Партнёр \ Партнёрша</p>
-        <MyRange :input-value="userData?.social?.love" :edit-enabled="true" ref="loveScore" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.social?.love"
+          :edit-enabled="true"
+          ref="loveScore"
+        />
       </div>
       <div class="block">
         <p>Друзья</p>
-        <MyRange :input-value="userData?.social?.friends" :edit-enabled="true" ref="friendsScore" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.social?.friends"
+          :edit-enabled="true"
+          ref="friendsScore"
+        />
       </div>
       <div class="block">
         <p>Знакомые</p>
-        <MyRange :input-value="userData?.social?.pals" :edit-enabled="true" ref="palsScore" />
+        <MyRange
+          :max-value="100"
+          :input-value="userData?.social?.pals"
+          :edit-enabled="true"
+          ref="palsScore"
+        />
       </div>
       <div class="block">
         <p>Незнакомцы</p>
         <MyRange
+          :max-value="100"
           :input-value="userData?.social?.strangers"
           :edit-enabled="true"
           ref="strangersScore"

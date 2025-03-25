@@ -50,6 +50,8 @@ const navigateRoute = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
 }
 .stats {
   display: grid;

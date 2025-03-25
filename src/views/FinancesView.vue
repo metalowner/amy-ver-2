@@ -3,32 +3,61 @@
     <div class="satisfactionDiv">
       <h1>Финансы!</h1>
       <p>Доход</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.finances?.income" />
+      <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.income" />
       <p>Коллектив</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.finances?.partners" />
+      <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.partners" />
       <p>Профессия</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.finances?.profession" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="false"
+        :input-value="userData?.finances?.profession"
+      />
       <p>Образования</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.finances?.education" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="false"
+        :input-value="userData?.finances?.education"
+      />
       <p>График</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.finances?.schedule" />
+      <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.schedule" />
       <MyButton btn-style="edit" @click="editFinances = !editFinances" />
     </div>
     <div class="satisfactionDiv" v-if="editFinances">
       <p>Доход</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.finances?.income" ref="income" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.finances?.income"
+        ref="income"
+      />
       <p>Коллектив</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.finances?.partners" ref="partners" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.finances?.partners"
+        ref="partners"
+      />
       <p>Профессия</p>
       <MyRange
+        :max-value="100"
         :edit-enabled="true"
         :input-value="userData?.finances?.profession"
         ref="profession"
       />
       <p>Образования</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.finances?.education" ref="education" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.finances?.education"
+        ref="education"
+      />
       <p>График</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.finances?.schedule" ref="schedule" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.finances?.schedule"
+        ref="schedule"
+      />
       <MyButton btn-style="save" @click="saveFinances" />
     </div>
     <TimeCalc

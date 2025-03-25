@@ -64,6 +64,8 @@ defineProps({
   position: absolute;
   top: 1em;
   right: 1em;
+  border: 1px solid #101010ff;
+  border-radius: 5px;
 }
 .cancelBottom {
   background-image: url(../assets/cancel.svg);
@@ -74,6 +76,8 @@ defineProps({
   position: absolute;
   bottom: 1em;
   left: 4em;
+  border: 1px solid #101010ff;
+  border-radius: 5px;
 }
 .add {
   background-image: url(../assets/add.svg);

@@ -3,18 +3,28 @@
     <div class="satisfactionDiv">
       <h1>Увлечения!</h1>
       <p>Увлечения</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.hobbies?.hobbies" />
+      <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.hobbies?.hobbies" />
       <p>Свободное время</p>
-      <MyRange :edit-enabled="false" :input-value="userData?.hobbies?.freeTime" />
+      <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.hobbies?.freeTime" />
 
       <MyButton btn-style="edit" @click="editHobbies = !editHobbies" />
     </div>
     <div class="satisfactionDiv" v-if="editHobbies">
       <h1>Увлечения!</h1>
       <p>Увлечения</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.hobbies?.hobbies" ref="hobbies" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.hobbies?.hobbies"
+        ref="hobbies"
+      />
       <p>Свободное время</p>
-      <MyRange :edit-enabled="true" :input-value="userData?.hobbies?.freeTime" ref="freeTime" />
+      <MyRange
+        :max-value="100"
+        :edit-enabled="true"
+        :input-value="userData?.hobbies?.freeTime"
+        ref="freeTime"
+      />
       <MyButton btn-style="save" @click="saveHobbies" />
     </div>
     <TimeCalc

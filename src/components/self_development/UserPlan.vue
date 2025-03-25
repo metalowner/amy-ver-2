@@ -1,7 +1,7 @@
 <template>
   <div class="planWrapper">
     <h3>{{ header }}</h3>
-    <TimeCalc label="Повторяймость" :time="time" field="planDisplay" />
+    <TimeCalc label="Повторяемость" :time="time" field="planDisplay" />
     <p>Дата начала: {{ startDate }}</p>
     <h4 class="infoHeader">
       Приоритетность
@@ -36,7 +36,7 @@
     </div>
 
     <h4 class="infoHeader">
-      Припятствия <MyButton btn-style="arrowDown" @click="displayObstacles = !displayObstacles" />
+      Препятствия <MyButton btn-style="arrowDown" @click="displayObstacles = !displayObstacles" />
     </h4>
     <div v-if="displayObstacles" class="infoBlock">
       <p v-for="(obstacle, index) in obstacles" :key="obstacle">{{ index + 1 }}. {{ obstacle }}</p>
@@ -56,7 +56,7 @@
       <p><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></p>
       <TimeCalc
         :time="time"
-        label="Повторяймость"
+        label="Повторяемость"
         :total="userData?.health?.time?.total"
         :auth="auth.auth"
         :user-data="userData"
@@ -98,7 +98,7 @@
         </label>
       </div>
 
-      <h4>Припятствия</h4>
+      <h4>Препятствия</h4>
       <div class="checkboxDiv">
         <label v-for="obstacle in userData.obstacles" :key="obstacle.header" class="container"
           >{{ obstacle.header }}
