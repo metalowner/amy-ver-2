@@ -1,6 +1,8 @@
 <template>
   <div class="timeDiv">
-    <h4>{{ label }}</h4>
+    <h4 v-if="label != null">
+      {{ label }}
+    </h4>
     <div class="display">
       <select :value="time?.repetition" disabled>
         <option value="daily">Ежедневно</option>
@@ -120,6 +122,15 @@ const saveTime = async () => {
     newTimeObject.value.repetition = repetition.value
     time.value.repetition = repetition.value
     if (repetition.value == 'daily') {
+      total.value.hours += newTimeObject.value.hours - time.value.hours
+      total.value.minutes += newTimeObject.value.minutes - time.value.minutes
+      if (userData.value.health.time.total.minutes > 60) {
+        userData.value.health.time.total.hours += 1
+        userData.value.health.time.total.minutes -= 60
+      } else if (userData.value.health.time.total.minutes < 0) {
+        userData.value.health.time.total.hours -= 1
+        userData.value.health.time.total.minutes += 60
+      }
       newTimeObject.value.minutes = minutes.value.editableValue
       newTimeObject.value.hours = hours.value.editableValue
       time.value.minutes = minutes.value.editableValue
@@ -159,10 +170,12 @@ const saveTime = async () => {
     if (repetition.value == 'daily') {
       total.value.minutes += minutes.value.editableValue - time.value.minutes
       total.value.hours += hours.value.editableValue - time.value.hours
-      console.log(minutes.value.editableValue, hours.value.editableValue)
-      if (total.value.minutes > 60) {
-        total.value.hours += 1
-        total.value.minutes -= 60
+      if (userData.value.health.time.total.minutes > 60) {
+        userData.value.health.time.total.hours += 1
+        userData.value.health.time.total.minutes -= 60
+      } else if (userData.value.health.time.total.minutes < 0) {
+        userData.value.health.time.total.hours -= 1
+        userData.value.health.time.total.minutes += 60
       }
       time.value.minutes = minutes.value.editableValue
       time.value.hours = hours.value.editableValue
@@ -221,8 +234,22 @@ defineExpose({ newTimeObject })
 </script>
 
 <style scoped>
+h4 {
+  text-align: center;
+  background: #00bbbbff;
+  margin: 1em 0em;
+  color: #fafaf2ff;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  position: relative;
+}
+.timeDiv .edit {
+  top: 2.6em;
+  right: 0em;
+}
 .timeDiv {
   position: relative;
+  width: 100%;
 }
 input[type='number'] {
   box-shadow: none;
@@ -259,6 +286,7 @@ input[type='number'] {
 }
 .edit {
   padding-bottom: 3em;
+  padding-top: 1em;
 }
 .edit input[type='number'] {
   box-shadow:

@@ -44,6 +44,15 @@ h2 {
   margin-bottom: 1em;
   max-width: 10em;
 }
+h3 {
+  border-bottom: 1px solid #00bbbbff;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  margin-right: 3em;
+  margin-left: 3em;
+  text-align: center;
+  font-size: 1.3em;
+}
 .popUp {
   background-color: #fafaf2ff;
   display: block;
@@ -59,10 +68,11 @@ h2 {
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  z-index: 1;
+  z-index: 10;
 }
 select {
   border: none;
+  font-size: 1em;
   padding: 10px 1em;
   border-radius: 5px;
   box-shadow:
@@ -104,6 +114,7 @@ textarea {
   margin: 1em 0em;
   display: grid;
   grid-template-columns: auto auto;
+  column-gap: 1em;
 }
 
 input:focus {
@@ -120,6 +131,7 @@ input:focus {
   margin-top: 1em;
   display: grid;
   grid-template-columns: auto auto;
+  column-gap: 1em;
 }
 
 /* Customize the label (the container) */
@@ -191,6 +203,18 @@ input:focus {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.infoBlock {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  column-gap: 1em;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom: 1px solid #10101011;
 }
 
 @media (min-width: 1024px) {

@@ -112,10 +112,11 @@ p {
   padding: 1em;
 }
 h1 {
-  padding: 2em 0px;
+  padding-top: 1em;
 }
 h2 {
-  padding: 1em 0px;
+  text-align: center;
+  max-width: 100%;
 }
 h3 {
   border-bottom: 1px solid #101010ff;
@@ -174,6 +175,7 @@ h3 {
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   border-radius: 5px;
+  margin: 0em auto;
 }
 .incognitoImg {
   background-image: url(../assets/incognito.svg);
@@ -186,6 +188,7 @@ h3 {
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   border-radius: 5px;
+  margin: 0em auto;
 }
 @media (min-width: 768px) {
   .team {

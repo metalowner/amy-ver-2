@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper shadow" @click="navigateRoute">
+  <div class="lifeFieldWrapper shadow" @click="navigateRoute">
     <h2>{{ name }}</h2>
     <div class="iconWrapper" :class="background">
       <div class="icon" :class="fieldIcon"></div>
@@ -44,14 +44,25 @@ const navigateRoute = () => {
 </script>
 
 <style scoped>
-.wrapper {
+h2 {
+  margin: 0em;
+  background-color: #00bbbbff;
+  color: #fafaf2ff;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  margin-bottom: 0.5em;
+  width: 100%;
+}
+.lifeFieldWrapper {
   text-align: center;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0em auto;
   padding-bottom: 1em;
   margin-bottom: 1em;
+  max-width: 15em;
 }
 .stats {
   display: grid;
@@ -60,7 +71,7 @@ const navigateRoute = () => {
 .iconWrapper {
   padding: 1em;
   border-radius: 5px;
-  margin: 1em;
+  margin-bottom: 0.5em;
 }
 .icon {
   background-repeat: no-repeat;

@@ -9,6 +9,7 @@ import UserGoal from '@/components/self_development/UserGoal.vue'
 import UserPlan from '@/components/self_development/UserPlan.vue'
 import MyCounter from '@/components/MyCounter.vue'
 import TimeCalc from '@/components/self_development/TimeCalc.vue'
+import moment from 'moment'
 
 const props = defineProps({
   auth: {
@@ -26,14 +27,17 @@ const { auth, userData } = toRefs(props)
 const addNewValue = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
+const newValueImportance = ref({})
 // declare obstacle variables
 const addNewObstacle = ref(false)
 const newObstacleHeader = ref('')
 const newObstacleDescription = ref('')
+const newObstacleImportance = ref({})
 // declare resources variables
 const addNewResource = ref(false)
 const newResourceHeader = ref('')
 const newResourceDescription = ref('')
+const newResourceImportance = ref({})
 // declare goal variables
 const addNewGoal = ref(false)
 const newGoalHeader = ref('')
@@ -61,13 +65,13 @@ const displayResourcesInfo = ref(false)
 const displayGoalsInfo = ref(false)
 const displayPlansInfo = ref(false)
 // declare simple value save methods
-const saveNewValue = async (array, newHeader, newDescription) => {
+const saveNewValue = async (array, newHeader, newDescription, newImportance) => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
   const newValueObject = {
     header: newHeader,
     description: newDescription,
-    importance: 1,
+    importance: newImportance,
   }
   if (
     newValueObject.header != '' &&
@@ -101,14 +105,14 @@ const addNewGoalDetails = () => {
 // add new plan
 const addNewPlanDetails = () => {
   addNewPlan.value = !addNewPlan.value
-  newPlanStartDate.value = new Date()
+  newPlanStartDate.value = moment().format('YYYY-MM-DD')
   newPlanTimeObject.value = {
     repetition: 'daily',
     months: 0,
     weeks: 0,
     days: 0,
     hours: 0,
-    minutes: 15,
+    minutes: 0,
   }
 }
 // save new plan
@@ -119,6 +123,9 @@ const savePlan = async () => {
     newPlanHeader.value != '' &&
     containsObject(newPlanHeader.value, userData.value.plans) == false
   ) {
+    if (newPlanTime.value.newTimeObject.repetition == '') {
+      newPlanTime.value.newTimeObject = newPlanTimeObject
+    }
     const newPlanObject = {
       header: newPlanHeader.value,
       urgency: parseInt(newPlanUrgency.value.editableValue),
@@ -131,6 +138,10 @@ const savePlan = async () => {
       time: newPlanTime.value.newTimeObject,
       daysPassed: 0,
       displayProgress: false,
+      success: {
+        processSuccess: 100,
+        resultsSuccess: 100,
+      },
     }
     if (newPlanObject.time.repetition == 'daily') {
       userData.value.health.time.total.minutes += newPlanObject.time.minutes
@@ -138,6 +149,9 @@ const savePlan = async () => {
       if (userData.value.health.time.total.minutes > 60) {
         userData.value.health.time.total.hours += 1
         userData.value.health.time.total.minutes -= 60
+      } else if (userData.value.health.time.total.minutes < 0) {
+        userData.value.health.time.total.hours -= 1
+        userData.value.health.time.total.minutes += 60
       }
     }
     userData.value.plans.push(newPlanObject)
@@ -198,282 +212,346 @@ const containsObject = (obj, list) => {
 <template>
   <div class="wrapper">
     <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
-    <div class="block">
-      <h2>Ценности<MyButton btn-style="info" @click="displayValuesInfo = !displayValuesInfo" /></h2>
-      <div class="popUp" v-if="displayValuesInfo">
-        <p>
-          Ценности - это абстрактные состовляющие нашей мотивации в жизни и причина почему или для
-          чего мы делаем всё что делаем, выбираем то что выбираем и отказываемся от того чего
-          отказываемся.
-        </p>
-      </div>
-      <MyButton btn-style="add" @click="addNewValue = !addNewValue" />
-      <div class="innerBlock" v-if="addNewValue">
-        <h3>
-          <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
-        </h3>
-        <p>
-          <input type="text" placeholder="Описания новой ценности" v-model="newValueDescription" />
-        </p>
-        <MyButton
-          btn-style="save"
-          @click="saveNewValue('values', newValueHeader, newValueDescription)"
-        />
-      </div>
-      <UserValue
-        v-for="(value, index) in userData?.values"
-        :key="value.header"
-        :db="db"
-        :auth="auth.auth"
-        :user-data="userData"
-        :index="index"
-        :header="value.header"
-        :description="value.description"
-        :importance="value.importance"
-        property="values"
-      />
-    </div>
-    <div class="block">
-      <h2>
-        Препятствия<MyButton
-          btn-style="info"
-          @click="displayObstaclesInfo = !displayObstaclesInfo"
-        />
-      </h2>
-      <div class="popUp" v-if="displayObstaclesInfo">
-        <p>
-          Препятствия - это главные причины из-за которых мы терпим неудачи, как нездоровые
-          привычки, черты характера, загоны и взгляды.
-        </p>
-      </div>
-      <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
-      <div class="innerBlock" v-if="addNewObstacle">
-        <h3>
-          <input
-            type="text"
-            placeholder="Заголовок нового препятствия"
-            v-model="newObstacleHeader"
-          />
-        </h3>
-        <p>
-          <input
-            type="text"
-            placeholder="Описание нового препятствия"
-            v-model="newObstacleDescription"
-          />
-        </p>
-        <MyButton
-          btn-style="save"
-          @click="saveNewValue('obstacles', newObstacleHeader, newObstacleDescription)"
-        />
-      </div>
-      <UserValue
-        v-for="(obstacle, index) in userData?.obstacles"
-        :key="obstacle.header"
-        :db="db"
-        :auth="auth.auth"
-        :user-data="userData"
-        :index="index"
-        :header="obstacle.header"
-        :description="obstacle.description"
-        :importance="obstacle.importance"
-        property="obstacles"
-      />
-    </div>
-    <div class="block">
-      <h2>
-        Ресурсы<MyButton btn-style="info" @click="displayResourcesInfo = !displayResourcesInfo" />
-      </h2>
-      <div class="popUp" v-if="displayResourcesInfo">
-        <p>
-          Ресурсы - это рычаги для достижения целей и преодоления препятствий, такие как знания,
-          умения, навыки, знакомые, внешний вид и другие.
-        </p>
-      </div>
-      <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
-      <div class="innerBlock" v-if="addNewResource">
-        <h3>
-          <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
-        </h3>
-        <p>
-          <input
-            type="text"
-            placeholder="Описание нового ресурса"
-            v-model="newResourceDescription"
-          />
-        </p>
-        <MyButton
-          btn-style="save"
-          @click="saveNewValue('resources', newResourceHeader, newResourceDescription)"
-        />
-      </div>
-      <UserValue
-        v-for="(resource, index) in userData?.resources"
-        :key="resource.header"
-        :db="db"
-        :auth="auth.auth"
-        :user-data="userData"
-        :index="index"
-        :header="resource.header"
-        :description="resource.description"
-        :importance="resource.importance"
-        property="resources"
-      />
-    </div>
-    <div class="block">
-      <h2>Цели<MyButton btn-style="info" @click="displayGoalsInfo = !displayGoalsInfo" /></h2>
-      <div class="popUp" v-if="displayGoalsInfo">
-        <p>
-          Цели - это конечные результаты, которые нам нужны. Если вы можете ответить на вопрос "Что
-          мне это даст?", значит это не цель, а промежуточный результат.
-        </p>
-      </div>
-      <MyButton btn-style="add" @click="addNewGoalDetails" />
-      <div class="innerBlock" v-if="addNewGoal">
-        <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
-        <p><input type="text" placeholder="Описание цели" v-model="newGoalDescription" /></p>
-        <h4>Сферы жизни</h4>
-        <div class="checkboxDiv">
-          <label class="container"
-            >Здоровье
-            <input value="Здоровье" type="checkbox" v-model="newGoalLifeFields" />
-            <span class="checkmark"></span>
-          </label>
-          <label class="container"
-            >Социум
-            <input value="Социум" type="checkbox" v-model="newGoalLifeFields" />
-            <span class="checkmark"></span>
-          </label>
-          <label class="container"
-            >Финансы
-            <input value="Финансы" type="checkbox" v-model="newGoalLifeFields" />
-            <span class="checkmark"></span>
-          </label>
-          <label class="container"
-            >Увлечения
-            <input value="Увлечения" type="checkbox" v-model="newGoalLifeFields" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <div class="counterDiv">
+    <div class="profileGrid">
+      <div class="block">
+        <h2>
+          Ценности
+          <MyButton btn-style="info" @click="displayValuesInfo = !displayValuesInfo" />
+          <MyButton btn-style="add" @click="addNewValue = !addNewValue" />
+        </h2>
+        <div class="popUp" v-if="displayValuesInfo">
           <p>
-            <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newGoalUrgency" />
-          </p>
-          <p>
-            <MyCounter label="Важность" :input-value="1" :max-value="10" ref="newGoalImportance" />
-          </p>
-        </div>
-        <h4>Ценности</h4>
-        <div class="checkboxDiv">
-          <label class="container" v-for="value in userData?.values" :key="value"
-            >{{ value.header }}
-            <input :value="value.header" type="checkbox" v-model="newGoalValues" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <MyButton btn-style="save" @click="saveGoal" />
-      </div>
-      <UserGoal
-        v-for="(goal, index) in userData?.goals"
-        :key="goal.header"
-        :db="db"
-        :auth="auth.auth"
-        :user-data="userData"
-        :header="goal.header"
-        :description="goal.description"
-        :importance="goal.importance"
-        :goal-index="index"
-        :measures="goal.measures"
-        :prices="goal.prices"
-        :urgency="goal.urgency"
-        :values="goal.values"
-        :life-fields="goal.lifeFields"
-      />
-    </div>
-    <div class="block">
-      <h2>Планы<MyButton btn-style="info" @click="displayPlansInfo = !displayPlansInfo" /></h2>
-      <div class="popUp" v-if="displayPlansInfo">
-        <p>
-          План - это описание пути к цели, состоящий из действия, повторяемости, препятствий и
-          ресурсов.
-        </p>
-      </div>
-      <MyButton btn-style="add" @click="addNewPlanDetails" />
-      <div class="innerBlock" v-if="addNewPlan">
-        <h4>Ваши цели</h4>
-        <div class="checkboxDiv">
-          <label class="container" v-for="value in userData?.goals" :key="value.header"
-            >{{ value.header }}
-            <input :value="value.header" type="checkbox" v-model="newPlanGoals" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <p><input type="text" placeholder="Ваше действие" v-model="newPlanHeader" /></p>
-        <TimeCalc
-          :time="newPlanTimeObject"
-          label="Повторяемость"
-          :total="userData?.health?.time?.total"
-          :auth="auth.auth"
-          :user-data="userData"
-          field="plans"
-          ref="newPlanTime"
-        />
-        <p>
-          Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" />
-        </p>
-        <div class="counterDiv">
-          <p>
-            <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newPlanUrgency" />
-          </p>
-          <p>
-            <MyCounter label="Важность" :input-value="1" :max-value="10" ref="newPlanImportance" />
+            Ценности - это абстрактные состовляющие нашей мотивации в жизни и причина почему или для
+            чего мы делаем всё что делаем, выбираем то что выбираем и отказываемся от того чего
+            отказываемся.
           </p>
         </div>
 
-        <h4>Ценности</h4>
-        <div class="checkboxDiv">
-          <label class="container" v-for="value in userData?.values" :key="value"
-            >{{ value.header }}
-            <input :value="value.header" type="checkbox" v-model="newPlanValues" />
-            <span class="checkmark"></span>
-          </label>
+        <div class="innerBlock" v-if="addNewValue">
+          <h3>
+            <input type="text" placeholder="Загаловок новой ценности" v-model="newValueHeader" />
+          </h3>
+          <p>
+            <input
+              type="text"
+              placeholder="Описания новой ценности"
+              v-model="newValueDescription"
+            />
+          </p>
+          <MyCounter :max-value="10" label="Важность" :input-value="1" ref="newValueImportance" />
+          <MyButton
+            btn-style="save"
+            @click="
+              saveNewValue(
+                'values',
+                newValueHeader,
+                newValueDescription,
+                newValueImportance.editableValue,
+              )
+            "
+          />
         </div>
-        <h4>Препятствия</h4>
-        <div class="checkboxDiv">
-          <label class="container" v-for="value in userData?.obstacles" :key="value"
-            >{{ value.header }}
-            <input :value="value.header" type="checkbox" v-model="newPlanObstacles" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <h4>Ресурсы</h4>
-        <div class="checkboxDiv">
-          <label class="container" v-for="value in userData?.resources" :key="value"
-            >{{ value.header }}
-            <input :value="value.header" type="checkbox" v-model="newPlanResources" />
-            <span class="checkmark"></span>
-          </label>
-        </div>
-        <MyButton btn-style="save" @click="savePlan" />
+        <UserValue
+          v-for="(value, index) in userData?.values"
+          :key="value.header"
+          :db="db"
+          :auth="auth.auth"
+          :user-data="userData"
+          :index="index"
+          :header="value.header"
+          :description="value.description"
+          :importance="value.importance"
+          property="values"
+        />
       </div>
-      <UserPlan
-        v-for="(plan, index) in userData?.plans"
-        :key="plan.header"
-        :db="db"
-        :auth="auth.auth"
-        :user-data="userData"
-        :header="plan.header"
-        :importance="plan.importance"
-        :plan-index="index"
-        :urgency="plan.urgency"
-        :values="plan.values"
-        :start-date="plan.startDate"
-        :goals="plan.goals"
-        :obstacles="plan.obstacles"
-        :resources="plan.resources"
-        :time="plan.time"
-        :success="plan.success"
-      />
+      <div class="block grayBg">
+        <h2>
+          Препятствия
+          <MyButton btn-style="info" @click="displayObstaclesInfo = !displayObstaclesInfo" />
+          <MyButton btn-style="add" @click="addNewObstacle = !addNewObstacle" />
+        </h2>
+        <div class="popUp" v-if="displayObstaclesInfo">
+          <p>
+            Препятствия - это главные причины из-за которых мы терпим неудачи, как нездоровые
+            привычки, черты характера, загоны и взгляды.
+          </p>
+        </div>
+
+        <div class="innerBlock" v-if="addNewObstacle">
+          <h3>
+            <input
+              type="text"
+              placeholder="Заголовок нового препятствия"
+              v-model="newObstacleHeader"
+            />
+          </h3>
+          <p>
+            <input
+              type="text"
+              placeholder="Описание нового препятствия"
+              v-model="newObstacleDescription"
+            />
+          </p>
+          <MyCounter
+            :max-value="10"
+            label="Важность"
+            :input-value="1"
+            ref="newObstacleImportance"
+          />
+          <MyButton
+            btn-style="save"
+            @click="
+              saveNewValue(
+                'obstacles',
+                newObstacleHeader,
+                newObstacleDescription,
+                newObstacleImportance.editableValue,
+              )
+            "
+          />
+        </div>
+        <UserValue
+          v-for="(obstacle, index) in userData?.obstacles"
+          :key="obstacle.header"
+          :db="db"
+          :auth="auth.auth"
+          :user-data="userData"
+          :index="index"
+          :header="obstacle.header"
+          :description="obstacle.description"
+          :importance="obstacle.importance"
+          property="obstacles"
+        />
+      </div>
+      <div class="block">
+        <h2>
+          Ресурсы
+          <MyButton btn-style="info" @click="displayResourcesInfo = !displayResourcesInfo" />
+          <MyButton btn-style="add" @click="addNewResource = !addNewResource" />
+        </h2>
+        <div class="popUp" v-if="displayResourcesInfo">
+          <p>
+            Ресурсы - это рычаги для достижения целей и преодоления препятствий, такие как знания,
+            умения, навыки, знакомые, внешний вид и другие.
+          </p>
+        </div>
+
+        <div class="innerBlock" v-if="addNewResource">
+          <h3>
+            <input type="text" placeholder="Заголовок нового ресурса" v-model="newResourceHeader" />
+          </h3>
+          <p>
+            <input
+              type="text"
+              placeholder="Описание нового ресурса"
+              v-model="newResourceDescription"
+            />
+          </p>
+          <MyCounter
+            :max-value="10"
+            label="Важность"
+            :input-value="1"
+            ref="newResourceImportance"
+          />
+          <MyButton
+            btn-style="save"
+            @click="
+              saveNewValue(
+                'resources',
+                newResourceHeader,
+                newResourceDescription,
+                newResourceImportance.editableValue,
+              )
+            "
+          />
+        </div>
+        <UserValue
+          v-for="(resource, index) in userData?.resources"
+          :key="resource.header"
+          :db="db"
+          :auth="auth.auth"
+          :user-data="userData"
+          :index="index"
+          :header="resource.header"
+          :description="resource.description"
+          :importance="resource.importance"
+          property="resources"
+        />
+      </div>
+      <div class="block grayBg">
+        <div>
+          <h2>
+            Цели
+            <MyButton btn-style="info" @click="displayGoalsInfo = !displayGoalsInfo" />
+            <MyButton btn-style="add" @click="addNewGoalDetails" />
+          </h2>
+        </div>
+
+        <div class="popUp" v-if="displayGoalsInfo">
+          <p>
+            Цели - это конечные результаты, которые нам нужны. Если вы можете ответить на вопрос
+            "Что мне это даст?", значит это не цель, а промежуточный результат.
+          </p>
+        </div>
+        <div class="innerBlock" v-if="addNewGoal">
+          <h3><input type="text" placeholder="Заголовок цели" v-model="newGoalHeader" /></h3>
+          <p><input type="text" placeholder="Описание цели" v-model="newGoalDescription" /></p>
+          <h4>Сферы жизни</h4>
+          <div class="checkboxDiv">
+            <label class="container"
+              >Здоровье
+              <input value="Здоровье" type="checkbox" v-model="newGoalLifeFields" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container"
+              >Социум
+              <input value="Социум" type="checkbox" v-model="newGoalLifeFields" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container"
+              >Финансы
+              <input value="Финансы" type="checkbox" v-model="newGoalLifeFields" />
+              <span class="checkmark"></span>
+            </label>
+            <label class="container"
+              >Увлечения
+              <input value="Увлечения" type="checkbox" v-model="newGoalLifeFields" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <div class="counterDiv">
+            <p>
+              <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newGoalUrgency" />
+            </p>
+            <p>
+              <MyCounter
+                label="Важность"
+                :input-value="1"
+                :max-value="10"
+                ref="newGoalImportance"
+              />
+            </p>
+          </div>
+          <h4>Ценности</h4>
+          <div class="checkboxDiv">
+            <label class="container" v-for="value in userData?.values" :key="value"
+              >{{ value.header }}
+              <input :value="value.header" type="checkbox" v-model="newGoalValues" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <MyButton btn-style="save" @click="saveGoal" />
+        </div>
+        <UserGoal
+          v-for="(goal, index) in userData?.goals"
+          :key="goal.header"
+          :db="db"
+          :auth="auth.auth"
+          :user-data="userData"
+          :header="goal.header"
+          :description="goal.description"
+          :importance="goal.importance"
+          :goal-index="index"
+          :measures="goal.measures"
+          :prices="goal.prices"
+          :urgency="goal.urgency"
+          :values="goal.values"
+          :life-fields="goal.lifeFields"
+        />
+      </div>
+      <div class="block">
+        <h2>
+          Планы
+          <MyButton btn-style="info" @click="displayPlansInfo = !displayPlansInfo" />
+          <MyButton btn-style="add" @click="addNewPlanDetails" />
+        </h2>
+        <div class="popUp" v-if="displayPlansInfo">
+          <p>
+            План - это описание пути к цели, состоящий из действия, повторяемости, препятствий и
+            ресурсов.
+          </p>
+        </div>
+        <div class="innerBlock" v-if="addNewPlan">
+          <h4>Ваши цели</h4>
+          <div class="checkboxDiv">
+            <label class="container" v-for="value in userData?.goals" :key="value.header"
+              >{{ value.header }}
+              <input :value="value.header" type="checkbox" v-model="newPlanGoals" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <p><input type="text" placeholder="Ваше действие" v-model="newPlanHeader" /></p>
+          <TimeCalc
+            :time="newPlanTimeObject"
+            label="Повторяемость"
+            :total="userData?.health?.time?.total"
+            :auth="auth.auth"
+            :user-data="userData"
+            field="plans"
+            ref="newPlanTime"
+          />
+          <p>
+            Дата начала: <input type="date" placeholder="Дата начала" v-model="newPlanStartDate" />
+          </p>
+          <div class="counterDiv">
+            <p>
+              <MyCounter label="Срочность" :input-value="1" :max-value="10" ref="newPlanUrgency" />
+            </p>
+            <p>
+              <MyCounter
+                label="Важность"
+                :input-value="1"
+                :max-value="10"
+                ref="newPlanImportance"
+              />
+            </p>
+          </div>
+
+          <h4>Ценности</h4>
+          <div class="checkboxDiv">
+            <label class="container" v-for="value in userData?.values" :key="value"
+              >{{ value.header }}
+              <input :value="value.header" type="checkbox" v-model="newPlanValues" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <h4>Препятствия</h4>
+          <div class="checkboxDiv">
+            <label class="container" v-for="value in userData?.obstacles" :key="value"
+              >{{ value.header }}
+              <input :value="value.header" type="checkbox" v-model="newPlanObstacles" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <h4>Ресурсы</h4>
+          <div class="checkboxDiv">
+            <label class="container" v-for="value in userData?.resources" :key="value"
+              >{{ value.header }}
+              <input :value="value.header" type="checkbox" v-model="newPlanResources" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+          <MyButton btn-style="save" @click="savePlan" />
+        </div>
+        <UserPlan
+          v-for="(plan, index) in userData?.plans"
+          :key="plan.header"
+          :db="db"
+          :auth="auth.auth"
+          :user-data="userData"
+          :header="plan.header"
+          :importance="plan.importance"
+          :plan-index="index"
+          :urgency="plan.urgency"
+          :values="plan.values"
+          :start-date="plan.startDate"
+          :goals="plan.goals"
+          :obstacles="plan.obstacles"
+          :resources="plan.resources"
+          :time="plan.time"
+          :success="plan.success"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -481,30 +559,34 @@ const containsObject = (obj, list) => {
 <style scoped>
 .wrapper {
   position: relative;
-  padding: 1em;
   margin-left: auto;
   margin-right: auto;
 }
 .popUp {
   position: absolute;
-  top: 3em;
-  max-width: 25m;
+  top: 4em;
+  max-width: 25em;
   text-align: start;
 }
 .block {
   position: relative;
-  max-width: 25em;
+  padding: 1em;
+  padding-top: 0em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .block h2 {
-  margin-left: 3em;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  text-align: center;
 }
 .innerBlock {
   position: relative;
   padding: 1em;
   padding-bottom: 3em;
   margin-bottom: 1em;
+}
+.grayBg {
+  background-color: #10101005;
 }
 .checkboxDiv {
   margin-top: 1em;
@@ -606,5 +688,20 @@ input[type='number']::-webkit-inner-spin-button {
   top: 0;
   right: 0;
   height: 100%;
+}
+.profileGrid {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+@media (min-width: 768px) {
+  .profileGrid {
+    grid-template-columns: 49% 49%;
+  }
+}
+@media (min-width: 1024px) {
+  .profileGrid {
+    grid-template-columns: 32% 32% 32%;
+  }
 }
 </style>

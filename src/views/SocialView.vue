@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="satisfactionDiv">
+    <div class="satisfactionDiv" v-show="!editSocial">
       <h1>Социум!</h1>
       <div class="block">
         <p>Семья</p>
@@ -26,9 +26,8 @@
           :edit-enabled="false"
         />
       </div>
-      <MyButton btn-style="edit" @click="editSocial = !editSocial" />
     </div>
-
+    <MyButton btn-style="edit" @click="editSocial = !editSocial" />
     <div class="satisfactionDiv" v-if="editSocial">
       <h1>Социум!</h1>
       <div class="block">
@@ -194,11 +193,12 @@ p {
 .wrapper {
   padding: 1em;
   position: relative;
-  max-width: 25em;
   padding-bottom: 3em;
+  max-width: 25em;
 }
 .satisfactionDiv {
   position: relative;
   padding-bottom: 3em;
+  max-width: 25em;
 }
 </style>

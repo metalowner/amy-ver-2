@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <div class="satisfactionDiv">
-      <h1>Финансы!</h1>
+    <h1>Финансы!</h1>
+    <div class="satisfactionDiv" v-show="!editFinances">
       <p>Доход</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.income" />
       <p>Коллектив</p>
@@ -20,7 +20,6 @@
       />
       <p>График</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.schedule" />
-      <MyButton btn-style="edit" @click="editFinances = !editFinances" />
     </div>
     <div class="satisfactionDiv" v-if="editFinances">
       <p>Доход</p>
@@ -60,6 +59,7 @@
       />
       <MyButton btn-style="save" @click="saveFinances" />
     </div>
+    <MyButton btn-style="edit" @click="editFinances = !editFinances" />
     <TimeCalc
       :time="userData?.finances?.time?.work"
       label="Работа"
@@ -149,7 +149,7 @@ const saveFinances = async () => {
 <style scoped>
 .wrapper {
   padding: 1em;
-
+  padding-bottom: 3em;
   position: relative;
 }
 .satisfactionDiv {

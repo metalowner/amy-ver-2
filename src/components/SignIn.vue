@@ -86,8 +86,8 @@ const register = () => {
       // Signed up
       const user = userCredential.user
       registerActive.value = false
-      const today = new Date()
-      const todayDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+      const today = moment().format('YYYY-MM-DD')
+      const todayDate = today
       // ...
       await setDoc(doc(db, 'users', user.uid), {
         lifeStory: 'Ваша история...',

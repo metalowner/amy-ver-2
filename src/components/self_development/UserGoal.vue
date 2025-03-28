@@ -1,36 +1,65 @@
 <template>
   <div class="goalWrapper">
-    <h3>{{ header }}</h3>
-    <p class="goalDescription">{{ description }}</p>
-    <h4 class="infoHeader">
-      Сферы жизни <MyButton btn-style="arrowDown" @click="displayLifeFields = !displayLifeFields" />
-    </h4>
-    <div v-if="displayLifeFields" class="infoBlock">
-      <p v-for="(lifeField, index) in lifeFields" :key="lifeField">
-        {{ index + 1 }}. {{ lifeField }}
-      </p>
-    </div>
-    <h4 class="infoHeader">
-      Ценности <MyButton btn-style="arrowDown" @click="displayValues = !displayValues" />
-    </h4>
-    <div v-if="displayValues" class="infoBlock">
-      <p v-for="(value, index) in values" :key="value">{{ index + 1 }}. {{ value }}</p>
-    </div>
-    <h4 class="infoHeader">
-      Приоритетность
-      <MyButton btn-style="arrowDown" @click="displayPriorities = !displayPriorities" />
-    </h4>
-    <div v-if="displayPriorities" class="infoBlock">
-      <p>Важность: {{ importance }}</p>
-      <p>Срочность: {{ urgency }}</p>
-    </div>
+    <div v-show="!editGoal">
+      <h3>{{ header }}</h3>
+      <p class="goalDescription">{{ description }}</p>
+      <MyButton
+        btn-style="arrowUp"
+        @click="displayGoalInfo = !displayGoalInfo"
+        v-show="displayGoalInfo"
+      />
+      <MyButton
+        btn-style="arrowDown"
+        @click="displayGoalInfo = !displayGoalInfo"
+        v-show="!displayGoalInfo"
+      />
+      <div class="goalInfo" v-show="displayGoalInfo">
+        <h4 class="infoHeader">Сферы жизни</h4>
+        <div class="infoBlock">
+          <p v-for="lifeField in lifeFields" :key="lifeField">
+            {{ lifeField }}
+          </p>
+        </div>
+        <h4 class="infoHeader">Ценности</h4>
+        <div class="infoBlock">
+          <p v-for="value in values" :key="value">{{ value }}</p>
+        </div>
+        <h4 class="infoHeader">Приоритетность</h4>
+        <div class="infoBlock">
+          <p>Важность: {{ importance }}</p>
+          <p>Срочность: {{ urgency }}</p>
+        </div>
+      </div>
 
+      <MyButton btn-style="complete" @click="achieveGoal" />
+    </div>
     <MyButton btn-style="edit" @click="editGoalDetails" />
-    <MyButton btn-style="delete" @click="deleteGoal" />
-    <MyButton btn-style="standard" btn-text="Достичь" @click="achieveGoal" />
     <div class="editData" v-if="editGoal">
       <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
+      <h4>Сферы жизни</h4>
+      <div class="checkboxDiv">
+        <label class="container"
+          >Здоровье
+          <input value="Здоровье" type="checkbox" v-model="newLifeFields" />
+          <span class="checkmark"></span>
+        </label>
+        <label class="container"
+          >Социум
+          <input value="Социум" type="checkbox" v-model="newLifeFields" />
+          <span class="checkmark"></span>
+        </label>
+        <label class="container"
+          >Финансы
+          <input value="Финансы" type="checkbox" v-model="newLifeFields" />
+          <span class="checkmark"></span>
+        </label>
+        <label class="container"
+          >Увлечения
+          <input value="Увлечения" type="checkbox" v-model="newLifeFields" />
+          <span class="checkmark"></span>
+        </label>
+      </div>
       <div class="counterDiv">
         <p>
           <MyCounter
@@ -58,6 +87,7 @@
         </label>
       </div>
       <MyButton btn-style="save" @click="saveGoal" />
+      <MyButton btn-style="delete" @click="deleteGoal" />
     </div>
   </div>
 </template>
@@ -112,8 +142,18 @@ const props = defineProps({
   },
 })
 // expose props
-const { db, auth, userData, header, description, importance, urgency, values, goalIndex } =
-  toRefs(props)
+const {
+  db,
+  auth,
+  userData,
+  header,
+  description,
+  importance,
+  urgency,
+  values,
+  goalIndex,
+  lifeFields,
+} = toRefs(props)
 // declate variables
 const editGoal = ref(false)
 const newGoalHeader = ref('')
@@ -121,9 +161,8 @@ const newGoalDescription = ref('')
 const newGoalUrgency = ref(Number)
 const newGoalImportance = ref(Number)
 const newGoalValues = ref([])
-const displayValues = ref(false)
-const displayLifeFields = ref(false)
-const displayPriorities = ref(false)
+const newLifeFields = ref([])
+const displayGoalInfo = ref(false)
 // define methods
 // delete function
 const deleteGoal = async () => {
@@ -148,6 +187,7 @@ const saveGoal = async () => {
   resourceRef.urgency = parseInt(newGoalUrgency.value.editableValue)
   resourceRef.importance = parseInt(newGoalImportance.value.editableValue)
   resourceRef.values = newGoalValues.value
+  resourceRef.lifeFields = newLifeFields.value
   try {
     await updateDoc(userRef, {
       goals: userData.value.goals,
@@ -165,6 +205,7 @@ const editGoalDetails = () => {
   newGoalUrgency.value = urgency.value
   newGoalImportance.value = importance.value
   newGoalValues.value = values.value
+  newLifeFields.value = lifeFields.value
 }
 
 const achieveGoal = async () => {
@@ -187,16 +228,18 @@ const achieveGoal = async () => {
 </script>
 
 <style scoped>
-h3 {
-  border-bottom: 1px solid #10101044;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
+h4 {
+  text-align: center;
+  background: #00bbbbff;
+  margin-top: 1em;
+  color: #fafaf2ff;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
 }
 
-h4 {
-  border-bottom: 1px solid #10101022;
-  padding-bottom: 1em;
-  padding-top: 1em;
+p {
+  text-align: center;
+  opacity: 0.8;
 }
 .goalWrapper {
   padding: 1em;
@@ -206,9 +249,8 @@ h4 {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
-  padding-right: 3em;
   padding-bottom: 3em;
-  max-width: 25em;
+  width: 100%;
 }
 .goalDescription {
   margin-bottom: 1em;
@@ -216,17 +258,14 @@ h4 {
 .editData {
   position: relative;
   padding-bottom: 3em;
-  border-top: 1px solid #10101011;
   margin-top: 1em;
   padding-top: 1em;
-  border-bottom: 1px solid #10101011;
 }
-.infoBlock {
-  display: grid;
-  grid-template-columns: auto auto;
-  padding: 1em;
-}
+
 .infoHeader {
   position: relative;
+}
+.goalInfo {
+  margin-top: 3.5em;
 }
 </style>

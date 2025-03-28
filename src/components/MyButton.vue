@@ -44,6 +44,7 @@ defineProps({
   position: absolute;
   top: 1em;
   right: 1em;
+  z-index: 1;
 }
 .save {
   background-image: url(../assets/save.svg);
@@ -83,11 +84,11 @@ defineProps({
   background-image: url(../assets/add.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 2.7em;
-  width: 2.7em;
+  height: 1.8em;
+  width: 1.8em;
   position: absolute;
   top: 0em;
-  left: 1em;
+  left: -2.5em;
 }
 .back {
   background-image: url(../assets/back.svg);
@@ -105,11 +106,26 @@ defineProps({
   background-image: url(../assets/arrowDown.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 1.5em;
-  width: 1.5em;
+  height: 2em;
+  width: 2em;
   position: absolute;
-  right: 0px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   opacity: 0.7;
+}
+.arrowUp {
+  background-image: url(../assets/arrowDown.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 2em;
+  width: 2em;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  opacity: 0.7;
+  transform: rotate(180deg);
 }
 .info {
   background-image: url(../assets/info.svg);
@@ -120,7 +136,19 @@ defineProps({
   border: 1px solid #101010ff;
   border-radius: 5px;
   position: absolute;
-  right: 0em;
+  right: -2em;
   top: 0.4em;
+}
+.complete {
+  background-image: url(../assets/complete.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  height: 1.5em;
+  width: 1.5em;
+  border: 1px solid #101010ff;
+  border-radius: 5px;
 }
 </style>

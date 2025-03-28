@@ -1,23 +1,22 @@
 <template>
-  <div class="valueCard">
-    <h3>{{ header }}</h3>
-    <p>{{ description }}</p>
-    <p>Важность: {{ importance }}</p>
+  <div class="card">
+    <div v-show="!valueEdit">
+      <h3>{{ header }}</h3>
+      <p>{{ description }}</p>
+      <p>Важность: {{ importance }}</p>
+
+      <MyButton v-if="property == 'obstacles'" btn-style="complete" @click="resolveObstacle" />
+    </div>
+
     <MyButton v-if="!valueEdit" btn-style="edit" @click="editValueDetails" />
     <MyButton v-if="valueEdit" btn-style="cancelTop" @click="valueEdit = !valueEdit" />
-    <MyButton btn-style="delete" @click="deleteValue" />
-    <MyButton
-      v-if="property == 'obstacles'"
-      btn-style="standard"
-      btn-text="Справиться"
-      @click="resolveObstacle"
-    />
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
       <MyCounter :max-value="10" label="Важность" :input-value="importance" ref="newImportance" />
       <MyButton btn-style="save" @click="saveValue" />
       <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
+      <MyButton btn-style="delete" @click="deleteValue" />
     </div>
   </div>
 </template>
@@ -129,7 +128,7 @@ const resolveObstacle = async () => {
 </script>
 
 <style scoped>
-.valueCard {
+.card {
   padding: 1em;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -137,19 +136,26 @@ const resolveObstacle = async () => {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
-  padding-right: 3em;
-  max-width: 25em;
+  width: 100%;
 }
 
 h3 {
-  border-bottom: 1px solid #10101044;
+  border-bottom: 1px solid #00bbbbff;
   padding-bottom: 3px;
   margin-bottom: 3px;
+  margin-right: 3em;
+  margin-left: 3em;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+p {
+  text-align: center;
+  opacity: 0.8;
 }
 
 .editDiv {
   padding-bottom: 3em;
-  border-top: 1px solid #10101011;
   margin-top: 1em;
   padding-top: 1em;
 }

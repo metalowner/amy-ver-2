@@ -1,73 +1,80 @@
 <template>
   <div class="wrapper">
-    <div class="infoContainer">
-      <h2>
-        {{ userData?.username }}
-      </h2>
-      <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
-      <MyButton
-        v-if="editPersonalInfo"
-        btn-style="cancelTop"
-        @click="editPersonalInfo = !editPersonalInfo"
-      />
-      <div class="infoData">
-        <div class="userImg"></div>
-        <div>
-          <div class="infoBlock">
-            <div class="icon birthday"></div>
-            <p>{{ userData?.dateOfBirth }}</p>
-          </div>
-          <div class="infoBlock">
-            <div class="icon" :class="userData?.gender"></div>
-            <p>{{ userData?.relationshipStatus }}</p>
-          </div>
-          <div class="infoBlock">
-            <div class="icon profession"></div>
-            <p>{{ userData?.profession }}</p>
-          </div>
-          <div class="infoBlock">
-            <div class="icon location"></div>
-            <p>{{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}</p>
+    <div class="headerGrid">
+      <div class="infoContainer">
+        <h2>
+          {{ userData?.username }}
+        </h2>
+        <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
+        <MyButton
+          v-if="editPersonalInfo"
+          btn-style="cancelTop"
+          @click="editPersonalInfo = !editPersonalInfo"
+        />
+        <div class="infoData">
+          <div class="userImg"></div>
+          <div>
+            <div class="infoBlock">
+              <div class="icon birthday"></div>
+              <p>{{ userData?.dateOfBirth }}</p>
+            </div>
+            <div class="infoBlock">
+              <div class="icon" :class="userData?.gender"></div>
+              <p>{{ userData?.relationshipStatus }}</p>
+            </div>
+            <div class="infoBlock">
+              <div class="icon profession"></div>
+              <p>{{ userData?.profession }}</p>
+            </div>
+            <div class="infoBlock">
+              <div class="icon location"></div>
+              <p>{{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}</p>
+            </div>
           </div>
         </div>
+
+        <div class="editInfoDiv" v-if="editPersonalInfo">
+          <p>Имя: <input type="text" placeholder="Имя" v-model="username" /></p>
+          <p>
+            Дата рождения: <input type="date" placeholder="Дата рождения" v-model="birthDate" />
+          </p>
+          <p>
+            Пол:
+            <select v-model="gender">
+              <option disabled value="">Выберите один</option>
+              <option value="male">Мужчина</option>
+              <option value="female">Женщина</option>
+              <option value="bigender">Бигендер</option>
+              <option value="androgyne">Андрогин</option>
+              <option value="neutrois">Агендер</option>
+              <option value="genderless">Бесгендер</option>
+              <option value="intergender">Интергендер</option>
+              <option value="demiboy">Демибой</option>
+              <option value="demigirl">Демигирл</option>
+              <option value="third_gender">Третий гендер</option>
+              <option value="non_binary">Недвоичный</option>
+              <option value="poligender">Полигендер</option>
+            </select>
+          </p>
+          <p>
+            Отношения:
+            <select v-model="relationship">
+              <option disabled value="">Выберите один</option>
+              <option>Женат \ Замужем</option>
+              <option>В отношениях</option>
+              <option>Не в отношениях</option>
+            </select>
+          </p>
+          <p>Профессия: <input type="text" placeholder="" v-model="profession" /></p>
+          <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
+          <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
+          <p class="lastStroke">Город: <input type="text" placeholder="Город" v-model="city" /></p>
+          <MyButton btn-style="save" @click="savePersonalInformation" />
+          <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
+        </div>
       </div>
-      <div class="editInfoDiv" v-if="editPersonalInfo">
-        <p>Имя: <input type="text" placeholder="Имя" v-model="username" /></p>
-        <p>Дата рождения: <input type="date" placeholder="Дата рождения" v-model="birthDate" /></p>
-        <p>
-          Пол:
-          <select v-model="gender">
-            <option disabled value="">Выберите один</option>
-            <option value="male">Мужчина</option>
-            <option value="female">Женщина</option>
-            <option value="bigender">Бигендер</option>
-            <option value="androgyne">Андрогин</option>
-            <option value="neutrois">Агендер</option>
-            <option value="genderless">Бесгендер</option>
-            <option value="intergender">Интергендер</option>
-            <option value="demiboy">Демибой</option>
-            <option value="demigirl">Демигирл</option>
-            <option value="third_gender">Третий гендер</option>
-            <option value="non_binary">Недвоичный</option>
-            <option value="poligender">Полигендер</option>
-          </select>
-        </p>
-        <p>
-          Отношения:
-          <select v-model="relationship">
-            <option disabled value="">Выберите один</option>
-            <option>Женат \ Замужем</option>
-            <option>В отношениях</option>
-            <option>Не в отношениях</option>
-          </select>
-        </p>
-        <p>Профессия: <input type="text" placeholder="" v-model="profession" /></p>
-        <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
-        <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
-        <p class="lastStroke">Город: <input type="text" placeholder="Город" v-model="city" /></p>
-        <MyButton btn-style="save" @click="savePersonalInformation" />
-        <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
-      </div>
+
+      <UserStats :user-data="userData" />
     </div>
 
     <div class="block">
@@ -142,6 +149,7 @@ import MyButton from './MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import UserAchievements from './self_development/UserAchievements.vue'
 import LifeField from './self_development/LifeField.vue'
+import UserStats from './self_development/UserStats.vue'
 // define props
 const props = defineProps({
   db: {
@@ -225,7 +233,6 @@ h3 {
 }
 .infoContainer {
   position: relative;
-  padding-top: 0.5em;
 }
 
 .infoContainer h2 {
@@ -251,6 +258,7 @@ h3 {
 }
 .wrapper {
   position: relative;
+  padding: 0em 1em;
 }
 .editInfoDiv {
   padding-bottom: 2em;
@@ -268,11 +276,17 @@ h3 {
   width: 8em;
   height: 8em;
   margin-right: 1em;
+  margin-bottom: auto;
+  margin-top: 0.5em;
 }
 .infoBlock {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 0.5em;
   justify-content: start;
   align-items: center;
+  border: none;
+  padding: 0px;
 }
 .achievements {
   display: grid;
@@ -282,10 +296,17 @@ h3 {
   height: 1.5em;
   width: 1.5em;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   margin: 0.5em;
 }
-
+.lifeFieldsDiv {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 1em;
+}
+.headerGrid {
+  padding-top: 0.5em;
+}
 .lastStroke {
   margin-bottom: 1em;
 }
@@ -334,11 +355,18 @@ h3 {
 .poligender {
   background-image: url(../assets/poligender.svg);
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .lifeFieldsDiv {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+}
+@media (min-width: 1024px) {
+  .headerGrid {
+    display: grid;
+    grid-template-columns: 40% 50%;
+    column-gap: 5%;
   }
 }
 </style>

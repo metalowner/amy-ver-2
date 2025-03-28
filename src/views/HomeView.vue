@@ -3,7 +3,7 @@
     <div class="attention">
       <div class="logo"></div>
       <h1>А.И. План</h1>
-      <h3>Ваш помощник-планировщик</h3>
+      <p>Ваш помощник-планировщик</p>
     </div>
     <div class="interest">
       <h2>Суть</h2>
@@ -27,7 +27,6 @@
     </div>
     <div class="action">
       <h2>Попробуйте</h2>
-      <h3>Наши путеводители</h3>
       <div class="actionGrid">
         <div class="gridBlock">
           <div>
@@ -83,7 +82,6 @@ p {
   margin-bottom: 1em;
   text-align: justify;
 }
-
 .blackLink {
   color: #101010ff;
   box-shadow:

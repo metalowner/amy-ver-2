@@ -1,57 +1,65 @@
 <template>
   <div class="planWrapper">
-    <h3>{{ header }}</h3>
-    <TimeCalc label="Повторяемость" :time="time" field="planDisplay" />
-    <p>Дата начала: {{ startDate }}</p>
-    <h4 class="infoHeader">
-      Приоритетность
-      <MyButton btn-style="arrowDown" @click="displayPriorities = !displayPriorities" />
-    </h4>
-    <div v-if="displayPriorities" class="infoBlock">
-      <p>Важность: {{ importance }}</p>
-      <p>Срочность: {{ urgency }}</p>
-    </div>
-    <h4 class="infoHeader">
-      Успешность <MyButton btn-style="arrowDown" @click="displaySuccess = !displaySuccess" />
-    </h4>
-    <div v-if="displaySuccess" class="infoBlock">
-      <p>Действий</p>
-      <MyRange :edit-enabled="false" :input-value="success.processSuccess" />
-      <p>Результатов</p>
-      <MyRange :edit-enabled="false" :input-value="success.resultsSuccess" />
-    </div>
+    <div v-show="!editPlan">
+      <h3>{{ header }}</h3>
+      <div class="subHeaderDiv">
+        <p>Начало: {{ startDate }}</p>
+        <TimeCalc :time="time" field="planDisplay" />
+      </div>
 
-    <h4 class="infoHeader">
-      Цели <MyButton btn-style="arrowDown" @click="displayGoals = !displayGoals" />
-    </h4>
-    <div v-if="displayGoals" class="infoBlock">
-      <p v-for="(goal, index) in goals" :key="goal">{{ index + 1 }}. {{ goal }}</p>
-    </div>
+      <MyButton
+        btn-style="arrowUp"
+        @click="displayPlanInfo = !displayPlanInfo"
+        v-show="displayPlanInfo"
+      />
+      <MyButton
+        btn-style="arrowDown"
+        @click="displayPlanInfo = !displayPlanInfo"
+        v-show="!displayPlanInfo"
+      />
+      <div class="planInfo" v-show="displayPlanInfo">
+        <h4 class="infoHeader">Приоритетность</h4>
+        <div class="infoBlock">
+          <p>Важность: {{ importance }}</p>
+          <p>Срочность: {{ urgency }}</p>
+        </div>
+        <h4 class="infoHeader">Успешность</h4>
+        <div class="infoBlock">
+          <p>Действий</p>
+          <MyRange :edit-enabled="false" :input-value="success?.processSuccess" />
+          <p>Результатов</p>
+          <MyRange :edit-enabled="false" :input-value="success?.resultsSuccess" />
+        </div>
 
-    <h4 class="infoHeader">
-      Ценности <MyButton btn-style="arrowDown" @click="displayValues = !displayValues" />
-    </h4>
-    <div v-if="displayValues" class="infoBlock">
-      <p v-for="(value, index) in values" :key="value">{{ index + 1 }}. {{ value }}</p>
-    </div>
+        <h4 class="infoHeader">Цели</h4>
+        <div class="infoBlock">
+          <p v-for="goal in goals" :key="goal">{{ goal }}</p>
+        </div>
 
-    <h4 class="infoHeader">
-      Препятствия <MyButton btn-style="arrowDown" @click="displayObstacles = !displayObstacles" />
-    </h4>
-    <div v-if="displayObstacles" class="infoBlock">
-      <p v-for="(obstacle, index) in obstacles" :key="obstacle">{{ index + 1 }}. {{ obstacle }}</p>
-    </div>
+        <h4 class="infoHeader">Ценности</h4>
+        <div class="infoBlock">
+          <p v-for="value in values" :key="value">{{ value }}</p>
+        </div>
 
-    <h4 class="infoHeader">
-      Ресурсы <MyButton btn-style="arrowDown" @click="displayResources = !displayResources" />
-    </h4>
-    <div v-if="displayResources" class="infoBlock">
-      <p v-for="(resource, index) in resources" :key="resource">{{ index + 1 }}. {{ resource }}</p>
+        <h4 class="infoHeader">Препятствия</h4>
+        <div class="infoBlock">
+          <p v-for="obstacle in obstacles" :key="obstacle">
+            {{ obstacle }}
+          </p>
+        </div>
+
+        <h4 class="infoHeader">Ресурсы</h4>
+        <div class="infoBlock">
+          <p v-for="resource in resources" :key="resource">
+            {{ resource }}
+          </p>
+        </div>
+      </div>
+
+      <MyButton btn-style="complete" @click="completePlan" />
     </div>
-    <MyButton btn-style="standard" btn-text="Завершить" @click="completePlan" />
 
     <MyButton btn-style="edit" @click="editPlanDetails" />
-    <MyButton btn-style="delete" @click="deletePlan" />
     <div class="editData" v-if="editPlan">
       <p><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></p>
       <TimeCalc
@@ -116,6 +124,7 @@
       </div>
 
       <MyButton btn-style="save" @click="savePlan" />
+      <MyButton btn-style="delete" @click="deletePlan" />
     </div>
   </div>
 </template>
@@ -212,13 +221,8 @@ const newPlanGoals = ref([])
 const newPlanValues = ref([])
 const newPlanObstacles = ref([])
 const newPlanResources = ref([])
-const displayPriorities = ref(false)
-const displaySuccess = ref(false)
-const displayGoals = ref(false)
-const displayValues = ref(false)
-const displayObstacles = ref(false)
-const displayResources = ref(false)
 const newPlanTime = ref({})
+const displayPlanInfo = ref(false)
 // methods
 // edit goal
 const editPlanDetails = () => {
@@ -264,10 +268,24 @@ const savePlan = async () => {
 const deletePlan = async () => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db.value, 'users', userUid)
+  const resourceRef = userData.value.plans[planIndex.value]
+  if (resourceRef.time.repetition == 'daily') {
+    const totalTime = userData.value.health.time.total
+    totalTime.hours -= resourceRef.time.hours
+    totalTime.minutes -= resourceRef.time.minutes
+    if (userData.value.health.time.total.minutes > 60) {
+      userData.value.health.time.total.hours += 1
+      userData.value.health.time.total.minutes -= 60
+    } else if (userData.value.health.time.total.minutes < 0) {
+      userData.value.health.time.total.hours -= 1
+      userData.value.health.time.total.minutes += 60
+    }
+  }
   userData.value.plans.splice(planIndex.value, 1)
   try {
     await updateDoc(userRef, {
       plans: userData.value.plans,
+      health: userData.value.health,
     })
   } catch (err) {
     console.log('Error adding documents', err)
@@ -293,16 +311,17 @@ const completePlan = async () => {
 </script>
 
 <style scoped>
-h3 {
-  border-bottom: 1px solid #10101044;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
-}
-
 h4 {
-  border-bottom: 1px solid #10101022;
-  padding-bottom: 1em;
-  padding-top: 1em;
+  text-align: center;
+  background: #00bbbbff;
+  margin-top: 1em;
+  color: #fafaf2ff;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+p {
+  text-align: center;
+  opacity: 0.8;
 }
 .planWrapper {
   padding: 1em;
@@ -312,24 +331,24 @@ h4 {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
-  padding-right: 3em;
   padding-bottom: 3em;
-  max-width: 25em;
+  width: 100%;
 }
 .editData {
   position: relative;
   padding-bottom: 3em;
-  border-top: 1px solid #10101011;
   margin-top: 1em;
   padding-top: 1em;
-  border-bottom: 1px solid #10101011;
-}
-.infoBlock {
-  display: grid;
-  grid-template-columns: auto auto;
-  padding: 1em;
 }
 .infoHeader {
   position: relative;
+}
+.planInfo {
+  margin-top: 3em;
+}
+.subHeaderDiv {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin-bottom: 1em;
 }
 </style>

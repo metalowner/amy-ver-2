@@ -8,6 +8,14 @@
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.hobbies?.freeTime" />
 
       <MyButton btn-style="edit" @click="editHobbies = !editHobbies" />
+      <TimeCalc
+        :time="userData?.hobbies?.time?.funTime"
+        label="Занятия увлечением"
+        :total="userData?.health?.time?.total"
+        :auth="auth.auth"
+        :user-data="userData"
+        field="hobbies"
+      />
     </div>
     <div class="satisfactionDiv" v-if="editHobbies">
       <h1>Увлечения!</h1>
@@ -27,14 +35,7 @@
       />
       <MyButton btn-style="save" @click="saveHobbies" />
     </div>
-    <TimeCalc
-      :time="userData?.hobbies?.time?.funTime"
-      label="Занятия увлечением"
-      :total="userData?.health?.time?.total"
-      :auth="auth.auth"
-      :user-data="userData"
-      field="hobbies"
-    />
+
     <MyButton btn-style="back" @click="router.push('profile')" />
   </div>
 </template>
@@ -93,7 +94,7 @@ const saveHobbies = async () => {
 <style scoped>
 .wrapper {
   padding: 1em;
-
+  padding-bottom: 3em;
   position: relative;
 }
 .satisfactionDiv {
