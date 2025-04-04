@@ -2,7 +2,7 @@
   <div class="goalWrapper">
     <div v-show="!editGoal">
       <h3>{{ header }}</h3>
-      <p class="goalDescription">{{ description }}</p>
+
       <MyButton
         btn-style="arrowUp"
         @click="displayGoalInfo = !displayGoalInfo"
@@ -14,6 +14,7 @@
         v-show="!displayGoalInfo"
       />
       <div class="goalInfo" v-show="displayGoalInfo">
+        <p class="goalDescription">{{ description }}</p>
         <h4 class="infoHeader">Сферы жизни</h4>
         <div class="infoBlock">
           <p v-for="lifeField in lifeFields" :key="lifeField">
@@ -30,8 +31,6 @@
           <p>Срочность: {{ urgency }}</p>
         </div>
       </div>
-
-      <MyButton btn-style="complete" @click="achieveGoal" />
     </div>
     <MyButton btn-style="edit" @click="editGoalDetails" />
     <div class="editData" v-if="editGoal">
@@ -88,6 +87,8 @@
       </div>
       <MyButton btn-style="save" @click="saveGoal" />
       <MyButton btn-style="delete" @click="deleteGoal" />
+      <MyButton btn-style="complete" @click="achieveGoal" />
+      <MyButton btn-style="cancelBottom" @click="editGoal = !editGoal" />
     </div>
   </div>
 </template>
@@ -249,7 +250,6 @@ p {
   border-radius: 5px;
   margin-bottom: 1em;
   position: relative;
-  padding-bottom: 3em;
   width: 100%;
 }
 .goalDescription {
@@ -266,6 +266,6 @@ p {
   position: relative;
 }
 .goalInfo {
-  margin-top: 3.5em;
+  margin-top: 2em;
 }
 </style>

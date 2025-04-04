@@ -308,9 +308,21 @@ onAuthStateChanged(auth, async (user) => {
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
       userData.value = docSnap.data()
+      if (userData.value.values.length > 0) {
+        sortArray(userData.value.values)
+      }
+      if (userData.value.obstacles.length > 0) {
+        sortArray(userData.value.obstacles)
+      }
+      if (userData.value.resources.length > 0) {
+        sortArray(userData.value.resources)
+      }
+      if (userData.value.goals.length > 0) {
+        sortArray(userData.value.goals)
+      }
       if (userData.value.plans.length > 0) {
         const plans = userData.value.plans
-
+        sortArray(plans)
         for (let i = 0; i < plans.length; i++) {
           const element = plans[i]
           const newDaysPassed = parseInt(parseTime(element.startDate))
@@ -380,6 +392,10 @@ const saveProgress = async () => {
   } catch (err) {
     console.log('Error adding documents', err)
   }
+}
+// sort array according to importance
+const sortArray = (array) => {
+  array.sort((a, b) => b.importance - a.importance)
 }
 defineExpose({
   auth,

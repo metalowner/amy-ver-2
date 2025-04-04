@@ -2,14 +2,23 @@
   <div class="card">
     <div v-show="!valueEdit">
       <h3>{{ header }}</h3>
-      <p>{{ description }}</p>
-      <p>Важность: {{ importance }}</p>
-
-      <MyButton v-if="property == 'obstacles'" btn-style="complete" @click="resolveObstacle" />
+      <MyButton
+        btn-style="arrowUp"
+        @click="displayValueInfo = !displayValueInfo"
+        v-show="displayValueInfo"
+      />
+      <MyButton
+        btn-style="arrowDown"
+        @click="displayValueInfo = !displayValueInfo"
+        v-show="!displayValueInfo"
+      />
+      <div class="valueInfo" v-show="displayValueInfo">
+        <p>{{ description }}</p>
+        <p>Важность: {{ importance }}</p>
+      </div>
     </div>
 
-    <MyButton v-if="!valueEdit" btn-style="edit" @click="editValueDetails" />
-    <MyButton v-if="valueEdit" btn-style="cancelTop" @click="valueEdit = !valueEdit" />
+    <MyButton btn-style="edit" @click="editValueDetails" />
     <div class="editDiv" v-if="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
@@ -17,6 +26,7 @@
       <MyButton btn-style="save" @click="saveValue" />
       <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
       <MyButton btn-style="delete" @click="deleteValue" />
+      <MyButton v-if="property == 'obstacles'" btn-style="complete" @click="resolveObstacle" />
     </div>
   </div>
 </template>
@@ -67,6 +77,7 @@ const valueEdit = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
 const newImportance = ref(Number)
+const displayValueInfo = ref(false)
 // define access to passed props
 const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
 // edit function
@@ -137,16 +148,6 @@ const resolveObstacle = async () => {
   margin-bottom: 1em;
   position: relative;
   width: 100%;
-}
-
-h3 {
-  border-bottom: 1px solid #00bbbbff;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
-  margin-right: 3em;
-  margin-left: 3em;
-  text-align: center;
-  font-size: 1.3em;
 }
 
 p {

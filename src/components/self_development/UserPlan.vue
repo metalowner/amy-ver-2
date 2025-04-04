@@ -2,10 +2,6 @@
   <div class="planWrapper">
     <div v-show="!editPlan">
       <h3>{{ header }}</h3>
-      <div class="subHeaderDiv">
-        <p>Начало: {{ startDate }}</p>
-        <TimeCalc :time="time" field="planDisplay" />
-      </div>
 
       <MyButton
         btn-style="arrowUp"
@@ -18,6 +14,10 @@
         v-show="!displayPlanInfo"
       />
       <div class="planInfo" v-show="displayPlanInfo">
+        <div class="subHeaderDiv">
+          <p>Начало: {{ startDate }}</p>
+          <TimeCalc :time="time" field="planDisplay" />
+        </div>
         <h4 class="infoHeader">Приоритетность</h4>
         <div class="infoBlock">
           <p>Важность: {{ importance }}</p>
@@ -55,8 +55,6 @@
           </p>
         </div>
       </div>
-
-      <MyButton btn-style="complete" @click="completePlan" />
     </div>
 
     <MyButton btn-style="edit" @click="editPlanDetails" />
@@ -125,6 +123,8 @@
 
       <MyButton btn-style="save" @click="savePlan" />
       <MyButton btn-style="delete" @click="deletePlan" />
+      <MyButton btn-style="complete" @click="completePlan" />
+      <MyButton btn-style="cancelBottom" @click="editPlan = !editPlan" />
     </div>
   </div>
 </template>
@@ -344,7 +344,7 @@ p {
   position: relative;
 }
 .planInfo {
-  margin-top: 3em;
+  margin-top: 2em;
 }
 .subHeaderDiv {
   display: grid;

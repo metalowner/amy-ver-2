@@ -251,18 +251,20 @@ const containsObject = (obj, list) => {
             "
           />
         </div>
-        <UserValue
-          v-for="(value, index) in userData?.values"
-          :key="value.header"
-          :db="db"
-          :auth="auth.auth"
-          :user-data="userData"
-          :index="index"
-          :header="value.header"
-          :description="value.description"
-          :importance="value.importance"
-          property="values"
-        />
+        <div class="cardsDiv">
+          <UserValue
+            v-for="(value, index) in userData?.values"
+            :key="value.header"
+            :db="db"
+            :auth="auth.auth"
+            :user-data="userData"
+            :index="index"
+            :header="value.header"
+            :description="value.description"
+            :importance="value.importance"
+            property="values"
+          />
+        </div>
       </div>
       <div class="block grayBg">
         <h2>
@@ -310,18 +312,20 @@ const containsObject = (obj, list) => {
             "
           />
         </div>
-        <UserValue
-          v-for="(obstacle, index) in userData?.obstacles"
-          :key="obstacle.header"
-          :db="db"
-          :auth="auth.auth"
-          :user-data="userData"
-          :index="index"
-          :header="obstacle.header"
-          :description="obstacle.description"
-          :importance="obstacle.importance"
-          property="obstacles"
-        />
+        <div class="cardsDiv">
+          <UserValue
+            v-for="(obstacle, index) in userData?.obstacles"
+            :key="obstacle.header"
+            :db="db"
+            :auth="auth.auth"
+            :user-data="userData"
+            :index="index"
+            :header="obstacle.header"
+            :description="obstacle.description"
+            :importance="obstacle.importance"
+            property="obstacles"
+          />
+        </div>
       </div>
       <div class="block">
         <h2>
@@ -365,18 +369,20 @@ const containsObject = (obj, list) => {
             "
           />
         </div>
-        <UserValue
-          v-for="(resource, index) in userData?.resources"
-          :key="resource.header"
-          :db="db"
-          :auth="auth.auth"
-          :user-data="userData"
-          :index="index"
-          :header="resource.header"
-          :description="resource.description"
-          :importance="resource.importance"
-          property="resources"
-        />
+        <div class="cardsDiv">
+          <UserValue
+            v-for="(resource, index) in userData?.resources"
+            :key="resource.header"
+            :db="db"
+            :auth="auth.auth"
+            :user-data="userData"
+            :index="index"
+            :header="resource.header"
+            :description="resource.description"
+            :importance="resource.importance"
+            property="resources"
+          />
+        </div>
       </div>
       <div class="block grayBg">
         <div>
@@ -442,22 +448,24 @@ const containsObject = (obj, list) => {
           </div>
           <MyButton btn-style="save" @click="saveGoal" />
         </div>
-        <UserGoal
-          v-for="(goal, index) in userData?.goals"
-          :key="goal.header"
-          :db="db"
-          :auth="auth.auth"
-          :user-data="userData"
-          :header="goal.header"
-          :description="goal.description"
-          :importance="goal.importance"
-          :goal-index="index"
-          :measures="goal.measures"
-          :prices="goal.prices"
-          :urgency="goal.urgency"
-          :values="goal.values"
-          :life-fields="goal.lifeFields"
-        />
+        <div class="cardsDiv">
+          <UserGoal
+            v-for="(goal, index) in userData?.goals"
+            :key="goal.header"
+            :db="db"
+            :auth="auth.auth"
+            :user-data="userData"
+            :header="goal.header"
+            :description="goal.description"
+            :importance="goal.importance"
+            :goal-index="index"
+            :measures="goal.measures"
+            :prices="goal.prices"
+            :urgency="goal.urgency"
+            :values="goal.values"
+            :life-fields="goal.lifeFields"
+          />
+        </div>
       </div>
       <div class="block">
         <h2>
@@ -533,24 +541,26 @@ const containsObject = (obj, list) => {
           </div>
           <MyButton btn-style="save" @click="savePlan" />
         </div>
-        <UserPlan
-          v-for="(plan, index) in userData?.plans"
-          :key="plan.header"
-          :db="db"
-          :auth="auth.auth"
-          :user-data="userData"
-          :header="plan.header"
-          :importance="plan.importance"
-          :plan-index="index"
-          :urgency="plan.urgency"
-          :values="plan.values"
-          :start-date="plan.startDate"
-          :goals="plan.goals"
-          :obstacles="plan.obstacles"
-          :resources="plan.resources"
-          :time="plan.time"
-          :success="plan.success"
-        />
+        <div class="cardsDiv">
+          <UserPlan
+            v-for="(plan, index) in userData?.plans"
+            :key="plan.header"
+            :db="db"
+            :auth="auth.auth"
+            :user-data="userData"
+            :header="plan.header"
+            :importance="plan.importance"
+            :plan-index="index"
+            :urgency="plan.urgency"
+            :values="plan.values"
+            :start-date="plan.startDate"
+            :goals="plan.goals"
+            :obstacles="plan.obstacles"
+            :resources="plan.resources"
+            :time="plan.time"
+            :success="plan.success"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -564,9 +574,11 @@ const containsObject = (obj, list) => {
 }
 .popUp {
   position: absolute;
-  top: 4em;
+  top: 5em;
   max-width: 25em;
   text-align: start;
+  margin-inline: 0px;
+  left: 1em;
 }
 .block {
   position: relative;
@@ -574,10 +586,10 @@ const containsObject = (obj, list) => {
   padding-top: 0em;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 .block h2 {
-  text-align: center;
+  text-align: start;
+  padding-left: 3em;
 }
 .innerBlock {
   position: relative;
@@ -587,6 +599,10 @@ const containsObject = (obj, list) => {
 }
 .grayBg {
   background-color: #10101005;
+}
+.cardsDiv {
+  display: grid;
+  grid-template-columns: auto;
 }
 .checkboxDiv {
   margin-top: 1em;
@@ -695,12 +711,16 @@ input[type='number']::-webkit-inner-spin-button {
 }
 
 @media (min-width: 768px) {
-  .profileGrid {
+  .cardsDiv {
     grid-template-columns: 49% 49%;
+    column-gap: 1em;
+  }
+  .popUp {
+    left: 3em;
   }
 }
 @media (min-width: 1024px) {
-  .profileGrid {
+  .cardsDiv {
     grid-template-columns: 32% 32% 32%;
   }
 }

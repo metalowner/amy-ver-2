@@ -45,6 +45,7 @@ defineProps({
   top: 1em;
   right: 1em;
   z-index: 1;
+  opacity: 0.7;
 }
 .save {
   background-image: url(../assets/save.svg);
@@ -88,7 +89,7 @@ defineProps({
   width: 1.8em;
   position: absolute;
   top: 0em;
-  left: -2.5em;
+  left: 0em;
 }
 .back {
   background-image: url(../assets/back.svg);
@@ -106,25 +107,23 @@ defineProps({
   background-image: url(../assets/arrowDown.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 2em;
-  width: 2em;
+  height: 1.7em;
+  width: 1.7em;
   position: absolute;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  opacity: 0.7;
+  left: 1em;
+  top: 1em;
+  opacity: 0.3;
 }
 .arrowUp {
   background-image: url(../assets/arrowDown.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 2em;
-  width: 2em;
+  height: 1.7em;
+  width: 1.7em;
   position: absolute;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  opacity: 0.7;
+  left: 1em;
+  top: 1em;
+  opacity: 0.3;
   transform: rotate(180deg);
 }
 .info {
@@ -145,7 +144,9 @@ defineProps({
   background-size: contain;
   position: absolute;
   bottom: 1em;
-  left: 1em;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
   height: 1.5em;
   width: 1.5em;
   border: 1px solid #101010ff;
