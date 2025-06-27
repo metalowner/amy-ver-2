@@ -1,8 +1,19 @@
 <template>
-  <div class="planWrapper">
-    <div v-show="!editPlan">
-      <h3>{{ header }}</h3>
-
+  <div>
+    <div class="card" v-show="!editPlan">
+      <h3 @click="displayPlanInfo = !displayPlanInfo">{{ header }}</h3>
+      <div class="importanceDiv">
+        <p class="importanceLabel">Важность</p>
+        <p class="importance">{{ importance }}</p>
+      </div>
+      <div class="urgencyDiv">
+        <p class="urgencyLabel">Срочность</p>
+        <p class="urgency">{{ urgency }}</p>
+      </div>
+      <div class="subHeaderDiv description">
+        <p>Начало: {{ startDate }}</p>
+        <TimeCalc :time="time" field="planDisplay" />
+      </div>
       <MyButton
         btn-style="arrowUp"
         @click="displayPlanInfo = !displayPlanInfo"
@@ -13,21 +24,15 @@
         @click="displayPlanInfo = !displayPlanInfo"
         v-show="!displayPlanInfo"
       />
-      <div class="planInfo" v-show="displayPlanInfo">
-        <div class="subHeaderDiv">
-          <p>Начало: {{ startDate }}</p>
-          <TimeCalc :time="time" field="planDisplay" />
-        </div>
-        <h4 class="infoHeader">Приоритетность</h4>
-        <div class="infoBlock">
-          <p>Важность: {{ importance }}</p>
-          <p>Срочность: {{ urgency }}</p>
-        </div>
+      <MyButton btn-style="edit" @click="editPlanDetails" class="editBtn" />
+    </div>
+    <div>
+      <div v-show="displayPlanInfo">
         <h4 class="infoHeader">Успешность</h4>
         <div class="infoBlock">
-          <p>Действий</p>
+          <p class="description">Действий</p>
           <MyRange :edit-enabled="false" :input-value="success?.processSuccess" />
-          <p>Результатов</p>
+          <p class="description">Результатов</p>
           <MyRange :edit-enabled="false" :input-value="success?.resultsSuccess" />
         </div>
 
@@ -57,8 +62,8 @@
       </div>
     </div>
 
-    <MyButton btn-style="edit" @click="editPlanDetails" />
     <div class="editData" v-if="editPlan">
+      <MyButton btn-style="edit" @click="editPlanDetails" class="editBtn" />
       <p><input type="text" placeholder="Новый заголовок" v-model="newPlanHeader" /></p>
       <TimeCalc
         :time="time"
@@ -120,11 +125,14 @@
           <span class="checkmark"></span>
         </label>
       </div>
-
-      <MyButton btn-style="save" @click="savePlan" />
-      <MyButton btn-style="delete" @click="deletePlan" />
-      <MyButton btn-style="complete" @click="completePlan" />
-      <MyButton btn-style="cancelBottom" @click="editPlan = !editPlan" />
+      <div class="btnsDiv">
+        <MyButton btn-style="standard" btn-text="Сохранить" @click="savePlan" />
+        <MyButton btn-style="delete" btn-text="Удалить" @click="deletePlan" />
+      </div>
+      <div class="btnsDiv">
+        <MyButton btn-style="complete" btn-text="Завершить" @click="completePlan" />
+        <MyButton btn-style="cancelBottom" @click="editPlan = !editPlan" />
+      </div>
     </div>
   </div>
 </template>
@@ -226,6 +234,7 @@ const displayPlanInfo = ref(false)
 // methods
 // edit goal
 const editPlanDetails = () => {
+  displayPlanInfo.value = false
   editPlan.value = !editPlan.value
   newPlanHeader.value = header.value
   newPlanUrgency.value = urgency.value
@@ -313,42 +322,27 @@ const completePlan = async () => {
 <style scoped>
 h4 {
   text-align: center;
-  background: #00bbbbff;
-  margin-top: 1em;
-  color: #fafaf2ff;
+  background: var(--blue);
+  margin-top: 0.5em;
+  color: var(--white);
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
 }
-p {
-  text-align: center;
-  opacity: 0.8;
-}
-.planWrapper {
-  padding: 1em;
+
+.editData {
+  position: relative;
+  padding: 2em 0.5em;
+  margin-bottom: 0.5em;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   border-radius: 5px;
-  margin-bottom: 1em;
-  position: relative;
-  padding-bottom: 3em;
-  width: 100%;
-}
-.editData {
-  position: relative;
-  padding-bottom: 3em;
-  margin-top: 1em;
-  padding-top: 1em;
 }
 .infoHeader {
   position: relative;
 }
-.planInfo {
-  margin-top: 2em;
-}
 .subHeaderDiv {
   display: grid;
   grid-template-columns: auto auto;
-  margin-bottom: 1em;
 }
 </style>

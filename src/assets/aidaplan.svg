@@ -378,7 +378,7 @@
    y2="-939.59021"
    gradientTransform="matrix(-1,0,0,1,3686.0842,0)">&#10;					<stop
    offset="0"
-   style="stop-color:#e10707;stop-opacity:1;"
+   style="stop-color:#960505;stop-opacity:1;"
    id="stop100" />&#10;					<stop
    offset="1"
    style="stop-color:#f31508;stop-opacity:1;"
@@ -711,9 +711,9 @@
    inkscape:pageopacity="0.0"
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#d1d1d1"
-   inkscape:zoom="0.048506382"
-   inkscape:cx="876.17337"
-   inkscape:cy="2731.5993"
+   inkscape:zoom="0.19402553"
+   inkscape:cx="1858.0029"
+   inkscape:cy="2022.9297"
    inkscape:window-width="1366"
    inkscape:window-height="705"
    inkscape:window-x="-8"

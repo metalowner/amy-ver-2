@@ -5,6 +5,7 @@ import App from './App.vue'
 import router from './router'
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAaboroWx51bVpf2gn8X00S948wE3654MU',

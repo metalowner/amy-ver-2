@@ -68,6 +68,7 @@ import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
 import MyRange from './MyRange.vue'
 import moment from 'moment'
+import Swal from 'sweetalert2'
 
 const registerActive = ref(false)
 const loginActive = ref(false)
@@ -273,6 +274,7 @@ const register = () => {
           },
         ],
       })
+      Swal.fire({ text: 'Пользователь успешно создан!', buttonsStyling: false })
     })
     .catch((error) => {
       const errorCode = error.code
@@ -286,7 +288,7 @@ const login = () => {
     .then(() => {
       // Signed in
       loginActive.value = false
-      // ...
+      Swal.fire({ text: 'Вход прошёл успешно!', buttonsStyling: false })
     })
     .catch((error) => {
       const errorCode = error.code
@@ -348,6 +350,12 @@ onAuthStateChanged(auth, async (user) => {
           }
         }
       }
+      if ('incomes' in userData.value.finances) {
+        return
+      } else {
+        userData.value.finances.incomes = []
+        userData.value.finances.costs = []
+      }
     } else {
       // docSnap.data() will be undefined in this case
       console.log('No such document!')
@@ -403,12 +411,3 @@ defineExpose({
   userData,
 })
 </script>
-
-<style scoped>
-.navLink {
-  margin: 0px 0.5em;
-}
-.signInBtn {
-  margin-left: auto;
-}
-</style>

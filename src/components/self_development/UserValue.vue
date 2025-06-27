@@ -2,38 +2,45 @@
   <div class="card">
     <div v-show="!valueEdit">
       <h3>{{ header }}</h3>
-      <MyButton
-        btn-style="arrowUp"
-        @click="displayValueInfo = !displayValueInfo"
-        v-show="displayValueInfo"
-      />
-      <MyButton
-        btn-style="arrowDown"
-        @click="displayValueInfo = !displayValueInfo"
-        v-show="!displayValueInfo"
-      />
-      <div class="valueInfo" v-show="displayValueInfo">
+      <div class="importanceDiv">
+        <p class="importanceLabel">Важность</p>
+        <p class="importance">{{ importance }}</p>
+      </div>
+      <div class="valueInfo description">
         <p>{{ description }}</p>
-        <p>Важность: {{ importance }}</p>
       </div>
     </div>
 
-    <MyButton btn-style="edit" @click="editValueDetails" />
-    <div class="editDiv" v-if="valueEdit">
+    <MyButton btn-style="edit" @click="editValueDetails" class="editBtn" />
+    <div class="editDiv" v-show="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
-      <p><input type="text" placeholder="Новое описания" v-model="newValueDescription" /></p>
+      <textarea
+        type="text"
+        placeholder="Описания"
+        v-model="newValueDescription"
+        ref="valuesTextarea"
+        @input="adjustHeight"
+      ></textarea>
       <MyCounter :max-value="10" label="Важность" :input-value="importance" ref="newImportance" />
-      <MyButton btn-style="save" @click="saveValue" />
-      <MyButton btn-style="cancelBottom" @click="valueEdit = !valueEdit" />
-      <MyButton btn-style="delete" @click="deleteValue" />
-      <MyButton v-if="property == 'obstacles'" btn-style="complete" @click="resolveObstacle" />
+      <div class="btnsDiv">
+        <MyButton btn-style="standard" btn-text="Сохранить" @click="saveValue" />
+        <MyButton btn-style="delete" btn-text="Удалить" @click="deleteValue" />
+      </div>
+      <div class="btnsDiv">
+        <MyButton
+          v-if="property == 'obstacles'"
+          btn-style="complete"
+          btn-text="Завершить"
+          @click="resolveObstacle"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { doc, updateDoc } from 'firebase/firestore'
-import { ref, toRefs } from 'vue'
+import { nextTick, ref, toRefs, useTemplateRef } from 'vue'
 import MyButton from '../MyButton.vue'
 import MyCounter from '../MyCounter.vue'
 
@@ -77,14 +84,15 @@ const valueEdit = ref(false)
 const newValueHeader = ref('')
 const newValueDescription = ref('')
 const newImportance = ref(Number)
-const displayValueInfo = ref(false)
 // define access to passed props
 const { db, auth, userData, header, description, importance, index, property } = toRefs(props)
 // edit function
-const editValueDetails = () => {
+const editValueDetails = async () => {
   valueEdit.value = !valueEdit.value
   newValueHeader.value = header.value
   newValueDescription.value = description.value
+  await nextTick()
+  adjustHeight()
 }
 // save function
 const saveValue = async () => {
@@ -136,28 +144,17 @@ const resolveObstacle = async () => {
     console.log('Error adding documents', err)
   }
 }
+// adjust input height
+const valuesTextareaRef = useTemplateRef('valuesTextarea')
+
+const adjustHeight = () => {
+  valuesTextareaRef.value.style.height = 'auto'
+  valuesTextareaRef.value.style.height = `${valuesTextareaRef.value.scrollHeight}px`
+}
 </script>
 
 <style scoped>
-.card {
-  padding: 1em;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  border-radius: 5px;
-  margin-bottom: 1em;
-  position: relative;
-  width: 100%;
-}
-
-p {
-  text-align: center;
-  opacity: 0.8;
-}
-
 .editDiv {
-  padding-bottom: 3em;
-  margin-top: 1em;
-  padding-top: 1em;
+  padding-top: 2em;
 }
 </style>

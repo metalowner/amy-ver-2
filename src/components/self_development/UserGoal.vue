@@ -1,8 +1,20 @@
 <template>
-  <div class="goalWrapper">
-    <div v-show="!editGoal">
-      <h3>{{ header }}</h3>
-
+  <div>
+    <div class="card" v-show="!editGoal">
+      <div class="headerDiv">
+        <h3 @click="displayGoalInfo = !displayGoalInfo">{{ header }}</h3>
+        <div class="importanceDiv">
+          <p class="importanceLabel">Важность</p>
+          <p class="importance">{{ importance }}</p>
+        </div>
+        <div class="urgencyDiv">
+          <p class="urgencyLabel">Срочность</p>
+          <p class="urgency">{{ urgency }}</p>
+        </div>
+      </div>
+      <div class="description">
+        <p>{{ description }}</p>
+      </div>
       <MyButton
         btn-style="arrowUp"
         @click="displayGoalInfo = !displayGoalInfo"
@@ -13,82 +25,85 @@
         @click="displayGoalInfo = !displayGoalInfo"
         v-show="!displayGoalInfo"
       />
-      <div class="goalInfo" v-show="displayGoalInfo">
-        <p class="goalDescription">{{ description }}</p>
-        <h4 class="infoHeader">Сферы жизни</h4>
-        <div class="infoBlock">
-          <p v-for="lifeField in lifeFields" :key="lifeField">
-            {{ lifeField }}
+      <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" />
+    </div>
+    <div>
+      <div>
+        <div class="goalInfo" v-show="displayGoalInfo">
+          <h4 class="infoHeader">Сферы жизни</h4>
+          <div class="infoBlock">
+            <p v-for="lifeField in lifeFields" :key="lifeField">
+              {{ lifeField }}
+            </p>
+          </div>
+          <h4 class="infoHeader">Ценности</h4>
+          <div class="infoBlock">
+            <p v-for="value in values" :key="value">{{ value }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="editData" v-if="editGoal">
+        <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" />
+        <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
+        <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
+        <h4>Сферы жизни</h4>
+        <div class="checkboxDiv">
+          <label class="container"
+            >Здоровье
+            <input value="Здоровье" type="checkbox" v-model="newLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Социум
+            <input value="Социум" type="checkbox" v-model="newLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Финансы
+            <input value="Финансы" type="checkbox" v-model="newLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+          <label class="container"
+            >Увлечения
+            <input value="Увлечения" type="checkbox" v-model="newLifeFields" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+        <div class="counterDiv">
+          <p>
+            <MyCounter
+              label="Срочность"
+              :input-value="urgency"
+              :max-value="10"
+              ref="newGoalUrgency"
+            />
+          </p>
+          <p>
+            <MyCounter
+              label="Важность"
+              :input-value="importance"
+              :max-value="10"
+              ref="newGoalImportance"
+            />
           </p>
         </div>
-        <h4 class="infoHeader">Ценности</h4>
-        <div class="infoBlock">
-          <p v-for="value in values" :key="value">{{ value }}</p>
+        <h4>Ценности</h4>
+        <div class="checkboxDiv">
+          <label v-for="value in userData.values" :key="value.header" class="container"
+            >{{ value.header }}
+            <input :value="value.header" type="checkbox" v-model="newGoalValues" />
+            <span class="checkmark"></span>
+          </label>
         </div>
-        <h4 class="infoHeader">Приоритетность</h4>
-        <div class="infoBlock">
-          <p>Важность: {{ importance }}</p>
-          <p>Срочность: {{ urgency }}</p>
+        <div class="btnsDiv">
+          <MyButton btn-style="standard" btn-text="Сохранить" @click="saveGoal" />
+          <MyButton btn-style="delete" btn-text="Удалить" @click="deleteGoal" />
+        </div>
+        <div class="btnsDiv">
+          <MyButton btn-style="complete" btn-text="Завершить" @click="achieveGoal" />
+          <MyButton btn-style="cancelBottom" @click="editGoal = !editGoal" />
         </div>
       </div>
-    </div>
-    <MyButton btn-style="edit" @click="editGoalDetails" />
-    <div class="editData" v-if="editGoal">
-      <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
-      <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
-      <h4>Сферы жизни</h4>
-      <div class="checkboxDiv">
-        <label class="container"
-          >Здоровье
-          <input value="Здоровье" type="checkbox" v-model="newLifeFields" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Социум
-          <input value="Социум" type="checkbox" v-model="newLifeFields" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Финансы
-          <input value="Финансы" type="checkbox" v-model="newLifeFields" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Увлечения
-          <input value="Увлечения" type="checkbox" v-model="newLifeFields" />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <div class="counterDiv">
-        <p>
-          <MyCounter
-            label="Срочность"
-            :input-value="urgency"
-            :max-value="10"
-            ref="newGoalUrgency"
-          />
-        </p>
-        <p>
-          <MyCounter
-            label="Важность"
-            :input-value="importance"
-            :max-value="10"
-            ref="newGoalImportance"
-          />
-        </p>
-      </div>
-      <h4>Ценности</h4>
-      <div class="checkboxDiv">
-        <label v-for="value in userData.values" :key="value.header" class="container"
-          >{{ value.header }}
-          <input :value="value.header" type="checkbox" v-model="newGoalValues" />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-      <MyButton btn-style="save" @click="saveGoal" />
-      <MyButton btn-style="delete" @click="deleteGoal" />
-      <MyButton btn-style="complete" @click="achieveGoal" />
-      <MyButton btn-style="cancelBottom" @click="editGoal = !editGoal" />
     </div>
   </div>
 </template>
@@ -200,6 +215,7 @@ const saveGoal = async () => {
 }
 // edit goal
 const editGoalDetails = () => {
+  displayGoalInfo.value = false
   editGoal.value = !editGoal.value
   newGoalHeader.value = header.value
   newGoalDescription.value = description.value
@@ -231,41 +247,24 @@ const achieveGoal = async () => {
 <style scoped>
 h4 {
   text-align: center;
-  background: #00bbbbff;
-  margin-top: 1em;
-  color: #fafaf2ff;
+  background: var(--blue);
+  color: var(--white);
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+  margin-top: 0.5em;
 }
 
-p {
-  text-align: center;
-  opacity: 0.8;
-}
-.goalWrapper {
-  padding: 1em;
+.editData {
+  position: relative;
+  padding: 2em 0.5em;
+  margin-bottom: 0.5em;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
   border-radius: 5px;
-  margin-bottom: 1em;
-  position: relative;
-  width: 100%;
-}
-.goalDescription {
-  margin-bottom: 1em;
-}
-.editData {
-  position: relative;
-  padding-bottom: 3em;
-  margin-top: 1em;
-  padding-top: 1em;
 }
 
 .infoHeader {
   position: relative;
-}
-.goalInfo {
-  margin-top: 2em;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="lifeFieldWrapper shadow" @click="navigateRoute">
-    <h2>{{ name }}</h2>
+    <h3>{{ name }}</h3>
     <div class="iconWrapper" :class="background">
       <div class="icon" :class="fieldIcon"></div>
     </div>
@@ -44,15 +44,6 @@ const navigateRoute = () => {
 </script>
 
 <style scoped>
-h2 {
-  margin: 0em;
-  background-color: #00bbbbff;
-  color: #fafaf2ff;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  margin-bottom: 0.5em;
-  width: 100%;
-}
 .lifeFieldWrapper {
   text-align: center;
   cursor: pointer;
@@ -63,6 +54,10 @@ h2 {
   padding-bottom: 1em;
   margin-bottom: 1em;
   max-width: 15em;
+}
+.lifeFieldWrapper h3 {
+  margin-bottom: 0.5em;
+  border-bottom: none;
 }
 .stats {
   display: grid;

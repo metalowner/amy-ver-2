@@ -17,33 +17,47 @@ defineProps({
 
 <style scoped>
 .standard {
-  color: #101010ff;
+  color: var(--white);
+  background: var(--blue-gradient);
   border-radius: 5px;
   padding: 5px 1em;
-  line-height: 3em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.complete {
+  background: var(--green-gradient);
+  color: var(--white);
+  border-radius: 5px;
+  display: block;
+  padding: 5px 1em;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .delete {
-  background-image: url(../assets/delete.svg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  height: 1.5em;
-  width: 1.5em;
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
+  color: var(--white);
+  background: var(--red-gradient);
+  border-radius: 5px;
+  padding: 5px 1em;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.navLink {
+  padding-bottom: 2px;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 .edit {
   background-image: url(../assets/edit.svg);
   background-repeat: no-repeat;
   background-size: contain;
+  display: block;
   height: 1.5em;
   width: 1.5em;
-  position: absolute;
-  top: 1em;
-  right: 1em;
   z-index: 1;
   opacity: 0.7;
 }
@@ -53,9 +67,7 @@ defineProps({
   background-size: contain;
   height: 1.5em;
   width: 1.5em;
-  position: absolute;
-  bottom: 1em;
-  left: 1em;
+  display: block;
 }
 .cancelTop {
   background-image: url(../assets/cancel.svg);
@@ -63,11 +75,9 @@ defineProps({
   background-size: contain;
   height: 1.5em;
   width: 1.5em;
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  border: 1px solid #101010ff;
+  border: 1px solid var(--black);
   border-radius: 5px;
+  display: block;
 }
 .cancelBottom {
   background-image: url(../assets/cancel.svg);
@@ -75,21 +85,17 @@ defineProps({
   background-size: contain;
   height: 1.5em;
   width: 1.5em;
-  position: absolute;
-  bottom: 1em;
-  left: 4em;
-  border: 1px solid #101010ff;
+  border: 1px solid var(--black);
   border-radius: 5px;
+  display: block;
 }
 .add {
   background-image: url(../assets/add.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 1.8em;
-  width: 1.8em;
-  position: absolute;
-  top: 0em;
-  left: 0em;
+  height: 2.3em;
+  width: 2.3em;
+  display: block;
 }
 .back {
   background-image: url(../assets/back.svg);
@@ -97,59 +103,73 @@ defineProps({
   background-size: contain;
   height: 1.5em;
   width: 1.5em;
-  position: absolute;
-  bottom: 1em;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
+  display: block;
 }
 .arrowDown {
   background-image: url(../assets/arrowDown.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 1.7em;
-  width: 1.7em;
-  position: absolute;
-  left: 1em;
-  top: 1em;
-  opacity: 0.3;
+  height: 1em;
+  width: 1em;
+  display: block;
+  opacity: 0.5;
+  margin-top: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
 }
 .arrowUp {
   background-image: url(../assets/arrowDown.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  height: 1.7em;
-  width: 1.7em;
-  position: absolute;
-  left: 1em;
-  top: 1em;
-  opacity: 0.3;
+  height: 1em;
+  width: 1em;
+  display: block;
+  opacity: 0.5;
+  margin-top: 0.5em;
   transform: rotate(180deg);
+  margin-left: auto;
+  margin-right: auto;
 }
+
+.tutorial {
+  background: var(--red);
+  height: 2em;
+  width: 2em;
+  border-radius: 15em;
+  position: fixed;
+  right: 1em;
+  bottom: 1em;
+  text-align: center;
+  font-weight: 700;
+  line-height: 2em;
+  font-size: 1.3em;
+  display: block;
+}
+.help,
 .info {
-  background-image: url(../assets/info.svg);
+  color: var(--gray);
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 1.4em;
+  width: 1.4em;
+  border: 1px solid var(--gray);
+  border-radius: 5px;
+  line-height: 0.3em;
+  font-size: 1.3em;
+  text-align: center;
+  display: block;
+  font-weight: 500;
+}
+.arrowDownWhite {
+  background-image: url(../assets/arrowDownWhite.svg);
   background-repeat: no-repeat;
   background-size: contain;
   height: 1em;
   width: 1em;
-  border: 1px solid #101010ff;
-  border-radius: 5px;
-  position: absolute;
-  right: -2em;
-  top: 0.4em;
-}
-.complete {
-  background-image: url(../assets/complete.svg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  bottom: 1em;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  height: 1.5em;
-  width: 1.5em;
-  border: 1px solid #101010ff;
-  border-radius: 5px;
+  display: block;
+  opacity: 0.5;
+  margin-top: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

@@ -75,7 +75,7 @@
           ref="strangersScore"
         />
       </div>
-      <MyButton btn-style="save" @click="saveSocial" />
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveSocial" />
     </div>
     <TimeCalc
       :time="userData?.social?.time?.family"
@@ -189,12 +189,6 @@ const saveSocial = async () => {
 <style scoped>
 p {
   text-align: center;
-}
-.wrapper {
-  padding: 1em;
-  position: relative;
-  padding-bottom: 3em;
-  max-width: 25em;
 }
 .satisfactionDiv {
   position: relative;

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <h1>Финансы!</h1>
     <div class="satisfactionDiv" v-show="!editFinances">
+      <h1>Финансы!</h1>
       <p>Доход</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.income" />
       <p>Коллектив</p>
@@ -20,6 +20,8 @@
       />
       <p>График</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.schedule" />
+
+      <MyButton btn-style="edit" @click="editFinances = !editFinances" />
     </div>
     <div class="satisfactionDiv" v-if="editFinances">
       <p>Доход</p>
@@ -58,29 +60,33 @@
         ref="schedule"
       />
       <MyButton btn-style="save" @click="saveFinances" />
+      <MyButton btn-style="edit" @click="editFinances = !editFinances" />
     </div>
-    <MyButton btn-style="edit" @click="editFinances = !editFinances" />
-    <TimeCalc
-      :time="userData?.finances?.time?.work"
-      label="Работа"
-      :total="userData?.health?.time?.total"
-      :auth="auth.auth"
-      :user-data="userData"
-      field="finances"
-    />
-    <TimeCalc
-      :time="userData?.finances?.time?.education"
-      label="Обучение"
-      :total="userData?.health?.time?.total"
-      :auth="auth.auth"
-      :user-data="userData"
-      field="finances"
-    />
+    <div>
+      <TimeCalc
+        :time="userData?.finances?.time?.work"
+        label="Работа"
+        :total="userData?.health?.time?.total"
+        :auth="auth.auth"
+        :user-data="userData"
+        field="finances"
+      />
+      <TimeCalc
+        :time="userData?.finances?.time?.education"
+        label="Обучение"
+        :total="userData?.health?.time?.total"
+        :auth="auth.auth"
+        :user-data="userData"
+        field="finances"
+      />
+    </div>
+    <PersonalFinances :user-data="userData" :auth="auth" />
     <MyButton btn-style="back" @click="router.push('profile')" />
   </div>
 </template>
 
 <script setup>
+import PersonalFinances from '@/components/finances/PersonalFinances.vue'
 import MyButton from '@/components/MyButton.vue'
 import MyRange from '@/components/MyRange.vue'
 import TimeCalc from '@/components/self_development/TimeCalc.vue'
@@ -147,14 +153,21 @@ const saveFinances = async () => {
 </script>
 
 <style scoped>
-.wrapper {
-  padding: 1em;
-  padding-bottom: 3em;
-  position: relative;
-}
 .satisfactionDiv {
   max-width: 25em;
   position: relative;
   padding-bottom: 3em;
+}
+@media (min-width: 768px) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 1em;
+  }
+}
+@media (min-width: 1024px) {
+  .wrapper {
+    grid-template-columns: auto auto auto;
+  }
 }
 </style>

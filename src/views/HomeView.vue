@@ -1,9 +1,7 @@
 <template>
-  <div>
+  <div class="wrapper">
     <div class="attention">
-      <div class="logo"></div>
-      <h1>А.И. План</h1>
-      <p>Ваш помощник-планировщик</p>
+      <div class="neolifeHeader"></div>
     </div>
     <div class="interest">
       <h2>Суть</h2>
@@ -90,12 +88,13 @@ p {
   border-radius: 5px;
   padding: 5px 1em;
 }
-.logo {
-  background-image: url(../assets/aidaplan.png);
-  height: 10em;
-  width: 10em;
+.neolifeHeader {
+  background-image: url(../assets/neolife_header.svg);
+  height: 15em;
+  width: 15em;
   background-repeat: no-repeat;
   background-size: contain;
+  margin-top: 5em;
 }
 .attention,
 .interest,
@@ -131,7 +130,7 @@ p {
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 .attention {
-  background: linear-gradient(#101010ff, rgb(0, 21, 34));
+  background: var(--blue-gradient);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top;

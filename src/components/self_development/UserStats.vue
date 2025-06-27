@@ -1,20 +1,26 @@
 <template>
-  <div class="statsWrapper">
+  <div class="statsWrapper" v-if="userData?.health">
+    <MyButton btn-style="edit" class="editBtn" @click="displayStats = !displayStats" />
     <h2>Статистика</h2>
     <div class="statsSubHeader">
-      <p>
-        Занятое время суток: {{ userData?.health?.time?.total?.hours }}ч
-        {{ userData?.health?.time?.total?.minutes }}м
-      </p>
-      <div v-if="userData?.health?.totalHealth != undefined">
-        <p>Удовлитворительность жизни {{ lifeSatisfaction }}</p>
+      <div class="subHeaderContent shadow">
+        <p class="description">Занятое время суток</p>
+        <h2>
+          {{ userData?.health?.time?.total?.hours }}:{{ zeroIfNeeded
+          }}{{ userData?.health?.time?.total?.minutes }}
+        </h2>
+      </div>
+
+      <div class="subHeaderContent shadow" v-if="userData?.health?.totalHealth != undefined">
+        <p class="description">Удовлетворительность</p>
+        <h2>{{ lifeSatisfaction }}</h2>
       </div>
     </div>
 
-    <div class="statsDiv">
+    <div class="statsDiv" v-if="displayStats">
       <div class="gridBlock">
         <h3>Заполненость</h3>
-        <div class="gridContent">
+        <div class="gridContent description">
           <p>Число ценностей</p>
           <p class="stat">{{ userData?.values?.length }}</p>
           <p class="grayBg">Число препятствий</p>
@@ -29,7 +35,7 @@
       </div>
       <div class="gridBlock">
         <h3>Завершено</h3>
-        <div class="gridContent">
+        <div class="gridContent description">
           <p>Препятствий</p>
           <p class="stat">{{ userData?.achievements?.resolvedObstacles?.length }}</p>
           <p class="grayBg">Целей</p>
@@ -43,7 +49,8 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs } from 'vue'
+import MyButton from '../MyButton.vue'
 
 const props = defineProps({
   userData: {
@@ -52,6 +59,7 @@ const props = defineProps({
   },
 })
 const { userData } = toRefs(props)
+const displayStats = ref(false)
 
 const lifeSatisfaction = computed(() => {
   const health = userData.value.health.totalHealth
@@ -60,21 +68,19 @@ const lifeSatisfaction = computed(() => {
   const hobbies = userData.value.hobbies.totalHobbies
   return (health + social + finances + hobbies) / 4
 })
+
+const zeroIfNeeded = computed(() => {
+  return userData.value.health.time.total.minutes.length < 2 ? '' : '0'
+})
 </script>
 
 <style scoped>
-h2 {
-  margin: 0em;
-}
-p {
-  padding: 0em 1em;
-}
 .grayBg {
-  background-color: #10101005;
+  background: var(--gray-opacity);
 }
 .statsWrapper {
-  background-color: #10101005;
-  padding: 0em 1em;
+  padding: 1em 0em;
+  position: relative;
   border-radius: 5px;
 }
 .statsDiv {
@@ -92,20 +98,29 @@ p {
 .stat {
   text-align: right;
 }
+.statsSubHeader {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 0.5em;
+  text-align: center;
+  margin-top: 0.5em;
+}
+.statsSubHeader h2 {
+  line-height: 1em;
+  border-bottom: none;
+  color: var(--black);
+}
+.subHeaderContent {
+  padding: 0.5em;
+  background: var(--gray-opacity);
+  border-radius: 5px;
+}
+.subHeaderContent p {
+  padding: none;
+}
 @media (min-width: 768px) {
   .statsDiv {
     grid-template-columns: auto auto;
-  }
-}
-@media (min-width: 1024px) {
-  h2 {
-    max-width: 100%;
-    text-align: center;
-  }
-  .statsSubHeader {
-    display: grid;
-    grid-template-columns: auto auto;
-    text-align: center;
   }
 }
 </style>

@@ -1,24 +1,22 @@
-/* color palette from <https://github.com/vuejs/theme> */
+/* color palette */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
-
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --black: #010e0eff;
+  --blue: #13bfa1ff;
+  --dark-blue: rgb(11, 114, 97);
+  --blue-opacity: #13bfa1dd;
+  --blue-gradient: linear-gradient(to right bottom, #13bfa1ff, rgb(9, 116, 98));
+  --red: #db1c12dd;
+  --red-gradient: linear-gradient(to right bottom, #e94239dd, #c2372fdd);
+  --gray: #101010b3;
+  --gray-opacity: #99999911;
+  --light-gray: #dfdfdfdd;
+  --green: #39f52cdd;
+  --green-gradient: linear-gradient(to right bottom, #39f52cdd, #27d41add);
+  --light-blue: #13bfa1dd;
+  --light-blue-gradient: linear-gradient(to right bottom, #94fafadd, #40e2e2dd);
+  --white: #fafaf2ff;
+  --white-opacity: #fafaf2dd;
+  --orange: #ff7300;
 }
 
 /* semantic color variables for this project */

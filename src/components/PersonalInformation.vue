@@ -1,34 +1,39 @@
 <template>
-  <div class="wrapper">
+  <div v-if="userData" class="wrapper">
     <div class="headerGrid">
       <div class="infoContainer">
+        <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" class="editBtn" />
+        <MyButton
+          v-if="editPersonalInfo"
+          btn-style="edit"
+          @click="editPersonalInfo = !editPersonalInfo"
+          class="editBtn"
+        />
         <h2>
           {{ userData?.username }}
         </h2>
-        <MyButton v-if="!editPersonalInfo" btn-style="edit" @click="editInfo" />
-        <MyButton
-          v-if="editPersonalInfo"
-          btn-style="cancelTop"
-          @click="editPersonalInfo = !editPersonalInfo"
-        />
-        <div class="infoData">
-          <div class="userImg"></div>
+        <div class="headerContainer">
           <div>
+            <div class="userImg"></div>
+          </div>
+          <div class="descriptionInfo">
             <div class="infoBlock">
               <div class="icon birthday"></div>
-              <p>{{ userData?.dateOfBirth }}</p>
+              <p class="description">{{ userData?.dateOfBirth }}</p>
             </div>
             <div class="infoBlock">
               <div class="icon" :class="userData?.gender"></div>
-              <p>{{ userData?.relationshipStatus }}</p>
+              <p class="description">{{ userData?.relationshipStatus }}</p>
             </div>
             <div class="infoBlock">
               <div class="icon profession"></div>
-              <p>{{ userData?.profession }}</p>
+              <p class="description">{{ userData?.profession }}</p>
             </div>
             <div class="infoBlock">
               <div class="icon location"></div>
-              <p>{{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}</p>
+              <p class="description">
+                {{ userData?.country }}, {{ userData?.region }}, {{ userData?.city }}
+              </p>
             </div>
           </div>
         </div>
@@ -69,22 +74,31 @@
           <p>Страна: <input type="text" placeholder="Страна" v-model="country" /></p>
           <p>Регион: <input type="text" placeholder="Регион" v-model="region" /></p>
           <p class="lastStroke">Город: <input type="text" placeholder="Город" v-model="city" /></p>
-          <MyButton btn-style="save" @click="savePersonalInformation" />
-          <MyButton btn-style="cancelBottom" @click="editPersonalInfo = !editPersonalInfo" />
+          <div class="btnsDiv">
+            <MyButton btn-style="standard" btn-text="Сохранить" @click="savePersonalInformation" />
+            <MyButton
+              btn-style="delete"
+              btn-text="Отменить"
+              @click="editPersonalInfo = !editPersonalInfo"
+            />
+          </div>
         </div>
       </div>
-
+      <DreamLife :auth="auth" :userData="userData" />
       <UserStats :user-data="userData" />
     </div>
 
     <div class="block">
-      <h2>
-        Достижения<MyButton
+      <div class="infoHeader">
+        <h2>Достижения</h2>
+        <MyButton
           class="infoBtn"
           btn-style="info"
+          btn-text="i"
           @click="displayAchievementsInfo = !displayAchievementsInfo"
         />
-      </h2>
+      </div>
+
       <div class="popUp" v-if="displayAchievementsInfo">
         <p>
           Достижения это результаты ваших действий и важная часть мотивации. Они помогают продолжать
@@ -96,20 +110,23 @@
       </div>
     </div>
     <div class="block">
-      <h2>
-        Сферы жизни<MyButton
+      <div class="infoHeader">
+        <h2>Сферы жизни</h2>
+        <MyButton
           class="infoBtn"
           btn-style="info"
+          btn-text="i"
           @click="displayLifeFieldsInfo = !displayLifeFieldsInfo"
         />
-      </h2>
+      </div>
+
       <div class="popUp" v-if="displayLifeFieldsInfo">
         <p>
           Жизнь почти каждого человека можно отоброзить и описать четырмя сферами. Они состовляют
           общую удовлитворительность жизни, помогают с принятием решений и выбором целей.
         </p>
       </div>
-      <div class="lifeFieldsDiv">
+      <div class="lifeFieldsDiv" v-if="userData?.health">
         <LifeField
           name="Здоровье"
           route-name="health"
@@ -150,6 +167,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import UserAchievements from './self_development/UserAchievements.vue'
 import LifeField from './self_development/LifeField.vue'
 import UserStats from './self_development/UserStats.vue'
+import DreamLife from './self_development/DreamLife.vue'
 // define props
 const props = defineProps({
   db: {
@@ -226,24 +244,11 @@ const savePersonalInformation = async () => {
 .infoBtn {
   right: 0px;
 }
-h3 {
-  border-bottom: 1px solid #10101022;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
-}
+
 .infoContainer {
   position: relative;
 }
 
-.infoContainer h2 {
-  margin: 0px;
-}
-.infoData {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: start;
-  align-items: center;
-}
 .popUp {
   position: absolute;
   top: 3em;
@@ -265,6 +270,7 @@ h3 {
   max-width: 25em;
   position: relative;
 }
+
 .userImg {
   border-radius: 5px;
   box-shadow:
@@ -275,9 +281,7 @@ h3 {
   background-size: cover;
   width: 8em;
   height: 8em;
-  margin-right: 1em;
-  margin-bottom: auto;
-  margin-top: 0.5em;
+  margin: 0em auto;
 }
 .infoBlock {
   display: grid;
@@ -288,16 +292,16 @@ h3 {
   border: none;
   padding: 0px;
 }
+
 .achievements {
   display: grid;
   grid-template-columns: auto auto;
 }
 .icon {
-  height: 1.5em;
-  width: 1.5em;
+  height: 1em;
+  width: 1em;
   background-repeat: no-repeat;
   background-size: contain;
-  margin: 0.5em;
 }
 .lifeFieldsDiv {
   display: grid;
@@ -305,6 +309,18 @@ h3 {
   column-gap: 1em;
 }
 .headerGrid {
+  padding-top: 0.5em;
+  max-width: 35em;
+}
+.infoHeader {
+  display: grid;
+  grid-template-columns: 13em auto;
+  align-items: center;
+}
+.headerContainer {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 0.5em;
   padding-top: 0.5em;
 }
 .lastStroke {
@@ -360,13 +376,6 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-}
-@media (min-width: 1024px) {
-  .headerGrid {
-    display: grid;
-    grid-template-columns: 40% 50%;
-    column-gap: 5%;
   }
 }
 </style>

@@ -92,11 +92,6 @@ const saveHobbies = async () => {
 </script>
 
 <style scoped>
-.wrapper {
-  padding: 1em;
-  padding-bottom: 3em;
-  position: relative;
-}
 .satisfactionDiv {
   max-width: 25em;
   position: relative;

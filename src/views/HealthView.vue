@@ -111,11 +111,6 @@ const saveHealth = async () => {
 p {
   text-align: center;
 }
-.wrapper {
-  padding: 1em;
-  padding-bottom: 3em;
-  position: relative;
-}
 .satisfactionDiv {
   max-width: 25em;
   position: relative;

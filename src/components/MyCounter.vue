@@ -1,5 +1,5 @@
 <template>
-  <p>{{ label }}</p>
+  <p class="description">{{ label }}</p>
   <div class="counter">
     <div class="counterButton decrement" @click="decrement">-</div>
     <input min="0" :max="maxValue" type="number" v-model="editableValue" />
@@ -21,7 +21,7 @@ const props = defineProps({
   },
   maxValue: {
     type: Number,
-    required: true,
+    required: false,
   },
 })
 
@@ -58,6 +58,7 @@ input[type='number'] {
   -moz-appearance: textfield;
   box-shadow: none;
   width: 3.2em;
+  height: 1.4em;
   text-align: center;
   border-radius: 0px;
   margin: 0px;
@@ -65,7 +66,6 @@ input[type='number'] {
 }
 
 p {
-  margin-top: 1em;
   text-align: center;
 }
 
@@ -76,19 +76,20 @@ p {
 }
 .counterButton {
   width: 2em;
+  height: 1.1em;
   text-align: center;
   font-size: 1.5em;
+  line-height: 0.9em;
   cursor: pointer;
-  height: 100%;
 }
 .decrement {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  background-color: #10101022;
+  background-color: var(--gray);
 }
 .increment {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  background-color: #10101022;
+  background: var(--blue);
 }
 </style>

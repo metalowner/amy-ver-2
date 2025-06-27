@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="wrapper">
     <h1>Кто мы и что за А.И. План</h1>
     <h2>Мы - это в основном:</h2>
     <div class="team">
