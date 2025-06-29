@@ -1,10 +1,13 @@
 <template>
   <div class="lifeStoryWrapper" v-if="userData && auth?.currentUser?.uid">
     <div v-if="checkLifeStory(userData?.lifeStory, auth?.currentUser?.uid)"></div>
-    <div class="lifeStoryHeader">
-      <h2 @click="displayLifeStoryContent = !displayLifeStoryContent">История жизни</h2>
-      <MyButton class="toLeft" btn-style="arrowDown" v-if="!displayLifeStoryContent" />
-      <MyButton class="toLeft" btn-style="arrowUp" v-if="displayLifeStoryContent" />
+    <div class="infoHeader">
+      <div class="lifeStoryHeader">
+        <h2 @click="displayLifeStoryContent = !displayLifeStoryContent">История жизни</h2>
+        <MyButton class="toLeft" btn-style="arrowDown" v-if="!displayLifeStoryContent" />
+        <MyButton class="toLeft" btn-style="arrowUp" v-if="displayLifeStoryContent" />
+      </div>
+      <MyButton btn-style="info" btn-text="i" @click="displayLifeStoryInfo()" />
     </div>
 
     <div class="lifeStoryContent" v-if="displayLifeStoryContent">
@@ -217,6 +220,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
 import MyTextarea from './MyTextarea.vue'
 import MyButton from '../MyButton.vue'
+import Swal from 'sweetalert2'
 
 const props = defineProps({
   userData: {
@@ -231,6 +235,15 @@ const props = defineProps({
 
 const { userData, auth } = toRefs(props)
 const displayLifeStoryContent = ref(false)
+
+const displayLifeStoryInfo = () => {
+  Swal.fire({
+    title: 'История жизни',
+    text: 'Это одна из самых полезных практик которую рекомендуют многие профессионалы. Просто уделяя время описанию своей истории вы осознаете множество моментов которые повлияли на вашу судьбу. А осознать момент когда появилось жизненое препятствие это пол пути к его решению!',
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
+}
 // check required data
 const checkLifeStory = async (data, userUid) => {
   if (data) {
@@ -279,7 +292,8 @@ const checkLifeStory = async (data, userUid) => {
 
 <style scoped>
 .lifeStoryWrapper {
-  padding: 0em 1em;
+  padding: 1em 1em;
+  margin: 1em 0em;
 }
 .insideBlock {
   position: relative;
@@ -287,9 +301,6 @@ const checkLifeStory = async (data, userUid) => {
 .lifeStoryHeader {
   display: flex;
   align-items: center;
-}
-.lifeStoryHeader h2 {
-  color: var(--orange);
 }
 .toLeft {
   margin-right: auto;

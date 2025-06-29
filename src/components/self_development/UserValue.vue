@@ -1,17 +1,24 @@
 <template>
   <div class="card">
-    <div v-show="!valueEdit">
-      <h3>{{ header }}</h3>
-      <div class="importanceDiv">
-        <p class="importanceLabel">Важность</p>
-        <p class="importance">{{ importance }}</p>
+    <div class="cardInfoContainer" v-show="!valueEdit">
+      <div>
+        <h3>{{ header }}</h3>
+        <div class="valueInfo description">
+          <p>{{ description }}</p>
+        </div>
+        <div class="descriptionFiller" v-if="description.length < 1"></div>
       </div>
-      <div class="valueInfo description">
-        <p>{{ description }}</p>
+
+      <div class="cardInfoColor">
+        <div class="importanceDiv">
+          <p class="importanceLabel">Важность</p>
+          <p class="importance">{{ importance }}</p>
+        </div>
       </div>
     </div>
 
-    <MyButton btn-style="edit" @click="editValueDetails" class="editBtn" />
+    <MyButton v-if="!valueEdit" btn-style="editWhite" @click="editValueDetails" class="editBtn" />
+    <MyButton v-if="valueEdit" btn-style="edit" @click="editValueDetails" class="editBtn" />
     <div class="editDiv" v-show="valueEdit">
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <textarea
@@ -156,5 +163,8 @@ const adjustHeight = () => {
 <style scoped>
 .editDiv {
   padding-top: 2em;
+}
+.descriptionFiller {
+  height: 2em;
 }
 </style>

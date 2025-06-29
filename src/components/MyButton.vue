@@ -61,6 +61,16 @@ defineProps({
   z-index: 1;
   opacity: 0.7;
 }
+.editWhite {
+  background-image: url(../assets/editWhite.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  height: 1.5em;
+  width: 1.5em;
+  z-index: 1;
+  opacity: 0.9;
+}
 .save {
   background-image: url(../assets/save.svg);
   background-repeat: no-repeat;
@@ -141,9 +151,10 @@ defineProps({
   bottom: 1em;
   text-align: center;
   font-weight: 700;
-  line-height: 2em;
+  line-height: 1.3em;
   font-size: 1.3em;
   display: block;
+  z-index: 5;
 }
 .help,
 .info {

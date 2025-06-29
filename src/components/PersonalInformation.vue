@@ -95,16 +95,10 @@
           class="infoBtn"
           btn-style="info"
           btn-text="i"
-          @click="displayAchievementsInfo = !displayAchievementsInfo"
+          @click="displayAchievementsInfo()"
         />
       </div>
 
-      <div class="popUp" v-if="displayAchievementsInfo">
-        <p>
-          Достижения это результаты ваших действий и важная часть мотивации. Они помогают продолжать
-          двигаться когда сложно.
-        </p>
-      </div>
       <div class="achievements">
         <UserAchievements :user-data="userData" />
       </div>
@@ -112,19 +106,7 @@
     <div class="block">
       <div class="infoHeader">
         <h2>Сферы жизни</h2>
-        <MyButton
-          class="infoBtn"
-          btn-style="info"
-          btn-text="i"
-          @click="displayLifeFieldsInfo = !displayLifeFieldsInfo"
-        />
-      </div>
-
-      <div class="popUp" v-if="displayLifeFieldsInfo">
-        <p>
-          Жизнь почти каждого человека можно отоброзить и описать четырмя сферами. Они состовляют
-          общую удовлитворительность жизни, помогают с принятием решений и выбором целей.
-        </p>
+        <MyButton class="infoBtn" btn-style="info" btn-text="i" @click="displayLifeFieldsInfo()" />
       </div>
       <div class="lifeFieldsDiv" v-if="userData?.health">
         <LifeField
@@ -168,6 +150,7 @@ import UserAchievements from './self_development/UserAchievements.vue'
 import LifeField from './self_development/LifeField.vue'
 import UserStats from './self_development/UserStats.vue'
 import DreamLife from './self_development/DreamLife.vue'
+import Swal from 'sweetalert2'
 // define props
 const props = defineProps({
   db: {
@@ -195,8 +178,23 @@ const country = ref('')
 const region = ref('')
 const city = ref('')
 const editPersonalInfo = ref(false)
-const displayAchievementsInfo = ref(false)
-const displayLifeFieldsInfo = ref(false)
+const displayLifeFieldsInfo = () => {
+  Swal.fire({
+    title: 'Сферы жизни',
+    text: 'Это основные сферы в которых действует почти каждый человек на земле. Понимание своего удовлетворения в каждой из сфер поможет определять как лучше всего двигаться дальше.',
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
+}
+
+const displayAchievementsInfo = () => {
+  Swal.fire({
+    title: 'Достижеия',
+    text: 'Этот блок показывает ваши достижения типа заполнености полей, завершения планов, достижения целей и решения препятствий.',
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
+}
 
 const editInfo = () => {
   editPersonalInfo.value = !editPersonalInfo.value
@@ -247,8 +245,11 @@ const savePersonalInformation = async () => {
 
 .infoContainer {
   position: relative;
+  padding: 1em 0em;
+  margin-top: 3em;
+  margin-bottom: 2em;
+  padding-bottom: 2em;
 }
-
 .popUp {
   position: absolute;
   top: 3em;
@@ -260,6 +261,8 @@ const savePersonalInformation = async () => {
 }
 .block {
   position: relative;
+  padding: 1em 0em;
+  margin: 1em 0em;
 }
 .wrapper {
   position: relative;
@@ -303,18 +306,12 @@ const savePersonalInformation = async () => {
   background-repeat: no-repeat;
   background-size: contain;
 }
-.lifeFieldsDiv {
-  display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 1em;
-}
 .headerGrid {
-  padding-top: 0.5em;
   max-width: 35em;
 }
 .infoHeader {
-  display: grid;
-  grid-template-columns: 13em auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 .headerContainer {

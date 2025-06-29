@@ -1,8 +1,10 @@
 <template>
-  <div class="lifeFieldWrapper shadow" @click="navigateRoute">
-    <h3>{{ name }}</h3>
-    <div class="iconWrapper" :class="background">
-      <div class="icon" :class="fieldIcon"></div>
+  <div class="lifeFieldWrapper" @click="navigateRoute">
+    <div class="lifeFieldHeader">
+      <div class="iconWrapper" :class="background">
+        <div class="icon" :class="fieldIcon"></div>
+      </div>
+      <h3>{{ name }}</h3>
     </div>
 
     <MyRange :input-value="satisfaction" :edit-enabled="false" />
@@ -45,34 +47,34 @@ const navigateRoute = () => {
 
 <style scoped>
 .lifeFieldWrapper {
-  text-align: center;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 0em auto;
-  padding-bottom: 1em;
-  margin-bottom: 1em;
-  max-width: 15em;
+  justify-content: space-between;
+  margin: 1em auto;
 }
 .lifeFieldWrapper h3 {
-  margin-bottom: 0.5em;
   border-bottom: none;
+  text-align: start;
+}
+.lifeFieldHeader {
+  display: flex;
+  width: 13em;
 }
 .stats {
   display: grid;
   grid-template-columns: auto auto auto;
 }
 .iconWrapper {
-  padding: 1em;
+  padding: 0.5em;
   border-radius: 5px;
-  margin-bottom: 0.5em;
+  margin-right: 1em;
 }
 .icon {
   background-repeat: no-repeat;
   background-size: contain;
-  height: 3em;
-  width: 3em;
+  height: 1em;
+  width: 1em;
   margin-left: auto;
   margin-right: auto;
 }

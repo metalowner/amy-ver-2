@@ -308,13 +308,13 @@ input[type='number'] {
 }
 .display select {
   appearance: none;
-  opacity: 0.7;
   box-shadow: none;
   max-width: fit-content;
   padding: 0px;
-  text-align: center;
   margin: 0px;
   color: var(--black);
+  font-size: 1.125em;
+  font-weight: 300;
 }
 .timeBlock {
   position: relative;

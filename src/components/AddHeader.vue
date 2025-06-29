@@ -1,18 +1,17 @@
 <template>
   <div>
-    <div class="headerDiv">
-      <MyButton btn-style="add" @click="addNewData()" />
-      <h2 @click="displayBlock = !displayBlock">
-        {{ header }}
-      </h2>
-      <MyButton btn-style="arrowDown" @click="displayBlock = !displayBlock" />
-      <MyButton btn-style="info" btn-text="i" @click="displayDescription = !displayDescription" />
-      <MyButton btn-style="help" btn-text="?" @click="displayHelp = !displayHelp" />
-    </div>
-    <div class="popUp" v-if="displayDescription">
-      <p>
-        {{ description }}
-      </p>
+    <div class="headerContainer">
+      <div class="headerDiv">
+        <MyButton btn-style="add" @click="addNewData()" />
+        <h3 @click="displayBlock = !displayBlock">
+          {{ header }}
+        </h3>
+        <MyButton btn-style="arrowDown" @click="displayBlock = !displayBlock" />
+      </div>
+      <div class="headerBtns">
+        <MyButton btn-style="help" btn-text="?" @click="displayHelp = !displayHelp" />
+        <MyButton btn-style="info" btn-text="i" @click="displayDescription()" />
+      </div>
     </div>
   </div>
   <div v-if="dataType === 'values' || dataType === 'obstacles' || dataType === 'resources'">
@@ -53,6 +52,7 @@ import MyButton from './MyButton.vue'
 import AddNewValue from './self_development/AddNewValue.vue'
 import AddNewGoal from './self_development/AddNewGoal.vue'
 import AddNewPlan from './self_development/AddNewPlan.vue'
+import Swal from 'sweetalert2'
 
 const props = defineProps({
   auth: {
@@ -77,10 +77,19 @@ const props = defineProps({
   },
 })
 
-const { auth, userData, dataType } = toRefs(props)
+const { auth, userData, dataType, description, header } = toRefs(props)
 const addNewValue = ref(false)
 const displayBlock = ref(false)
 const displayHelp = ref(false)
+// declare info variables
+const displayDescription = () => {
+  Swal.fire({
+    title: header.value,
+    text: description.value,
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
+}
 // declare goal variables
 const addNewGoal = ref(false)
 
@@ -88,8 +97,6 @@ const addNewGoal = ref(false)
 const addNewPlan = ref(false)
 const newPlanStartDate = ref(Date)
 const newPlanTimeObject = ref({})
-// info vars
-const displayDescription = ref(false)
 // add new data function
 const addNewData = () => {
   if (dataType.value === 'goals') {
@@ -116,9 +123,19 @@ defineExpose({ displayBlock, displayHelp })
 <style scoped>
 .headerDiv {
   display: grid;
-  grid-template-columns: 2em 10em auto auto auto;
+  grid-template-columns: 2em 10em auto;
   column-gap: 1em;
   max-width: 13em;
   align-items: center;
+}
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.headerBtns {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 1em;
 }
 </style>

@@ -1,60 +1,65 @@
 <template>
   <div>
     <div class="card" v-show="!editPlan">
-      <h3 @click="displayPlanInfo = !displayPlanInfo">{{ header }}</h3>
-      <div class="importanceDiv">
-        <p class="importanceLabel">Важность</p>
-        <p class="importance">{{ importance }}</p>
+      <div class="cardInfoContainer">
+        <div>
+          <h3 @click="displayPlanInfo = !displayPlanInfo">{{ header }}</h3>
+          <div class="subHeaderDiv description">
+            <p>Начало: {{ startDate }}</p>
+            <TimeCalc :time="time" field="planDisplay" />
+            <MyButton
+              btn-style="arrowUp"
+              @click="displayPlanInfo = !displayPlanInfo"
+              v-show="displayPlanInfo"
+            />
+            <MyButton
+              btn-style="arrowDown"
+              @click="displayPlanInfo = !displayPlanInfo"
+              v-show="!displayPlanInfo"
+            />
+          </div>
+        </div>
+        <div class="cardInfoColor">
+          <div class="importanceDiv">
+            <p class="importanceLabel">Важность</p>
+            <p class="importance">{{ importance }}</p>
+          </div>
+          <div class="urgencyDiv">
+            <p class="urgencyLabel">Срочность</p>
+            <p class="urgency">{{ urgency }}</p>
+          </div>
+        </div>
       </div>
-      <div class="urgencyDiv">
-        <p class="urgencyLabel">Срочность</p>
-        <p class="urgency">{{ urgency }}</p>
-      </div>
-      <div class="subHeaderDiv description">
-        <p>Начало: {{ startDate }}</p>
-        <TimeCalc :time="time" field="planDisplay" />
-      </div>
-      <MyButton
-        btn-style="arrowUp"
-        @click="displayPlanInfo = !displayPlanInfo"
-        v-show="displayPlanInfo"
-      />
-      <MyButton
-        btn-style="arrowDown"
-        @click="displayPlanInfo = !displayPlanInfo"
-        v-show="!displayPlanInfo"
-      />
-      <MyButton btn-style="edit" @click="editPlanDetails" class="editBtn" />
-    </div>
-    <div>
-      <div v-show="displayPlanInfo">
-        <h4 class="infoHeader">Успешность</h4>
-        <div class="infoBlock">
+
+      <MyButton btn-style="editWhite" @click="editPlanDetails" class="editBtn" />
+      <div class="infoDisplayContainer" v-show="displayPlanInfo">
+        <h4>Успешность</h4>
+        <div class="infoBlock description">
           <p class="description">Действий</p>
           <MyRange :edit-enabled="false" :input-value="success?.processSuccess" />
           <p class="description">Результатов</p>
           <MyRange :edit-enabled="false" :input-value="success?.resultsSuccess" />
         </div>
 
-        <h4 class="infoHeader">Цели</h4>
-        <div class="infoBlock">
+        <h4>Цели</h4>
+        <div class="infoBlock description">
           <p v-for="goal in goals" :key="goal">{{ goal }}</p>
         </div>
 
-        <h4 class="infoHeader">Ценности</h4>
-        <div class="infoBlock">
+        <h4>Ценности</h4>
+        <div class="infoBlock description">
           <p v-for="value in values" :key="value">{{ value }}</p>
         </div>
 
-        <h4 class="infoHeader">Препятствия</h4>
-        <div class="infoBlock">
+        <h4>Препятствия</h4>
+        <div class="infoBlock description">
           <p v-for="obstacle in obstacles" :key="obstacle">
             {{ obstacle }}
           </p>
         </div>
 
-        <h4 class="infoHeader">Ресурсы</h4>
-        <div class="infoBlock">
+        <h4>Ресурсы</h4>
+        <div class="infoBlock description">
           <p v-for="resource in resources" :key="resource">
             {{ resource }}
           </p>
@@ -320,19 +325,10 @@ const completePlan = async () => {
 </script>
 
 <style scoped>
-h4 {
-  text-align: center;
-  background: var(--blue);
-  margin-top: 0.5em;
-  color: var(--white);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-}
-
 .editData {
   position: relative;
   padding: 2em 0.5em;
-  margin-bottom: 0.5em;
+  margin: 0.5em 0em;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -341,8 +337,8 @@ h4 {
 .infoHeader {
   position: relative;
 }
-.subHeaderDiv {
-  display: grid;
-  grid-template-columns: auto auto;
+.infoDisplayContainer {
+  padding-right: 1em;
+  padding-bottom: 1em;
 }
 </style>

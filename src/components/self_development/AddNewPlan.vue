@@ -104,9 +104,9 @@ const newPlanTimeObject = ref(newTime.value)
 const savePlan = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-  if (newPlanHeader.value != '') {
-    Swal.fire({ text: 'Нужуе заголовок!', buttonsStyling: false })
-  } else if (containsObject(newPlanHeader.value, userData.value.plans) == false) {
+  if (newPlanHeader.value === '') {
+    Swal.fire({ text: 'Нужен заголовок!', buttonsStyling: false })
+  } else if (containsObject(newPlanHeader.value, userData.value.plans) === true) {
     Swal.fire({ text: 'Такой заголовок плана уже есть!', buttonsStyling: false })
   } else {
     if (newPlanTime.value.newTimeObject.repetition == '') {

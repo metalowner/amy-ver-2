@@ -9,6 +9,8 @@ import AIHelper from '@/components/ai/AIHelper.vue'
 import TutorialHelper from '@/components/education/TutorialHelper.vue'
 import AddHeader from '@/components/AddHeader.vue'
 import LifeStory from '@/components/self_development/LifeStory.vue'
+import MyButton from '@/components/MyButton.vue'
+import Swal from 'sweetalert2'
 
 const props = defineProps({
   auth: {
@@ -22,9 +24,19 @@ const props = defineProps({
 })
 
 const { auth, userData } = toRefs(props)
+// personal values vars
+const displayPersonalValuesinfo = () => {
+  Swal.fire({
+    title: 'Личные качества',
+    text: 'Это элементы из которых формируется наш характер включая: привычки, что нравится, что не нравится, на чём основываем решения, к чему стремимся и т.д.',
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
+}
 // declare values variables
 const valuesHeader = ref({})
-const valuesDescription = ''
+const valuesDescription =
+  'Это основа вашего механизма принимания решений. Когда они воплощаются вы чувствуете позитивные эмоции а когда наоборот вы чувствуете негативные эмоции. Чтобы понять есть ли у вас та или иная ценность проверьте присутствие данной ценности в ваших решениях и действиях.'
 const displayValues = computed(() => {
   return valuesHeader.value.displayBlock
 })
@@ -38,7 +50,8 @@ const valuesQuestion = {
 }
 // obstacles variables
 const obstaclesHeader = ref({})
-const obstaclesDescription = ''
+const obstaclesDescription =
+  'Это личные качества которые являются основной причиной ваших провалов. В основном это причины из-за которых не получается добывать удовлетворительное количество ресурсов.'
 const displayObstacles = computed(() => {
   return obstaclesHeader.value.displayBlock
 })
@@ -52,7 +65,8 @@ const obstaclesQuestion = {
 }
 // resources variables
 const resourcesHeader = ref({})
-const resourcesDescription = ''
+const resourcesDescription =
+  'Это ваши рычаги для достигания удовлетворительных успехов. Ресурсы могут быть навыки, опыт, черты характера, красота, манеры, мудрость и многое другое что позволяет вам достигать успехов.'
 const displayResources = computed(() => {
   return resourcesHeader.value.displayBlock
 })
@@ -66,7 +80,7 @@ const resourcesQuestion = {
 }
 // goals variables
 const goalsHeader = ref({})
-const goalsDescription = ''
+const goalsDescription = ' Это ваши конечные результаты которые определяют к чему вы стремитесь.'
 const displayGoals = computed(() => {
   return goalsHeader.value.displayBlock
 })
@@ -80,7 +94,8 @@ const goalsQuestion = {
 }
 // plans variables
 const plansHeader = ref({})
-const plansDescription = ''
+const plansDescription =
+  'Это ваши повторяймые действия которые определяют что вы намерены делать и как часто.'
 const displayPlans = computed(() => {
   return plansHeader.value.displayBlock
 })
@@ -99,6 +114,11 @@ const plansQuestion = {
     <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
     <TutorialHelper />
     <LifeStory :user-data="userData" :auth="auth.auth" />
+    <div class="infoHeader">
+      <h2>Личные качества</h2>
+      <MyButton btn-style="info" btn-text="i" @click="displayPersonalValuesinfo()" />
+    </div>
+
     <div class="profileGrid">
       <div class="block">
         <AddHeader
@@ -277,22 +297,12 @@ const plansQuestion = {
 </template>
 
 <style scoped>
-.wrapper {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-}
-.popUp {
-  position: absolute;
-  top: 5em;
-  max-width: 25em;
-  text-align: start;
-  margin-inline: 0px;
-  left: 1em;
+.wrapper .infoHeader {
+  margin: 0em 1em;
 }
 .block {
   position: relative;
-  padding: 0.5em;
+  padding: 1em;
   padding-top: 0em;
   display: flex;
   flex-direction: column;
@@ -318,6 +328,8 @@ const plansQuestion = {
 .profileGrid {
   display: grid;
   grid-template-columns: auto;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
 }
 
 .blockHeaderDiv {

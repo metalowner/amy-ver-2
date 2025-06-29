@@ -3,9 +3,9 @@
   --black: #010e0eff;
   --blue: #13bfa1ff;
   --dark-blue: rgb(11, 114, 97);
-  --blue-opacity: #13bfa1dd;
-  --blue-gradient: linear-gradient(to right bottom, #13bfa1ff, rgb(9, 116, 98));
-  --red: #db1c12dd;
+  --blue-opacity: #13bfa1ff;
+  --blue-gradient: linear-gradient(to right bottom, #13bfa1ff, rgb(11, 114, 97));
+  --red: #db1c12ff;
   --red-gradient: linear-gradient(to right bottom, #e94239dd, #c2372fdd);
   --gray: #101010b3;
   --gray-opacity: #99999911;

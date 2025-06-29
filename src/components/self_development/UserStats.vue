@@ -1,10 +1,13 @@
 <template>
   <div class="statsWrapper" v-if="userData?.health">
-    <MyButton btn-style="edit" class="editBtn" @click="displayStats = !displayStats" />
-    <h2>Статистика</h2>
+    <div class="infoHeader">
+      <h2>Статистика</h2>
+      <MyButton btn-style="info" btn-text="i" @click="displayStats = !displayStats" />
+    </div>
+
     <div class="statsSubHeader">
       <div class="subHeaderContent shadow">
-        <p class="description">Занятое время суток</p>
+        <p class="description">Занятое время</p>
         <h2>
           {{ userData?.health?.time?.total?.hours }}:{{ zeroIfNeeded
           }}{{ userData?.health?.time?.total?.minutes }}
@@ -70,7 +73,7 @@ const lifeSatisfaction = computed(() => {
 })
 
 const zeroIfNeeded = computed(() => {
-  return userData.value.health.time.total.minutes.length < 2 ? '' : '0'
+  return userData.value.health.time.total.minutes < 10 ? '0' : ''
 })
 </script>
 
@@ -80,6 +83,7 @@ const zeroIfNeeded = computed(() => {
 }
 .statsWrapper {
   padding: 1em 0em;
+  margin: 1em 0em;
   position: relative;
   border-radius: 5px;
 }

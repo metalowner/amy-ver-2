@@ -105,6 +105,7 @@ const displayLesson = (data, index) => {
       element.active = ''
     }
   }
+  displayMenu.value = false
 }
 
 const receiveEmit = () => {

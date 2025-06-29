@@ -1,47 +1,48 @@
 <template>
-  <div>
-    <div class="card" v-show="!editGoal">
-      <div class="headerDiv">
-        <h3 @click="displayGoalInfo = !displayGoalInfo">{{ header }}</h3>
-        <div class="importanceDiv">
-          <p class="importanceLabel">Важность</p>
-          <p class="importance">{{ importance }}</p>
-        </div>
-        <div class="urgencyDiv">
-          <p class="urgencyLabel">Срочность</p>
-          <p class="urgency">{{ urgency }}</p>
-        </div>
-      </div>
-      <div class="description">
-        <p>{{ description }}</p>
-      </div>
-      <MyButton
-        btn-style="arrowUp"
-        @click="displayGoalInfo = !displayGoalInfo"
-        v-show="displayGoalInfo"
-      />
-      <MyButton
-        btn-style="arrowDown"
-        @click="displayGoalInfo = !displayGoalInfo"
-        v-show="!displayGoalInfo"
-      />
-      <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" />
-    </div>
-    <div>
-      <div>
-        <div class="goalInfo" v-show="displayGoalInfo">
-          <h4 class="infoHeader">Сферы жизни</h4>
-          <div class="infoBlock">
-            <p v-for="lifeField in lifeFields" :key="lifeField">
-              {{ lifeField }}
-            </p>
+  <div class="card">
+    <div v-show="!editGoal">
+      <div class="cardInfoContainer">
+        <div>
+          <div class="headerDiv">
+            <h3>{{ header }}</h3>
+            <div class="description">
+              <p>{{ description }}</p>
+            </div>
           </div>
-          <h4 class="infoHeader">Ценности</h4>
-          <div class="infoBlock">
+          <div class="infoContainer">
+            <h4>Сферы жизни</h4>
+            <div class="infoBlock description">
+              <p v-for="lifeField in lifeFields" :key="lifeField">
+                {{ lifeField }}
+              </p>
+            </div>
+          </div>
+
+          <h4>Ценности</h4>
+          <div class="infoBlock description">
             <p v-for="value in values" :key="value">{{ value }}</p>
           </div>
         </div>
+        <div class="cardInfoColor">
+          <div class="importanceDiv">
+            <p class="importanceLabel">Важность</p>
+            <p class="importance">{{ importance }}</p>
+          </div>
+          <div class="urgencyDiv">
+            <p class="urgencyLabel">Срочность</p>
+            <p class="urgency">{{ urgency }}</p>
+          </div>
+          <MyButton
+            btn-style="editWhite"
+            @click="editGoalDetails"
+            class="editBtn"
+            v-if="!displayGoalInfo"
+          />
+        </div>
       </div>
+    </div>
+    <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" v-if="displayGoalInfo" />
+    <div>
       <div class="editData" v-if="editGoal">
         <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" />
         <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
@@ -245,26 +246,14 @@ const achieveGoal = async () => {
 </script>
 
 <style scoped>
-h4 {
-  text-align: center;
-  background: var(--blue);
-  color: var(--white);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  margin-top: 0.5em;
-}
-
 .editData {
   position: relative;
   padding: 2em 0.5em;
   margin-bottom: 0.5em;
-  box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  border-radius: 5px;
 }
 
-.infoHeader {
-  position: relative;
+.infoContainer,
+.infoBlock {
+  padding: 0.5em 0em;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="lifeStoryInnerHeader">
     <h4>{{ header }}</h4>
     <MyButton btn-style="edit" @click="startEdit" class="lifeStoryEditBtn" />
     <div class="displayDiv" v-show="!editOn">
@@ -103,5 +103,8 @@ const adjustHeight = () => {
   position: absolute;
   top: 0em;
   right: 1em;
+}
+.lifeStoryInnerHeader {
+  margin: 0.5em 0em;
 }
 </style>

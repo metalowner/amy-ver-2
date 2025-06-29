@@ -80,9 +80,9 @@ const newGoalLifeFields = ref([])
 const saveGoal = async () => {
   const userUid = auth.value.auth.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-  if (newGoalHeader.value != '') {
-    Swal.fire({ text: 'Нужуе заголовок!', buttonsStyling: false })
-  } else if (containsObject(newGoalHeader.value, userData.value.goals) == false) {
+  if (newGoalHeader.value === '') {
+    Swal.fire({ text: 'Нужен заголовок!', buttonsStyling: false })
+  } else if (containsObject(newGoalHeader.value, userData.value.goals) == true) {
     Swal.fire({ text: 'Такой заголовок уже есть!', buttonsStyling: false })
   } else {
     const newGoalObject = {
@@ -103,6 +103,7 @@ const saveGoal = async () => {
       newGoalDescription.value = ''
       newGoalValues.value = []
       newGoalLifeFields.value = []
+      close()
     } catch (err) {
       console.log('Error adding documents', err)
     }
