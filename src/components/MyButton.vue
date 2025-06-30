@@ -158,18 +158,23 @@ defineProps({
 }
 .help,
 .info {
-  color: var(--gray);
+  color: var(--white);
   background-repeat: no-repeat;
   background-size: contain;
   height: 1.4em;
   width: 1.4em;
-  border: 1px solid var(--gray);
   border-radius: 5px;
   line-height: 0.3em;
   font-size: 1.3em;
   text-align: center;
   display: block;
   font-weight: 500;
+}
+.help {
+  background: var(--orange);
+}
+.info {
+  background: var(--dark-blue);
 }
 .arrowDownWhite {
   background-image: url(../assets/arrowDownWhite.svg);

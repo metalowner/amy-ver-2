@@ -18,13 +18,19 @@
     <h1>Создать аккаунт</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><MyButton btn-style="standard" btn-text="Отправить" @click="register" /></p>
+    <div class="btnsDiv">
+      <MyButton btn-style="standard" btn-text="Отправить" @click="register" />
+      <MyButton btn-style="delete" btn-text="Отменить" @click="registerActive = !registerActive" />
+    </div>
   </div>
   <div class="popUp" v-if="loginActive">
     <h1>Войти в аккаунт</h1>
     <p><input type="text" placeholder="Email" v-model="email" /></p>
     <p><input type="password" placeholder="Password" v-model="password" /></p>
-    <p><MyButton btn-style="standard" btn-text="Отправить" @click="login" /></p>
+    <div class="btnsDiv">
+      <MyButton btn-style="standard" btn-text="Отправить" @click="login" />
+      <MyButton btn-style="delete" btn-text="Отменить" @click="loginActive = !loginActive" />
+    </div>
   </div>
   <div class="popUp" v-if="userData?.plans?.length > 0 && displayPlansProgress">
     <h2>Как идут планы?</h2>

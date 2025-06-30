@@ -9,8 +9,8 @@
     <MyButton v-show="!notRunning" btn-style="standard" btn-text="Проверить" @click="main()" />
   </div>
   <div v-if="notRunning">
-    <div class="shadow" v-for="value in reply" :key="value.header">
-      <p>Заголовок: {{ value.header }}</p>
+    <div class="response" v-for="value in reply" :key="value.header">
+      <h4>Заголовок: {{ value.header }}</h4>
       <p>Описание: {{ value.description }}</p>
       <MyButton
         btn-style="standard"
@@ -116,13 +116,19 @@ const containsObject = (obj, list) => {
 </script>
 
 <style scoped>
-.wrapper {
-  margin-bottom: 1em;
-}
 .AIReplyDiv {
   border: 1px solid var(--black);
   border-radius: 5px;
   padding: 0.5em;
   margin-bottom: 0.5em;
+}
+.response {
+  margin: 1em 0em;
+}
+.response p {
+  margin-bottom: 1em;
+}
+input {
+  margin-bottom: 1em;
 }
 </style>

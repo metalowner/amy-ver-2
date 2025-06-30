@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
   <RouterView :auth="signIn" :userData="signIn?.userData" />
   <footer>
     <div class="footerContacts">
-      <a class="footerLink" target="_blank" href="https://vk.com/simonmys">Вконтакте</a>
+      <a class="footerLink" target="_blank" href="https://vk.com/neo_life">ВКонтакте</a>
       <p>Телефон: +7 961 435 90 49 Павел</p>
       <p>Все права защищены!</p>
     </div>

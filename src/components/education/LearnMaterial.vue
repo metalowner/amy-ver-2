@@ -13,7 +13,7 @@
       </div>
     </div>
 
-    <div class="btnContainer">
+    <div class="btnsDiv">
       <MyButton
         v-if="activeTest === false && testNotPassed()"
         btn-style="standard"
@@ -46,8 +46,14 @@
         </label>
       </div>
     </div>
-    <MyButton btn-style="standard" btn-text="Назад" @click="activeTest = false" />
-    <MyButton btn-style="standard" btn-text="Сдать на проверку" @click="checkAnswers(data.test)" />
+    <div class="btnsDiv">
+      <MyButton btn-style="standard" btn-text="Назад" @click="activeTest = false" />
+      <MyButton
+        btn-style="standard"
+        btn-text="Сдать на проверку"
+        @click="checkAnswers(data.test)"
+      />
+    </div>
   </div>
   <div class="testDiv" v-if="timeToExercise">
     <h4>
@@ -83,8 +89,10 @@
         :new-time="newPlanTimeObject"
       />
     </div>
-    <MyButton btn-style="standard" btn-text="Профиль" @click="router.push('/profile')" />
-    <MyButton btn-style="standard" btn-text="Следующий урок" @click="emit('finish-lesson')" />
+    <div class="btnsDiv">
+      <MyButton btn-style="standard" btn-text="Профиль" @click="router.push('/profile')" />
+      <MyButton btn-style="standard" btn-text="Следующий урок" @click="emit('finish-lesson')" />
+    </div>
   </div>
 </template>
 
@@ -195,8 +203,5 @@ const emit = defineEmits(['finish-lesson'])
 }
 .wrong {
   background: var(--red-gradient);
-}
-.valueInput {
-  border: 1px solid var(--red);
 }
 </style>

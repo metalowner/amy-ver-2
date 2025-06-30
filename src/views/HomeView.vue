@@ -4,27 +4,38 @@
       <div class="neolifeHeader"></div>
     </div>
     <div class="interest">
-      <h2>Суть</h2>
-      <p>
-        Основная сложность современного мира - это избыток информации и перемен, усложняющих путь к
-        удовлетворительной жизни и мешающих отличать хотелки от потребностей.
+      <h2>Проблема</h2>
+      <p class="subHeader">
+        Удовлетворение – это привилегия и роскошь в современном мире (даже для богатых).
+        Исследования показывают постоянный рост показателей депрессии и тревожности при отсутствии
+        доступности решений. Больше всего страдает молодёжь возрастом 10 - 30 лет. Всё потому, что
+        эволюция дала нам тело и разум, но не дала инструкцию.
       </p>
-      <p>
-        А.И. План. - это платформа для планирования, учитывающая эти сложности и помогающая их
-        преодолеть. С помощью взгляда внутрь себя, организации по полочкам и сортировки по
-        приоритетам можно улучшить свои определения целей и видение путей для их достижения. Что в
-        итоге повышает удовлетворённость жизнью.
-      </p>
+      <div class="stats"></div>
     </div>
     <div class="trust">
       <h2>Наше решение</h2>
-      <p>
-        Грамотные процессы, вопросы и описания, которые помогут вам развивать грамотное мышление и
-        формировать грамотные цели и планы.
+      <p class="subHeader">Доступное приложение для саморазвития и управления жизнью.</p>
+      <div class="educationImg"></div>
+      <h3>Обучение</h3>
+      <p class="description">
+        Что означают различные черты характера и как с ними взаимодействовать.
+      </p>
+      <div class="coachingImg"></div>
+      <h3>Канвас</h3>
+      <p class="description">
+        Все разделы коучинга на одном листе помогают сформировать полноценный и структурный взгляд
+        на свою реальность с возможностью строить эффективные долгосрочные планы.
+      </p>
+      <div class="AIImg"></div>
+      <h3>Искусственный интеллект</h3>
+      <p class="description">
+        Методом наводящих вопросов помогает анализировать значения ваших убеждений.
       </p>
     </div>
-    <div class="action">
-      <h2>Попробуйте</h2>
+    <div class="information">
+      <h2>Узнайте больше</h2>
+      <p class="subHeader">О нас и нашей методики прочитав наши бесплатные путеводители.</p>
       <div class="actionGrid">
         <div class="gridBlock">
           <div>
@@ -69,6 +80,11 @@
         </div>
       </div>
     </div>
+    <div class="action">
+      <h2>Попробуйте</h2>
+      <p class="subHeader">Зарегестрироваться и начать свою НЕОЖИЗНЬ</p>
+      <div class="registerGuide"></div>
+    </div>
   </div>
 </template>
 
@@ -80,8 +96,12 @@ p {
   margin-bottom: 1em;
   text-align: justify;
 }
+.subHeader {
+  margin: 1em 0em;
+}
 .blackLink {
-  color: #101010ff;
+  color: var(--white);
+  background: var(--blue);
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -99,13 +119,25 @@ p {
 .attention,
 .interest,
 .trust {
-  height: 90vh;
+  padding: 0em 1em;
+  padding-top: 5em;
+  padding-bottom: 5em;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 .action {
+  padding-top: 5em;
+  padding-bottom: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--black);
+  color: var(--white);
+}
+.information {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,11 +166,14 @@ p {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top;
-  color: #fafaf2ff;
+  color: var(--white);
 }
 .trust {
-  background-color: #101010ff;
-  color: #fafaf2ff;
+  background-color: var(--black);
+  color: var(--white);
+}
+.trust p {
+  margin-bottom: 5em;
 }
 .actionImage {
   height: 20em;
@@ -157,7 +192,53 @@ p {
 .marketing {
   background-image: url(../assets/marketing.svg);
 }
-
+.stats {
+  background-image: url(../assets/stats.svg);
+  width: 20em;
+  height: 10em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+}
+.educationImg {
+  background-image: url(../assets/education.svg);
+  width: 20em;
+  height: 20em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+}
+.coachingImg {
+  background-image: url(../assets/canvas.svg);
+  width: 20em;
+  height: 20em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+}
+.AIImg {
+  background-image: url(../assets/ai.svg);
+  width: 20em;
+  height: 20em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  margin-bottom: 1em;
+}
+.registerGuide {
+  background-image: url(../assets/registerGuide.png);
+  width: 20em;
+  height: 15em;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  margin: 1em 0em;
+}
 @media (min-width: 768px) {
   .actionGrid {
     grid-template-columns: auto auto;
