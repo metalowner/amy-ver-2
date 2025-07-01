@@ -16,22 +16,30 @@
     <div class="trust">
       <h2>Наше решение</h2>
       <p class="subHeader">Доступное приложение для саморазвития и управления жизнью.</p>
-      <div class="educationImg"></div>
-      <h3>Обучение</h3>
-      <p class="description">
-        Что означают различные черты характера и как с ними взаимодействовать.
-      </p>
-      <div class="coachingImg"></div>
-      <h3>Канвас</h3>
-      <p class="description">
-        Все разделы коучинга на одном листе помогают сформировать полноценный и структурный взгляд
-        на свою реальность с возможностью строить эффективные долгосрочные планы.
-      </p>
-      <div class="AIImg"></div>
-      <h3>Искусственный интеллект</h3>
-      <p class="description">
-        Методом наводящих вопросов помогает анализировать значения ваших убеждений.
-      </p>
+      <div class="actionGrid">
+        <div class="gridItem">
+          <div class="actionImage educationImg"></div>
+          <h3>Обучение</h3>
+          <p class="description">
+            Что означают различные черты характера и как с ними взаимодействовать.
+          </p>
+        </div>
+        <div class="gridItem">
+          <div class="actionImage coachingImg"></div>
+          <h3>Канвас</h3>
+          <p class="description">
+            Все разделы коучинга на одном листе помогают сформировать полноценный и структурный
+            взгляд на свою реальность с возможностью строить эффективные долгосрочные планы.
+          </p>
+        </div>
+        <div class="gridItem">
+          <div class="actionImage AIImg"></div>
+          <h3>Искусственный интеллект</h3>
+          <p class="description">
+            Методом наводящих вопросов помогает анализировать значения ваших убеждений.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="information">
       <h2>Узнайте больше</h2>
@@ -110,8 +118,8 @@ p {
 }
 .neolifeHeader {
   background-image: url(../assets/neolife_header.svg);
-  height: 15em;
-  width: 15em;
+  height: 20em;
+  width: 20em;
   background-repeat: no-repeat;
   background-size: contain;
   margin-top: 5em;
@@ -161,6 +169,16 @@ p {
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
+.gridItem {
+  padding: 1em;
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gridItem h3 {
+  margin-top: 1em;
+}
 .attention {
   background: var(--blue-gradient);
   background-repeat: no-repeat;
@@ -179,9 +197,10 @@ p {
   height: 20em;
   width: 20em;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   margin-left: auto;
   margin-right: auto;
+  background-position: center;
 }
 .selfDev {
   background-image: url(../assets/selfdev.svg);
@@ -203,31 +222,12 @@ p {
 }
 .educationImg {
   background-image: url(../assets/education.svg);
-  width: 20em;
-  height: 20em;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: block;
 }
 .coachingImg {
   background-image: url(../assets/canvas.svg);
-  width: 20em;
-  height: 20em;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: block;
 }
 .AIImg {
   background-image: url(../assets/ai.svg);
-  width: 20em;
-  height: 20em;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: block;
-  margin-bottom: 1em;
 }
 .registerGuide {
   background-image: url(../assets/registerGuide.png);

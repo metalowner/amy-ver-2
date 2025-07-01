@@ -167,4 +167,7 @@ const adjustHeight = () => {
 .descriptionFiller {
   height: 2em;
 }
+.cardInfoContainer p {
+  padding-bottom: 0.5em;
+}
 </style>

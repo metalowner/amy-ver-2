@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
 header {
   background: var(--black);
   position: relative;
-  position: absolute;
+  position: fixed;
   width: 100%;
   z-index: 9;
   border-bottom: 1px solid var(--white);

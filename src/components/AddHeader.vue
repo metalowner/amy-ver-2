@@ -9,7 +9,13 @@
         <MyButton btn-style="arrowDown" @click="displayBlock = !displayBlock" />
       </div>
       <div class="headerBtns">
-        <MyButton btn-style="help" btn-text="?" @click="displayHelp = !displayHelp" />
+        <MyButton
+          btn-style="help"
+          btn-text="?"
+          @click="displayHelp = !displayHelp"
+          v-if="dataType === 'values' || dataType === 'obstacles' || dataType === 'resources'"
+        />
+        <MyButton btn-style="lock" v-if="dataType === 'goals' || dataType === 'plans'" />
         <MyButton btn-style="info" btn-text="i" @click="displayDescription()" />
       </div>
     </div>

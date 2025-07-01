@@ -333,8 +333,16 @@ input[type='number'] {
   right: 3em;
 }
 .countersDiv {
+  margin: 1em 0em;
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
+  justify-content: start;
+  column-gap: 1em;
+  row-gap: 1em;
+  text-align: start;
+}
+.countersDiv .description {
+  text-align: start;
 }
 </style>

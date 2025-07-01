@@ -18,21 +18,6 @@
           грамотно вложиться в недвижимость и появилось время заняться проектом НЕОЖИЗНЬ.
         </p>
       </div>
-      <div class="incognitoImg"></div>
-      <div class="gridTxt">
-        <h3>Давид К. Ловинг</h3>
-        <p>
-          Который на данный момент не участвует в разработке, но его вклад - это неотрицаемая часть
-          фундамента разработки НЕОЖИЗНЬ.
-        </p>
-        <p>
-          Давид - американец, мастер науки данных из Гарварда и один из лидирующих разработчиков
-          искусственного интеллекта в америке. С его помощью мы смогли разработать первую систему, а
-          сам он разработал алгоритмы обучения искусственного интеллекта. Однако несколько лет назад
-          он вернулся в америку, женился и устоился на отличную работу из-за чего наше
-          сотрудничество перешло в дружбу по имэйлу.
-        </p>
-      </div>
     </div>
     <div class="history">
       <h2>История происхождения</h2>
@@ -92,6 +77,33 @@
         Ваша обратная связь необходима для устранения ошибок и доработки разделов.
       </p>
     </div>
+    <div class="wallOfHonor">
+      <h2>Стена почёта</h2>
+      <div class="wallOfHonorGrid">
+        <div class="honorDiv">
+          <div class="incognitoImg"></div>
+          <h3>Давид К. Ловинг</h3>
+          <p class="description">
+            Который на данный момент не участвует в разработке, но его вклад - это неотрицаемая
+            часть фундамента разработки НЕОЖИЗНЬ.
+          </p>
+          <p class="description">
+            Давид - американец, мастер науки данных из Гарварда и один из лидирующих разработчиков
+            искусственного интеллекта в америке. С его помощью мы смогли разработать первую систему,
+            а сам он разработал алгоритмы обучения искусственного интеллекта. Однако несколько лет
+            назад он вернулся в америку, женился и устоился на отличную работу из-за чего наше
+            сотрудничество перешло в дружбу по имэйлу.
+          </p>
+        </div>
+        <div class="honorDiv">
+          <div class="incognitoImg"></div>
+          <h3>Евгения Ивашова</h3>
+          <p class="description">
+            Настаяла на том чтобы я возобновил проект и поддерживает развитие как может.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -111,11 +123,8 @@ h2 {
 h3 {
   border-bottom: 1px solid #101010ff;
 }
-.about {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.wrapper {
+  padding-top: 7em;
 }
 .team {
   display: grid;
@@ -169,8 +178,8 @@ h3 {
 }
 .incognitoImg {
   background-image: url(../assets/incognito.svg);
-  height: 15em;
-  width: 15em;
+  height: 10em;
+  width: 10em;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -180,9 +189,29 @@ h3 {
   border-radius: 5px;
   margin: 0em auto;
 }
+.wallOfHonor {
+  padding: 2em 0em;
+}
+.wallOfHonor h2 {
+  margin-bottom: 1em;
+}
+.wallOfHonorGrid {
+  display: grid;
+  text-align: center;
+  justify-content: center;
+}
 @media (min-width: 768px) {
   .team {
     grid-template-columns: auto auto;
+  }
+  .wallOfHonorGrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+    justify-content: center;
+  }
+  .wallOfHonorGrid p {
+    text-align: center;
   }
 }
 </style>

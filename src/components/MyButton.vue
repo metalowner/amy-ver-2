@@ -170,6 +170,14 @@ defineProps({
   display: block;
   font-weight: 500;
 }
+.lock {
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  height: 1.7em;
+  width: 1.7em;
+  background-image: url(../assets/lock.svg);
+}
 .help {
   background: var(--orange);
 }
