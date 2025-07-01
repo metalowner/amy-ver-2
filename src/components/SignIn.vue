@@ -50,9 +50,11 @@
           :ref="(el) => (successValues['result' + index] = el)"
         />
       </div>
+    </div>
+    <div class="btnsDiv">
       <MyButton btn-style="standard" btn-text="Сохранить" @click="saveProgress" />
       <MyButton
-        btn-style="standard"
+        btn-style="delete"
         btn-text="Закрыть"
         @click="displayPlansProgress = !displayPlansProgress"
       />
