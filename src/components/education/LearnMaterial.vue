@@ -7,7 +7,7 @@
     <div v-for="paragraph in data.content" :key="paragraph" class="paragraphDivision">
       <p v-html="paragraph"></p>
     </div>
-    <div v-if="!testNotPassed">
+    <div v-if="!testNotPassed()">
       <div v-for="paragraph in data.exercise" :key="paragraph" class="paragraphDivision">
         <p v-html="paragraph"></p>
       </div>
@@ -15,13 +15,13 @@
 
     <div class="btnsDiv">
       <MyButton
-        v-if="activeTest === false && testNotPassed"
+        v-if="activeTest === false && testNotPassed()"
         btn-style="standard"
         btn-text="Перейти к экзамену"
         @click="activeTest = true"
       />
       <MyButton
-        v-if="!testNotPassed"
+        v-if="!testNotPassed()"
         btn-style="standard"
         :btn-text="'Добавить ' + data.header"
         @click="router.push('/profile')"
@@ -55,7 +55,7 @@
       />
     </div>
   </div>
-  <div class="testDiv" v-if="timeToExercise || !testNotPassed">
+  <div class="testDiv" v-if="timeToExercise || !testNotPassed()">
     <h4>
       Поздравляю! Вы завершили обучение "{{ data.header }}" и сейчас самое время закрепить новые
       знания практикой!
@@ -111,13 +111,12 @@
     </div>
     <div class="btnsDiv">
       <MyButton btn-style="standard" btn-text="Профиль" @click="router.push('/profile')" />
-      <MyButton btn-style="standard" btn-text="Следующий урок" @click="goToNextLesson()" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref, toRefs } from 'vue'
+import { ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
@@ -157,18 +156,15 @@ const newPlanTimeObject = {
   hours: 0,
   minutes: 0,
 }
-const testNotPassed = ref(false)
-const checkTestNotPassed = () => {
+
+const testNotPassed = () => {
   if (userData.value.education.lessons.indexOf(data.value.header) > -1) {
-    testNotPassed.value = false
+    return false
   } else {
-    testNotPassed.value = true
+    return true
   }
 }
-onMounted(async () => {
-  await nextTick()
-  checkTestNotPassed()
-})
+
 const checkAnswers = async (a) => {
   const answers = data.value.test.map((q) => q.selectedAnswers)
   const wrongAnswers = []
@@ -242,12 +238,6 @@ const containsObject = (obj, list) => {
     }
   }
   return false
-}
-const emit = defineEmits(['finish-lesson'])
-const goToNextLesson = () => {
-  emit('finish-lesson')
-  testNotPassed.value = true
-  timeToExercise.value = false
 }
 </script>
 

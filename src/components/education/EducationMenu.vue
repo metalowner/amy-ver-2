@@ -33,12 +33,7 @@
     </Transition>
   </div>
   <div>
-    <LearnMaterial
-      :data="courseData"
-      :user-data="userData"
-      :auth="auth"
-      @finish-lesson="receiveEmit"
-    />
+    <LearnMaterial :data="courseData" :user-data="userData" :auth="auth" />
   </div>
 </template>
 
@@ -106,11 +101,6 @@ const displayLesson = (data, index) => {
     }
   }
   displayMenu.value = false
-}
-
-const receiveEmit = () => {
-  const newIndex = lessonIndex.value + 1
-  displayLesson(CoursesData[newIndex], newIndex)
 }
 
 onMounted(() => {
