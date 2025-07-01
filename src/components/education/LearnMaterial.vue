@@ -7,11 +7,6 @@
     <div v-for="paragraph in data.content" :key="paragraph" class="paragraphDivision">
       <p v-html="paragraph"></p>
     </div>
-    <div v-if="!testNotPassed()">
-      <div v-for="paragraph in data.exercise" :key="paragraph" class="paragraphDivision">
-        <p v-html="paragraph"></p>
-      </div>
-    </div>
 
     <div class="btnsDiv">
       <MyButton
@@ -19,12 +14,6 @@
         btn-style="standard"
         btn-text="Перейти к экзамену"
         @click="activeTest = true"
-      />
-      <MyButton
-        v-if="!testNotPassed()"
-        btn-style="standard"
-        :btn-text="'Добавить ' + data.header"
-        @click="router.push('/profile')"
       />
     </div>
   </div>
