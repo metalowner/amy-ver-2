@@ -111,6 +111,7 @@ select {
   font-size: inherit;
   cursor: inherit;
   line-height: inherit;
+  outline: none;
   border-radius: 5px;
   box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -349,7 +350,8 @@ button {
 .infoBlock {
   display: grid;
   grid-template-columns: auto auto;
-  justify-content: center;
+  justify-content: space-between;
+  margin-right: 1em;
   align-items: center;
   column-gap: 0.5em;
   border-bottom-right-radius: 5px;

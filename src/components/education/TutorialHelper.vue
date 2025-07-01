@@ -10,36 +10,34 @@
         <h3>Иконки</h3>
         <div class="tutorialBlock">
           <div class="tutorialBtn">
+            <MyButton btn-style="add" />
+          </div>
+          <p class="description">
+            Означает добавить, при нажатие вы можете добавить новую информацию.
+          </p>
+        </div>
+        <div class="tutorialBlock">
+          <div class="tutorialBtn">
             <MyButton btn-style="edit" />
           </div>
-          <p>
-            Означает редакцию, нажав можно удалить, редактировать или завершить некоторые элементы.
+          <p class="description">Означает редакцию, нажав можно редактировать елемент.</p>
+        </div>
+        <div class="tutorialBlock">
+          <div class="tutorialBtn">
+            <MyButton btn-style="info" btn-text="i" />
+          </div>
+
+          <p class="description">
+            Означает информацию, нажав можно получить полезную информацию о блоке.
           </p>
         </div>
         <div class="tutorialBlock">
           <div class="tutorialBtn">
-            <MyButton btn-style="save" />
+            <MyButton btn-style="help" btn-text="?" />
           </div>
-          <p>
-            Означает сохранение, нажав можно сохранить заполненую информацию. Важно помнить что
-            автосохранения нет.
-          </p>
-        </div>
-        <div class="tutorialBlock">
-          <div class="tutorialBtn">
-            <h2><MyButton btn-style="info" /></h2>
-          </div>
-
-          <p>Означает информацию, нажав можно полусть полузную информацию о блоке.</p>
-        </div>
-        <div class="tutorialBlock">
-          <div class="tutorialBtn">
-            <h2><MyButton btn-style="help" btn-text="?" /></h2>
-          </div>
-
-          <p>
-            Означает помощь, нажав можно получить направляющие вопросы и для Премиум пользователей -
-            помощь искусственного ителлекта.
+          <p class="description">
+            Означает помощь, нажав можно получить направляющие вопросы и помощь искусственного
+            ителлекта.
           </p>
         </div>
       </div>
@@ -63,7 +61,8 @@ const displayTutorialContent = ref(false)
 .tutorialBlock {
   position: relative;
   display: grid;
-  grid-template-columns: 10% 90%;
+  grid-template-columns: 10% 80%;
+  column-gap: 1em;
   text-align: start;
   margin-bottom: 0.5em;
   border-bottom: 1px solid var(--gray-opacity);

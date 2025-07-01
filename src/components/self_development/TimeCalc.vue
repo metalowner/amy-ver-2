@@ -277,15 +277,6 @@ defineExpose({ newTimeObject })
 </script>
 
 <style scoped>
-h4 {
-  text-align: center;
-  background: var(--blue);
-  margin: 1em 0em;
-  color: var(--white);
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
-  position: relative;
-}
 .timeDiv .edit {
   top: 2.6em;
   right: 0em;

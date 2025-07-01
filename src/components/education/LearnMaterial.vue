@@ -7,7 +7,7 @@
     <div v-for="paragraph in data.content" :key="paragraph" class="paragraphDivision">
       <p v-html="paragraph"></p>
     </div>
-    <div v-if="!testNotPassed()">
+    <div v-if="!testNotPassed">
       <div v-for="paragraph in data.exercise" :key="paragraph" class="paragraphDivision">
         <p v-html="paragraph"></p>
       </div>
@@ -15,13 +15,13 @@
 
     <div class="btnsDiv">
       <MyButton
-        v-if="activeTest === false && testNotPassed()"
+        v-if="activeTest === false && testNotPassed"
         btn-style="standard"
         btn-text="Перейти к экзамену"
         @click="activeTest = true"
       />
       <MyButton
-        v-if="!testNotPassed()"
+        v-if="!testNotPassed"
         btn-style="standard"
         :btn-text="'Добавить ' + data.header"
         @click="router.push('/profile')"
@@ -55,7 +55,7 @@
       />
     </div>
   </div>
-  <div class="testDiv" v-if="timeToExercise">
+  <div class="testDiv" v-if="timeToExercise || !testNotPassed">
     <h4>
       Поздравляю! Вы завершили обучение "{{ data.header }}" и сейчас самое время закрепить новые
       знания практикой!
@@ -72,6 +72,26 @@
         data.header === 'Ценности' || data.header === 'Препятствия' || data.header === 'Ресурсы'
       "
     >
+      <div v-if="data.header === 'Препятствия'">
+        <div class="obstaclesAddDiv" v-for="obstacle in data.exerciseChooseFrom" :key="obstacle">
+          <li class="description">{{ obstacle }}</li>
+          <div>
+            <MyButton
+              btn-style="standard"
+              btn-text="Добавить"
+              @click="addNewObstacle('obstacles', obstacle, '', 1)"
+            />
+          </div>
+        </div>
+        <p class="description">Можете также добавить другие препятствия</p>
+      </div>
+      <div v-if="data.header === 'Ресурсы'">
+        <p><b>Перед вами несколько типов ресурсов.</b></p>
+        <div class="resourcesAddList" v-for="resource in data.exerciseFillList" :key="resource">
+          <li class="description">{{ resource }}</li>
+        </div>
+        <p class="description">Добавьте варианты ресурсов здесь:</p>
+      </div>
       <AddNewValue :user-data="userData" :auth="auth" :data-type="dataType" />
     </div>
     <div class="valueInput" v-if="data.header === 'Жизнь моей мечты'">
@@ -91,13 +111,13 @@
     </div>
     <div class="btnsDiv">
       <MyButton btn-style="standard" btn-text="Профиль" @click="router.push('/profile')" />
-      <MyButton btn-style="standard" btn-text="Следующий урок" @click="emit('finish-lesson')" />
+      <MyButton btn-style="standard" btn-text="Следующий урок" @click="goToNextLesson()" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue'
+import { onMounted, ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
@@ -108,6 +128,7 @@ import AddNewGoal from '../self_development/AddNewGoal.vue'
 import moment from 'moment'
 import LifeStory from '../self_development/LifeStory.vue'
 import AddNewPlan from '../self_development/AddNewPlan.vue'
+import Swal from 'sweetalert2'
 
 const props = defineProps({
   data: {
@@ -136,15 +157,17 @@ const newPlanTimeObject = {
   hours: 0,
   minutes: 0,
 }
-
-const testNotPassed = () => {
+const testNotPassed = ref(false)
+const checkTestNotPassed = () => {
   if (userData.value.education.lessons.indexOf(data.value.header) > -1) {
-    return false
+    testNotPassed.value = false
   } else {
-    return true
+    testNotPassed.value = true
   }
 }
-
+onMounted(() => {
+  checkTestNotPassed()
+})
 const checkAnswers = async (a) => {
   const answers = data.value.test.map((q) => q.selectedAnswers)
   const wrongAnswers = []
@@ -182,7 +205,49 @@ const checkAnswers = async (a) => {
   return true
 }
 
+const addNewObstacle = async (array, newHeader, newDescription, newImportance) => {
+  const userUid = auth.value.auth.currentUser.uid
+  const userRef = doc(db, 'users', userUid)
+  const newValueObject = {
+    header: newHeader,
+    description: newDescription,
+    importance: newImportance,
+  }
+  if (
+    newValueObject.header != '' &&
+    containsObject(newValueObject.header, userData.value[array]) == false
+  ) {
+    userData.value[array].push(newValueObject)
+  } else {
+    Swal.fire({ text: 'Препятствие уже добавлена!', buttonsStyling: false })
+
+    return
+  }
+  try {
+    await updateDoc(userRef, {
+      [array]: userData.value[array],
+    })
+    Swal.fire({ text: 'Сохранение прошло успешно!', buttonsStyling: false })
+  } catch (err) {
+    console.log('Error adding documents', err)
+  }
+}
+// check if array contains object
+const containsObject = (obj, list) => {
+  var i
+  for (i = 0; i < list.length; i++) {
+    if (list[i].header == obj) {
+      return true
+    }
+  }
+  return false
+}
 const emit = defineEmits(['finish-lesson'])
+const goToNextLesson = () => {
+  emit('finish-lesson')
+  testNotPassed.value = true
+  timeToExercise.value = false
+}
 </script>
 
 <style scoped>
@@ -203,5 +268,14 @@ const emit = defineEmits(['finish-lesson'])
 }
 .wrong {
   background: var(--red-gradient);
+}
+.obstaclesAddDiv {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: space-between;
+}
+.obstaclesAddDiv li {
+  padding: 0em 1em;
 }
 </style>

@@ -75,21 +75,22 @@ p {
   align-items: center;
 }
 .counterButton {
-  width: 2em;
+  width: 1.5em;
   height: 1.1em;
   text-align: center;
   font-size: 1.5em;
   line-height: 0.9em;
   cursor: pointer;
+  color: var(--white);
 }
 .decrement {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  background-color: var(--gray);
+  background-color: var(--red);
 }
 .increment {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  background: var(--blue);
+  background: var(--dark-blue);
 }
 </style>
