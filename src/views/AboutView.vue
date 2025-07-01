@@ -124,8 +124,8 @@ h3 {
 }
 .history,
 .help {
-  background-color: #101010ff;
-  color: #fafaf2ff;
+  background: var(--black);
+  color: var(--white);
   width: 100%;
   display: flex;
   flex-direction: column;

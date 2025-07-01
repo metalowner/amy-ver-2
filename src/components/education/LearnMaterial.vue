@@ -117,7 +117,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, toRefs } from 'vue'
+import { nextTick, onMounted, ref, toRefs } from 'vue'
 import MyButton from '../MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/main'
@@ -165,7 +165,8 @@ const checkTestNotPassed = () => {
     testNotPassed.value = true
   }
 }
-onMounted(() => {
+onMounted(async () => {
+  await nextTick()
   checkTestNotPassed()
 })
 const checkAnswers = async (a) => {
