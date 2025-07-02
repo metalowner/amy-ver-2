@@ -65,7 +65,7 @@
     <div class="help">
       <div class="image helpImage"></div>
       <h2>Нам нужна ваша помощь</h2>
-      <h3>Инвестиция</h3>
+      <h3>Инвестиции</h3>
       <p class="description">
         Мы ищем инвестора для перехода на второй этап развития. Для получения презентации и
         обсуждения условий обратитесь по номеру <br />
@@ -73,7 +73,7 @@
       </p>
       <h3>Пользование</h3>
       <p class="description">
-        Регистрация и использование сайта показывают заинтересованность, что поможет привлечь
+        Регистрации и использование сайта показывают заинтересованность, что поможет привлечь
         инвестиции.
       </p>
       <h3>Обратная связь</h3>
@@ -104,7 +104,7 @@
           <div class="incognitoImg"></div>
           <h3>Евгения Ивашова</h3>
           <p class="description">
-            Настаяла на том чтобы я возобновил проект и поддерживает развитие как может.
+            Настояла на том, чтобы я возобновил проект, и поддерживает развитие, как может.
           </p>
         </div>
       </div>
@@ -117,6 +117,7 @@ p {
   max-width: 35em;
   text-align: justify;
   padding: 1em;
+  margin: auto;
 }
 h1 {
   padding-top: 1em;
@@ -125,16 +126,8 @@ h2 {
   text-align: center;
   max-width: 100%;
 }
-h3 {
-  border-bottom: 1px solid #101010ff;
-}
 .wrapper {
   padding-top: 7em;
-}
-.team {
-  display: grid;
-  grid-template-columns: auto;
-  padding: 2em 1em;
 }
 .history,
 .help {
@@ -155,17 +148,15 @@ h3 {
   justify-content: center;
   padding: 2em 0px;
 }
-.help h3 {
-  border-color: #fafaf2ff;
-}
 .gridTxt {
   padding: 1em;
+  text-align: center;
 }
 .helpBlock {
   padding: 0px 1em;
 }
 .blackLink {
-  border: 1px solid #fafaf2ff;
+  border: 1px solid var(--white);
   border-radius: 5px;
 }
 .pashaImg {
@@ -202,8 +193,8 @@ h3 {
 }
 .wallOfHonorGrid {
   display: grid;
-  text-align: center;
   justify-content: center;
+  text-align: center;
 }
 .image {
   height: 20em;
@@ -236,11 +227,7 @@ h3 {
   .wallOfHonorGrid {
     display: grid;
     grid-template-columns: auto auto;
-    text-align: center;
     justify-content: center;
-  }
-  .wallOfHonorGrid p {
-    text-align: center;
   }
 }
 </style>

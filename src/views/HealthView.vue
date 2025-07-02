@@ -11,7 +11,7 @@
         />
       </div>
       <div class="block">
-        <p>Эмоцеональное здоровье</p>
+        <p>Эмоциональное здоровье</p>
         <MyRange
           :max-value="100"
           :input-value="userData?.health?.emotionalHealth"
@@ -27,7 +27,7 @@
           :input-value="userData?.health?.physicalHealth"
           ref="physicalHealth"
         />
-        <p>Эмоцеональное здоровье</p>
+        <p>Эмоциональное здоровье</p>
         <MyRange
           :max-value="100"
           :edit-enabled="true"

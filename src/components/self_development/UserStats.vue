@@ -22,7 +22,7 @@
 
     <div class="statsDiv" v-if="displayStats">
       <div class="gridBlock">
-        <h3>Заполненость</h3>
+        <h3>Заполненность</h3>
         <div class="gridContent description">
           <p>Число ценностей</p>
           <p class="stat">{{ userData?.values?.length }}</p>

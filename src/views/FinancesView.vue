@@ -12,7 +12,7 @@
         :edit-enabled="false"
         :input-value="userData?.finances?.profession"
       />
-      <p>Образования</p>
+      <p>Образование</p>
       <MyRange
         :max-value="100"
         :edit-enabled="false"
@@ -45,7 +45,7 @@
         :input-value="userData?.finances?.profession"
         ref="profession"
       />
-      <p>Образования</p>
+      <p>Образование</p>
       <MyRange
         :max-value="100"
         :edit-enabled="true"
