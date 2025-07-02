@@ -82,7 +82,7 @@ const zeroIfNeeded = computed(() => {
   background: var(--gray-opacity);
 }
 .statsWrapper {
-  padding: 1em 0em;
+  padding: 1em;
   margin: 1em 0em;
   position: relative;
   border-radius: 5px;

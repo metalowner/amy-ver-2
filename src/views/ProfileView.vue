@@ -11,6 +11,10 @@ import AddHeader from '@/components/AddHeader.vue'
 import LifeStory from '@/components/self_development/LifeStory.vue'
 import MyButton from '@/components/MyButton.vue'
 import Swal from 'sweetalert2'
+import DreamLife from '@/components/self_development/DreamLife.vue'
+import UserStats from '@/components/self_development/UserStats.vue'
+import UserAchievements from '@/components/self_development/UserAchievements.vue'
+import LifeFields from '@/components/self_development/LifeFields.vue'
 
 const props = defineProps({
   auth: {
@@ -80,7 +84,7 @@ const resourcesQuestion = {
 }
 // goals variables
 const goalsHeader = ref({})
-const goalsDescription = ' Это ваши конечные результаты которые определяют к чему вы стремитесь.'
+const goalsDescription = 'Это ваши конечные результаты, которые определяют к чему вы стремитесь.'
 const displayGoals = computed(() => {
   return goalsHeader.value.displayBlock
 })
@@ -95,7 +99,7 @@ const goalsQuestion = {
 // plans variables
 const plansHeader = ref({})
 const plansDescription =
-  'Это ваши повторяймые действия которые определяют что вы намерены делать и как часто.'
+  'Это ваши повторяемые действия, которые определяют что вы намерены делать и как часто.'
 const displayPlans = computed(() => {
   return plansHeader.value.displayBlock
 })
@@ -112,6 +116,10 @@ const plansQuestion = {
 <template>
   <div class="wrapper">
     <PersonalInformation :db="db" :auth="auth.auth" :userData="userData" />
+    <DreamLife :auth="auth.auth" :userData="userData" />
+    <UserStats :user-data="userData" />
+    <UserAchievements :user-data="userData" />
+    <LifeFields :user-data="userData" />
     <TutorialHelper />
     <LifeStory :user-data="userData" :auth="auth.auth" />
     <div class="infoHeader">
@@ -345,6 +353,13 @@ const plansQuestion = {
   }
   .popUp {
     left: 3em;
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: 49% 49%;
+    column-gap: 1em;
+    align-items: center;
+    justify-content: center;
   }
 }
 @media (min-width: 1024px) {

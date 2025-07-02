@@ -4,21 +4,9 @@
     <h4 @click="displayMenu = !displayMenu" class="educationMenuHeader">
       Пройдено {{ progressPercent }}% / 100%
     </h4>
-    <div id="largeScreenMenu" v-show="largeScreen">
-      <div
-        class="educationMenuItem"
-        v-for="(course, index) in CoursesData"
-        :class="course.active"
-        :key="course.header"
-        @click="displayLesson(course, index)"
-      >
-        <p class="educationMenuText">{{ course.header }}</p>
-        <div v-if="checkPassed(course.header)" class="passedIcon"></div>
-      </div>
-    </div>
-    <MyButton v-if="!largeScreen" btn-style="arrowDownWhite" @click="displayMenu = !displayMenu" />
+    <MyButton btn-style="arrowDownWhite" @click="displayMenu = !displayMenu" />
     <Transition>
-      <div v-show="displayMenu && !largeScreen">
+      <div class="educationMenuContainer" v-show="displayMenu">
         <div
           class="educationMenuItem"
           v-for="(course, index) in CoursesData"
@@ -33,12 +21,17 @@
     </Transition>
   </div>
   <div>
-    <LearnMaterial :data="courseData" :user-data="userData" :auth="auth" />
+    <LearnMaterial
+      :data="courseData"
+      :user-data="userData"
+      :auth="auth"
+      :time-to-exercise-prop="exerciseActive"
+    />
   </div>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, toRefs } from 'vue'
+import { computed, onMounted, ref, toRefs } from 'vue'
 import CoursesData from '../education/CoursesData'
 import LearnMaterial from './LearnMaterial.vue'
 import MyButton from '../MyButton.vue'
@@ -60,22 +53,7 @@ const { auth, userData } = toRefs(props)
 const courseData = ref({})
 const lessonIndex = ref(0)
 const displayMenu = ref(false)
-const windowWidth = ref(window.innerWidth)
-
-const largeScreen = computed(() => {
-  return windowWidth.value > 725 ? true : false
-})
-
-const handleResize = () => {
-  windowWidth.value = window.innerWidth
-}
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
+const exerciseActive = ref(false)
 
 const progressPercent = computed(() => {
   return parseInt((100 / CoursesData.length) * userData.value.education.lessons.length)
@@ -92,6 +70,7 @@ const checkPassed = (header) => {
 const displayLesson = (data, index) => {
   courseData.value = data
   lessonIndex.value = index
+  exerciseActive.value = !exerciseActive.value
   for (let i = 0; i < CoursesData.length; i++) {
     const element = CoursesData[i]
     if (element.header == data.header) {
@@ -100,6 +79,7 @@ const displayLesson = (data, index) => {
       element.active = ''
     }
   }
+
   displayMenu.value = false
 }
 
@@ -109,17 +89,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#largeScreenMenu {
-  display: grid;
-  align-items: center;
-  grid-template-columns: auto auto auto auto auto auto auto;
-  text-align: center;
-}
 .educationMenu {
-  position: relative;
+  position: fixed;
+  width: 100%;
   padding: 0.5em;
   background: var(--black);
   color: var(--white);
+  z-index: 5;
 }
 .educationMenu h2 {
   line-height: 1.5em;
@@ -157,5 +133,13 @@ onMounted(() => {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+@media (min-width: 1100px) {
+  .educationMenuContainer {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    text-align: center;
+  }
 }
 </style>

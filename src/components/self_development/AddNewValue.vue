@@ -75,11 +75,10 @@ const saveNewValue = async (array, newHeader, newDescription, newImportance) => 
     if (dataType.value === 'values') {
       Swal.fire({ text: 'Ценность уже добавлена!', buttonsStyling: false })
     } else if (dataType.value === 'obstacles') {
-      Swal.fire({ text: 'Препятствие уже добавлена!', buttonsStyling: false })
+      Swal.fire({ text: 'Препятствие уже добавлено!', buttonsStyling: false })
     } else {
       Swal.fire({ text: 'Ресурс уже добавлен!', buttonsStyling: false })
     }
-
     return
   }
   try {

@@ -97,7 +97,7 @@ const adjustHeight = () => {
 <style scoped>
 .dreamLifeWrapper {
   position: relative;
-  padding: 1em 0em;
+  padding: 1em;
   margin: 1em 0em;
 }
 .dreamLifeWrapper h2 {

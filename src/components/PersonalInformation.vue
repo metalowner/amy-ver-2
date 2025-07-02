@@ -84,60 +84,6 @@
           </div>
         </div>
       </div>
-      <DreamLife :auth="auth" :userData="userData" />
-      <UserStats :user-data="userData" />
-    </div>
-
-    <div class="block">
-      <div class="infoHeader">
-        <h2>Достижения</h2>
-        <MyButton
-          class="infoBtn"
-          btn-style="info"
-          btn-text="i"
-          @click="displayAchievementsInfo()"
-        />
-      </div>
-
-      <div class="achievements">
-        <UserAchievements :user-data="userData" />
-      </div>
-    </div>
-    <div class="block">
-      <div class="infoHeader">
-        <h2>Сферы жизни</h2>
-        <MyButton class="infoBtn" btn-style="info" btn-text="i" @click="displayLifeFieldsInfo()" />
-      </div>
-      <div class="lifeFieldsDiv" v-if="userData?.health">
-        <LifeField
-          name="Здоровье"
-          route-name="health"
-          field-icon="health"
-          background="green"
-          :satisfaction="userData?.health?.totalHealth"
-        />
-        <LifeField
-          name="Социум"
-          route-name="social"
-          field-icon="social"
-          background="blue"
-          :satisfaction="userData?.social?.totalSocial"
-        />
-        <LifeField
-          name="Финансы"
-          route-name="finances"
-          field-icon="finances"
-          background="red"
-          :satisfaction="userData?.finances?.totalFinances"
-        />
-        <LifeField
-          name="Увлечения"
-          route-name="hobbies"
-          field-icon="hobbies"
-          background="yellow"
-          :satisfaction="userData?.hobbies?.totalHobbies"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -146,11 +92,6 @@
 import { ref, toRefs } from 'vue'
 import MyButton from './MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
-import UserAchievements from './self_development/UserAchievements.vue'
-import LifeField from './self_development/LifeField.vue'
-import UserStats from './self_development/UserStats.vue'
-import DreamLife from './self_development/DreamLife.vue'
-import Swal from 'sweetalert2'
 // define props
 const props = defineProps({
   db: {
@@ -178,23 +119,6 @@ const country = ref('')
 const region = ref('')
 const city = ref('')
 const editPersonalInfo = ref(false)
-const displayLifeFieldsInfo = () => {
-  Swal.fire({
-    title: 'Сферы жизни',
-    text: 'Это основные сферы, в которых действует почти каждый человек на земле. Понимание своего удовлетворения в каждой из сфер поможет определять, как лучше всего двигаться дальше.',
-    buttonsStyling: false,
-    confirmButtonText: 'Понятно',
-  })
-}
-
-const displayAchievementsInfo = () => {
-  Swal.fire({
-    title: 'Достижения',
-    text: 'Этот блок показывает ваши достижения типа заполнености полей, завершения планов, достижения целей и решений препятствий.',
-    buttonsStyling: false,
-    confirmButtonText: 'Понятно',
-  })
-}
 
 const editInfo = () => {
   editPersonalInfo.value = !editPersonalInfo.value
@@ -367,12 +291,5 @@ const savePersonalInformation = async () => {
 }
 .poligender {
   background-image: url(../assets/poligender.svg);
-}
-@media (min-width: 768px) {
-  .lifeFieldsDiv {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
 }
 </style>

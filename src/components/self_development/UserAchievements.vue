@@ -1,21 +1,29 @@
 <template>
-  <div class="achievementsWrapper">
-    <div class="goalBadge" v-if="userData?.achievements?.achievedGoals.length > 0">
-      <p class="goalScore">{{ userData?.achievements?.achievedGoals.length }}</p>
+  <div class="achievementsContainer">
+    <div class="infoHeader">
+      <h2>Достижения</h2>
+      <MyButton class="infoBtn" btn-style="info" btn-text="i" @click="displayAchievementsInfo()" />
     </div>
-    <div class="planBadge" v-if="userData?.achievements?.finishedPlans.length > 0">
-      <p class="planScore">{{ userData?.achievements?.finishedPlans.length }}</p>
+    <div class="achievementsWrapper">
+      <div class="goalBadge" v-if="userData?.achievements?.achievedGoals.length > 0">
+        <p class="goalScore">{{ userData?.achievements?.achievedGoals.length }}</p>
+      </div>
+      <div class="planBadge" v-if="userData?.achievements?.finishedPlans.length > 0">
+        <p class="planScore">{{ userData?.achievements?.finishedPlans.length }}</p>
+      </div>
+      <div class="obstacleBadge" v-if="userData?.achievements?.resolvedObstacles.length > 0">
+        <p class="obstacleScore">{{ userData?.achievements?.resolvedObstacles.length }}</p>
+      </div>
+      <div class="fillBadge" v-if="filledFields === true"></div>
+      <div class="registerBadge"></div>
     </div>
-    <div class="obstacleBadge" v-if="userData?.achievements?.resolvedObstacles.length > 0">
-      <p class="obstacleScore">{{ userData?.achievements?.resolvedObstacles.length }}</p>
-    </div>
-    <div class="fillBadge" v-if="filledFields === true"></div>
-    <div class="registerBadge"></div>
   </div>
 </template>
 
 <script setup>
+import Swal from 'sweetalert2'
 import { toRefs } from 'vue'
+import MyButton from '../MyButton.vue'
 
 // define props
 const props = defineProps({
@@ -39,6 +47,14 @@ const filledFields = () => {
   } else {
     return false
   }
+}
+const displayAchievementsInfo = () => {
+  Swal.fire({
+    title: 'Достижения',
+    text: 'Этот блок показывает ваши достижения типа заполнености полей, завершения планов, достижения целей и решений препятствий.',
+    buttonsStyling: false,
+    confirmButtonText: 'Понятно',
+  })
 }
 </script>
 
@@ -103,6 +119,9 @@ const filledFields = () => {
   margin-inline: auto;
   width: fit-content;
   text-align: center;
+}
+.achievementsContainer {
+  padding: 0em 1em;
 }
 @media (min-width: 768px) {
   .achievementsWrapper {

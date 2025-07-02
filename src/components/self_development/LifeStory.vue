@@ -4,8 +4,18 @@
     <div class="infoHeader">
       <div class="lifeStoryHeader">
         <h2 @click="displayLifeStoryContent = !displayLifeStoryContent">История жизни</h2>
-        <MyButton class="toLeft" btn-style="arrowDown" v-if="!displayLifeStoryContent" />
-        <MyButton class="toLeft" btn-style="arrowUp" v-if="displayLifeStoryContent" />
+        <MyButton
+          class="toLeft"
+          btn-style="arrowDown"
+          @click="displayLifeStoryContent = !displayLifeStoryContent"
+          v-if="!displayLifeStoryContent"
+        />
+        <MyButton
+          class="toLeft"
+          btn-style="arrowUp"
+          @click="displayLifeStoryContent = !displayLifeStoryContent"
+          v-if="displayLifeStoryContent"
+        />
       </div>
       <MyButton btn-style="info" btn-text="i" @click="displayLifeStoryInfo()" />
     </div>
@@ -153,7 +163,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши увлечения в периоде переходной взрослости"
-            :input-text="userData.lifeStory.earlyAdolescence.hehobbiesalth"
+            :input-text="userData.lifeStory.earlyAdolescence.hobbies"
             header="Увлечения"
             :user-data="userData"
             :auth="auth"

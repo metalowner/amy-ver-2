@@ -135,7 +135,7 @@ const savePlan = async () => {
         plans: userData.value.plans,
         health: userData.value.health,
       })
-      Swal.fire({ text: 'Сохранение прошло усешно!', buttonsStyling: false })
+      Swal.fire({ text: 'Сохранение прошло успешно!', buttonsStyling: false })
       newPlanHeader.value = ''
       newPlanGoals.value = []
       newPlanObstacles.value = []
