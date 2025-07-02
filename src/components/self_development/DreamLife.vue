@@ -7,7 +7,7 @@
     <div v-show="displayEdit">
       <textarea
         type="text"
-        placeholder="Описания"
+        placeholder="Описание"
         v-model="dreamLifeText"
         ref="dreamLifeTextarea"
         @input="adjustHeight"

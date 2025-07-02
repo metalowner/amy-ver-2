@@ -4,7 +4,7 @@
     <p>
       <textarea
         type="text"
-        placeholder="Описания"
+        placeholder="Описание"
         v-model="newValueDescription"
         ref="valuesTextarea"
         @input="adjustHeight"

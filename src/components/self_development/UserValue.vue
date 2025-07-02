@@ -23,7 +23,7 @@
       <p><input type="text" placeholder="Новый заголовок" v-model="newValueHeader" /></p>
       <textarea
         type="text"
-        placeholder="Описания"
+        placeholder="Описание"
         v-model="newValueDescription"
         ref="valuesTextarea"
         @input="adjustHeight"

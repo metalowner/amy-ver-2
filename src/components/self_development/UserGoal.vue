@@ -46,7 +46,7 @@
       <div class="editData" v-if="editGoal">
         <MyButton btn-style="edit" @click="editGoalDetails" class="editBtn" />
         <p><input type="text" placeholder="Новый заголовок" v-model="newGoalHeader" /></p>
-        <p><input type="text" placeholder="Новое описания" v-model="newGoalDescription" /></p>
+        <p><input type="text" placeholder="Новое описание" v-model="newGoalDescription" /></p>
         <h4>Сферы жизни</h4>
         <div class="checkboxDiv">
           <label class="container"

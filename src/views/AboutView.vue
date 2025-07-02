@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <div class="image aboutImage"></div>
     <h2>Мы - это в основном:</h2>
     <div class="team">
       <div class="pashaImg"></div>
@@ -20,6 +21,7 @@
       </div>
     </div>
     <div class="history">
+      <div class="image historyImage"></div>
       <h2>История происхождения</h2>
       <p>
         В 2017 получив первый сертификат коучинга, набрав нескольких клиентов и пообщавшись с
@@ -45,6 +47,7 @@
       </p>
     </div>
     <div class="stages">
+      <div class="image developmentImage"></div>
       <h2>Два этапа проекта НЕОЖИЗНЬ</h2>
       <p>
         Этап первый - индивидуальная польза. Цель данного этапа привлечь пользователей, создав
@@ -60,6 +63,7 @@
       </p>
     </div>
     <div class="help">
+      <div class="image helpImage"></div>
       <h2>Нам нужна ваша помощь</h2>
       <h3>Инвестиция</h3>
       <p class="description">
@@ -78,6 +82,7 @@
       </p>
     </div>
     <div class="wallOfHonor">
+      <div class="image honorImage"></div>
       <h2>Стена почёта</h2>
       <div class="wallOfHonorGrid">
         <div class="honorDiv">
@@ -199,6 +204,30 @@ h3 {
   display: grid;
   text-align: center;
   justify-content: center;
+}
+.image {
+  height: 20em;
+  width: 20em;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-left: auto;
+  margin-right: auto;
+  background-position: center;
+}
+.aboutImage {
+  background-image: url(../assets/about.svg);
+}
+.historyImage {
+  background-image: url(../assets/history.svg);
+}
+.developmentImage {
+  background-image: url(../assets/development.svg);
+}
+.helpImage {
+  background-image: url(../assets/help.svg);
+}
+.honorImage {
+  background-image: url(../assets/honor.svg);
 }
 @media (min-width: 768px) {
   .team {
