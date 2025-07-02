@@ -26,8 +26,9 @@
           :edit-enabled="false"
         />
       </div>
+      <MyButton btn-style="edit" @click="editSocial = !editSocial" class="editBtn" />
     </div>
-    <MyButton btn-style="edit" @click="editSocial = !editSocial" />
+
     <div class="satisfactionDiv" v-if="editSocial">
       <h1>Социум!</h1>
       <div class="block">
@@ -76,6 +77,7 @@
         />
       </div>
       <MyButton btn-style="standard" btn-text="Сохранить" @click="saveSocial" />
+      <MyButton btn-style="edit" @click="editSocial = !editSocial" class="editBtn" />
     </div>
     <TimeCalc
       :time="userData?.social?.time?.family"
@@ -194,5 +196,10 @@ p {
   position: relative;
   padding-bottom: 3em;
   max-width: 25em;
+}
+.wrapper {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 2em;
 }
 </style>

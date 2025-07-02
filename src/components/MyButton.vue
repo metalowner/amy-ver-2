@@ -114,6 +114,8 @@ defineProps({
   height: 1.5em;
   width: 1.5em;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .arrowDown {
   background-image: url(../assets/arrowDown.svg);

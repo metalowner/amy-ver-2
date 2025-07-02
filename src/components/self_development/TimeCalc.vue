@@ -309,6 +309,7 @@ input[type='number'] {
 }
 .timeBlock {
   position: relative;
+  margin-left: 0.5em;
 }
 .measure {
   opacity: 0.7;

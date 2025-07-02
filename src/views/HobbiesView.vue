@@ -7,7 +7,7 @@
       <p>Свободное время</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.hobbies?.freeTime" />
 
-      <MyButton btn-style="edit" @click="editHobbies = !editHobbies" />
+      <MyButton btn-style="edit" @click="editHobbies = !editHobbies" class="editBtn" />
       <TimeCalc
         :time="userData?.hobbies?.time?.funTime"
         label="Занятия увлечением"
@@ -96,5 +96,10 @@ const saveHobbies = async () => {
   max-width: 25em;
   position: relative;
   padding-bottom: 3em;
+}
+.wrapper {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 2em;
 }
 </style>

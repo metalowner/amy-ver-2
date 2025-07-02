@@ -18,7 +18,7 @@
           :edit-enabled="false"
         />
       </div>
-      <MyButton btn-style="edit" @click="editHealthData" />
+      <MyButton btn-style="edit" @click="editHealthData" class="editBtn" />
       <div class="block" v-if="editHealth">
         <p>Физическое здоровье</p>
         <MyRange
@@ -34,7 +34,7 @@
           :input-value="userData?.health?.emotionalHealth"
           ref="emotionalHealth"
         />
-        <MyButton btn-style="save" @click="saveHealth" />
+        <MyButton btn-style="standard" btn-text="Сохранить" @click="saveHealth" />
       </div>
       <TimeCalc
         :time="userData?.health?.time?.sleep"
@@ -118,5 +118,10 @@ p {
 }
 input[type='number'] {
   max-width: 5em;
+}
+.wrapper {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 2em;
 }
 </style>

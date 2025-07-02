@@ -21,7 +21,7 @@
       <p>График</p>
       <MyRange :max-value="100" :edit-enabled="false" :input-value="userData?.finances?.schedule" />
 
-      <MyButton btn-style="edit" @click="editFinances = !editFinances" />
+      <MyButton btn-style="edit" @click="editFinances = !editFinances" class="editBtn" />
     </div>
     <div class="satisfactionDiv" v-if="editFinances">
       <p>Доход</p>
@@ -59,8 +59,8 @@
         :input-value="userData?.finances?.schedule"
         ref="schedule"
       />
-      <MyButton btn-style="save" @click="saveFinances" />
-      <MyButton btn-style="edit" @click="editFinances = !editFinances" />
+      <MyButton btn-style="standard" btn-text="Сохранить" @click="saveFinances" />
+      <MyButton btn-style="edit" @click="editFinances = !editFinances" class="editBtn" />
     </div>
     <div>
       <TimeCalc
@@ -154,9 +154,15 @@ const saveFinances = async () => {
 
 <style scoped>
 .satisfactionDiv {
+  padding-top: 1em;
   max-width: 25em;
   position: relative;
   padding-bottom: 3em;
+}
+.wrapper {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 2em;
 }
 @media (min-width: 768px) {
   .wrapper {
