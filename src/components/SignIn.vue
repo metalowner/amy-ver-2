@@ -4,6 +4,7 @@
       btn-style="navLink"
       btn-text="Войти"
       @click="((loginActive = !loginActive), (registerActive = false))"
+      class="leftBtn"
     />
     <MyButton
       btn-style="navLink"
@@ -423,5 +424,8 @@ defineExpose({
 <style scoped>
 .signInBtn {
   display: flex;
+}
+.leftBtn {
+  margin-right: 1em;
 }
 </style>
