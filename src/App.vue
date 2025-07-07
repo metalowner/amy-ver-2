@@ -37,7 +37,7 @@ onBeforeUnmount(() => {
     <div class="logo"></div>
     <div class="menuIcon" @click="displayMenu = !displayMenu" v-if="displayProperMenuIcon"></div>
     <Transition>
-      <nav v-show="displayMenu" :class="displayProperMenu" @click="displayMenu = !displayMenu">
+      <nav v-show="displayMenu" :class="displayProperMenu">
         <RouterLink @click="displayMenu = !displayMenu" to="/">Главная</RouterLink>
         <RouterLink @click="displayMenu = !displayMenu" to="/about">О нас</RouterLink>
         <RouterLink @click="displayMenu = !displayMenu" to="/education" v-if="signIn?.userLoggedIn"
