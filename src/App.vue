@@ -24,6 +24,7 @@ const handleResize = () => {
 }
 onMounted(() => {
   window.addEventListener('resize', handleResize)
+  handleResize()
 })
 
 onBeforeUnmount(() => {
