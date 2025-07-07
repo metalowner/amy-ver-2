@@ -22,6 +22,12 @@ const handleResize = () => {
     displayMenu.value = true
   }
 }
+
+const handleMenuClick = () => {
+  if (displayProperHeader.value === 'smallScreen') {
+    displayMenu.value = !displayMenu.value
+  }
+}
 onMounted(() => {
   window.addEventListener('resize', handleResize)
   handleResize()
@@ -38,12 +44,12 @@ onBeforeUnmount(() => {
     <div class="menuIcon" @click="displayMenu = !displayMenu" v-if="displayProperMenuIcon"></div>
     <Transition>
       <nav v-show="displayMenu" :class="displayProperMenu">
-        <RouterLink @click="displayMenu = !displayMenu" to="/">Главная</RouterLink>
-        <RouterLink @click="displayMenu = !displayMenu" to="/about">О нас</RouterLink>
-        <RouterLink @click="displayMenu = !displayMenu" to="/education" v-if="signIn?.userLoggedIn"
+        <RouterLink @click="handleMenuClick" to="/">Главная</RouterLink>
+        <RouterLink @click="handleMenuClick" to="/about">О нас</RouterLink>
+        <RouterLink @click="handleMenuClick" to="/education" v-if="signIn?.userLoggedIn"
           >Обучение</RouterLink
         >
-        <RouterLink @click="displayMenu = !displayMenu" to="/profile" v-if="signIn?.userLoggedIn"
+        <RouterLink @click="handleMenuClick" to="/profile" v-if="signIn?.userLoggedIn"
           >Профиль</RouterLink
         >
         <SignIn ref="signIn" />
