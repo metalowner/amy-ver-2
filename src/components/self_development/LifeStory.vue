@@ -31,7 +31,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваше здоровье в детстве"
-            :input-text="userData.lifeStory.childhood.health"
+            :input-text="userData?.lifeStory?.childhood?.health"
             header="Здоровье"
             :user-data="userData"
             :auth="auth"
@@ -42,7 +42,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши отношения в детстве, скорее всего, в основном с семьёй"
-            :input-text="userData.lifeStory.childhood.social"
+            :input-text="userData?.lifeStory?.childhood?.social"
             header="Социум"
             :user-data="userData"
             :auth="auth"
@@ -53,7 +53,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите вашу взаимосвязь с финансами в детстве, если была"
-            :input-text="userData.lifeStory.childhood.finances"
+            :input-text="userData?.lifeStory?.childhood?.finances"
             header="Финансы"
             :user-data="userData"
             :auth="auth"
@@ -64,7 +64,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши увлечения в детстве"
-            :input-text="userData.lifeStory.childhood.hobbies"
+            :input-text="userData?.lifeStory?.childhood?.hobbies"
             header="Увлечения"
             :user-data="userData"
             :auth="auth"
@@ -82,7 +82,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваше здоровье в подростковом периоде"
-            :input-text="userData.lifeStory.teenage.health"
+            :input-text="userData?.lifeStory?.teenage?.health"
             header="Здоровье"
             :user-data="userData"
             :auth="auth"
@@ -93,7 +93,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши отношения в подростковом периоде"
-            :input-text="userData.lifeStory.teenage.social"
+            :input-text="userData?.lifeStory?.teenage?.social"
             header="Социум"
             :user-data="userData"
             :auth="auth"
@@ -104,7 +104,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваше финансы в подростковом периоде"
-            :input-text="userData.lifeStory.teenage.finances"
+            :input-text="userData?.lifeStory?.teenage?.finances"
             header="Финансы"
             :user-data="userData"
             :auth="auth"
@@ -115,7 +115,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши увлечения в подростковом периоде"
-            :input-text="userData.lifeStory.teenage.hobbies"
+            :input-text="userData?.lifeStory?.teenage?.hobbies"
             header="Увлечения"
             :user-data="userData"
             :auth="auth"
@@ -130,7 +130,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваше здоровье в периоде переходной взрослости"
-            :input-text="userData.lifeStory.earlyAdolescence.health"
+            :input-text="userData?.lifeStory?.earlyAdolescence?.health"
             header="Здоровье"
             :user-data="userData"
             :auth="auth"
@@ -141,7 +141,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши отношения в периоде переходной взрослости"
-            :input-text="userData.lifeStory.earlyAdolescence.social"
+            :input-text="userData?.lifeStory?.earlyAdolescence?.social"
             header="Социум"
             :user-data="userData"
             :auth="auth"
@@ -152,7 +152,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши финансы в периоде переходной взрослости"
-            :input-text="userData.lifeStory.earlyAdolescence.finances"
+            :input-text="userData?.lifeStory?.earlyAdolescence?.finances"
             header="Финансы"
             :user-data="userData"
             :auth="auth"
@@ -163,7 +163,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши увлечения в периоде переходной взрослости"
-            :input-text="userData.lifeStory.earlyAdolescence.hobbies"
+            :input-text="userData?.lifeStory?.earlyAdolescence?.hobbies"
             header="Увлечения"
             :user-data="userData"
             :auth="auth"
@@ -178,7 +178,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваше здоровье в периоде взрослости"
-            :input-text="userData.lifeStory.adolescence.health"
+            :input-text="userData?.lifeStory?.adolescence?.health"
             header="Здоровье"
             :user-data="userData"
             :auth="auth"
@@ -189,7 +189,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши отношения в периоде взрослости"
-            :input-text="userData.lifeStory.adolescence.social"
+            :input-text="userData?.lifeStory?.adolescence?.social"
             header="Социум"
             :user-data="userData"
             :auth="auth"
@@ -200,7 +200,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши финансы в периоде взрослости"
-            :input-text="userData.lifeStory.adolescence.finances"
+            :input-text="userData?.lifeStory?.adolescence?.finances"
             header="Финансы"
             :user-data="userData"
             :auth="auth"
@@ -211,7 +211,7 @@
         <div class="insideBlock">
           <MyTextarea
             placeholder-text="Опишите ваши увлечения в периоде взрослости"
-            :input-text="userData.lifeStory.adolescence.hobbies"
+            :input-text="userData?.lifeStory?.adolescence?.hobbies"
             header="Увлечения"
             :user-data="userData"
             :auth="auth"
