@@ -25,14 +25,6 @@ html {
   margin: 0 auto;
   font-weight: normal;
 }
-
-nav {
-  display: flex;
-  align-items: center;
-  padding-bottom: 2em;
-  padding-left: 2em;
-  padding-right: 2em;
-}
 .description {
   opacity: 0.7;
   font-size: 1em;
@@ -126,8 +118,8 @@ a {
   text-decoration-line: none;
   border-bottom: 1px solid var(--gray-opacity);
   width: 100%;
+  outline: none;
 }
-
 input,
 textarea {
   border: none;
@@ -228,6 +220,7 @@ input[type='checkbox'] {
   border-bottom-right-radius: 5px;
   background: var(--blue-opacity);
   display: block;
+  position: relative;
 }
 .counterDiv {
   margin: 1em 0em;

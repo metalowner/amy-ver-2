@@ -45,12 +45,6 @@ defineProps({
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
-
-.navLink {
-  padding-bottom: 2px;
-  padding-left: 1em;
-  padding-right: 1em;
-}
 .edit {
   background-image: url(../assets/edit.svg);
   background-repeat: no-repeat;

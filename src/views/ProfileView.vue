@@ -120,14 +120,14 @@ const plansQuestion = {
     <UserStats :user-data="userData" />
     <UserAchievements :user-data="userData" />
     <LifeFields :user-data="userData" />
-    <TutorialHelper />
     <LifeStory :user-data="userData" :auth="auth.auth" />
-    <div class="infoHeader">
-      <h2>Личные качества</h2>
-      <MyButton btn-style="info" btn-text="i" @click="displayPersonalValuesinfo()" />
-    </div>
 
     <div class="profileGrid">
+      <TutorialHelper />
+      <div class="infoHeader">
+        <h2>Личные качества</h2>
+        <MyButton btn-style="info" btn-text="i" @click="displayPersonalValuesinfo()" />
+      </div>
       <div class="block">
         <AddHeader
           header="Ценности"
@@ -348,8 +348,8 @@ const plansQuestion = {
 
 @media (min-width: 768px) {
   .cardsDiv {
-    grid-template-columns: 49% 49%;
     column-gap: 1em;
+    align-items: start;
   }
   .popUp {
     left: 3em;
@@ -358,13 +358,7 @@ const plansQuestion = {
     display: grid;
     grid-template-columns: 49% 49%;
     column-gap: 1em;
-    align-items: center;
     justify-content: center;
-  }
-}
-@media (min-width: 1024px) {
-  .cardsDiv {
-    grid-template-columns: 32% 32% 32%;
   }
 }
 </style>

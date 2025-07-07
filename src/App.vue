@@ -7,11 +7,20 @@ const signIn = ref(null)
 const displayMenu = ref(false)
 const windowWidth = ref(window.innerWidth)
 const displayProperMenu = computed(() => {
-  return windowWidth.value > 725 ? true : false
+  return windowWidth.value > 725 ? 'largeScreen' : 'smallScreen'
+})
+const displayProperHeader = computed(() => {
+  return windowWidth.value > 725 ? 'largeHeader' : 'smallHeader'
+})
+const displayProperMenuIcon = computed(() => {
+  return windowWidth.value > 725 ? false : true
 })
 
 const handleResize = () => {
   windowWidth.value = window.innerWidth
+  if (displayProperMenu.value === 'largeScreen') {
+    displayMenu.value = true
+  }
 }
 onMounted(() => {
   window.addEventListener('resize', handleResize)
@@ -23,20 +32,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header>
+  <header :class="displayProperHeader">
     <div class="logo"></div>
-    <div class="menuIcon" @click="displayMenu = !displayMenu"></div>
-    <div v-if="displayProperMenu" id="largeScreenMenu">
-      <div id="largeScreenRouters">
-        <RouterLink to="/">Главная</RouterLink>
-        <RouterLink to="/about">О нас</RouterLink>
-        <RouterLink to="/education" v-if="signIn?.userLoggedIn">Обучение</RouterLink>
-        <RouterLink to="/profile" v-if="signIn?.userLoggedIn">Профиль</RouterLink>
-      </div>
-      <SignIn ref="signIn" v-if="displayProperMenu" />
-    </div>
+    <div class="menuIcon" @click="displayMenu = !displayMenu" v-if="displayProperMenuIcon"></div>
     <Transition>
-      <nav v-show="displayMenu && !displayProperMenu">
+      <nav v-show="displayMenu" :class="displayProperMenu" @click="displayMenu = !displayMenu">
         <RouterLink @click="displayMenu = !displayMenu" to="/">Главная</RouterLink>
         <RouterLink @click="displayMenu = !displayMenu" to="/about">О нас</RouterLink>
         <RouterLink @click="displayMenu = !displayMenu" to="/education" v-if="signIn?.userLoggedIn"
@@ -60,7 +60,19 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-header {
+.largeHeader {
+  background: var(--black);
+  position: fixed;
+  width: 100%;
+  z-index: 9;
+  border-bottom: 1px solid var(--white);
+  display: grid;
+  grid-template-columns: 5em 85%;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+}
+.smallHeader {
   background: var(--black);
   position: relative;
   position: fixed;
@@ -68,11 +80,19 @@ header {
   z-index: 9;
   border-bottom: 1px solid var(--white);
 }
-nav {
+.smallScreen {
   width: 100%;
   display: flex;
   flex-direction: column;
   text-align: start;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+}
+.largeScreen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 footer {
   background: var(--black);
@@ -99,32 +119,5 @@ footer {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-}
-#largeScreenMenu {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-#largeScreenRouters {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 5em;
-  padding-left: 5em;
-}
-@media (min-width: 725px) {
-  .menuIcon {
-    display: none;
-  }
-  header {
-    display: block;
-  }
-  header a {
-    padding: 0em 1em;
-  }
-  .logo {
-    position: absolute;
-  }
 }
 </style>

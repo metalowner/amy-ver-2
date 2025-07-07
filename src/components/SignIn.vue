@@ -419,3 +419,9 @@ defineExpose({
   userData,
 })
 </script>
+
+<style scoped>
+.signInBtn {
+  display: flex;
+}
+</style>
