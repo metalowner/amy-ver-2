@@ -6,7 +6,7 @@
   height: 5em;
   width: 5em;
   display: block;
-  margin: 0em auto;
+  margin: 1em auto;
 }
 /* Hide scrollbar for Chrome, Safari, and Opera */
 html::-webkit-scrollbar {
@@ -401,6 +401,6 @@ button {
   width: 2em;
   display: block;
   position: absolute;
-  top: 1.5em;
+  top: 2.5em;
   right: 1em;
 }

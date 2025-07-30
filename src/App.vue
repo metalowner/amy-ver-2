@@ -67,6 +67,9 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+nav {
+  padding: 0em 1em;
+}
 .largeHeader {
   background: var(--black);
   position: fixed;
@@ -78,6 +81,7 @@ onBeforeUnmount(() => {
   justify-content: start;
   align-items: center;
   text-align: center;
+  padding-left: 1em;
 }
 .smallHeader {
   background: var(--black);
