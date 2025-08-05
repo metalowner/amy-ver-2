@@ -100,7 +100,6 @@ const register = () => {
       const todayDate = today
       // ...
       await setDoc(doc(db, 'users', user.uid), {
-        lifeStory: 'Ваша история...',
         vision: 'Жить удовлетворительную жизнь',
         achievements: {
           finishedPlans: [],

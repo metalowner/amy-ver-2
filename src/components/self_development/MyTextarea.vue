@@ -77,7 +77,7 @@ const startEdit = async () => {
 const saveChanges = async (period, field, text) => {
   const userUid = auth.value.currentUser.uid
   const userRef = doc(db, 'users', userUid)
-
+  console.log(userData.value.lifeStory)
   userData.value.lifeStory[period][field] = text
 
   try {

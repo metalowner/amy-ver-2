@@ -92,6 +92,7 @@
 import { ref, toRefs } from 'vue'
 import MyButton from './MyButton.vue'
 import { doc, updateDoc } from 'firebase/firestore'
+import moment from 'moment'
 // define props
 const props = defineProps({
   db: {
@@ -122,15 +123,45 @@ const editPersonalInfo = ref(false)
 
 const editInfo = () => {
   editPersonalInfo.value = !editPersonalInfo.value
-  if (userData.value != {}) {
+  if (userData.value.username) {
     username.value = userData.value.username
+  } else {
+    username.value = ''
+  }
+  if (userData.value.dateOfBirth) {
     birthDate.value = userData.value.dateOfBirth
+  } else {
+    birthDate.value = moment()
+  }
+  if (userData.value.gender) {
     gender.value = userData.value.gender
+  } else {
+    gender.value = 'male'
+  }
+  if (userData.value.relationshipStatus) {
     relationship.value = userData.value.relationshipStatus
+  } else {
+    relationship.value = ''
+  }
+  if (userData.value.profession) {
     profession.value = userData.value.profession
+  } else {
+    profession.value = ''
+  }
+  if (userData.value.country) {
     country.value = userData.value.country
+  } else {
+    country.value = ''
+  }
+  if (userData.value.region) {
     region.value = userData.value.region
+  } else {
+    region.value = ''
+  }
+  if (userData.value.city) {
     city.value = userData.value.city
+  } else {
+    city.value = ''
   }
 }
 
