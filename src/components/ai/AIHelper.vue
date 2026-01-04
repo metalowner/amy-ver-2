@@ -56,7 +56,7 @@ const notRunning = ref(false)
 
 const openai = new OpenAI({
   baseURL: 'https://openrouter.ai/api/v1',
-  apiKey: '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',
+  apiKey: import.meta.env.VITE_AI_KEY,
   dangerouslyAllowBrowser: true,
 })
 
